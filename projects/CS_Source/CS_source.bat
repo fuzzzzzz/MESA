@@ -63,16 +63,3 @@ echo ...
 SET VPROJECT="%STEAMDIR%\steamapps\common\Counter-Strike source\cstrike
 SETX VPROJECT "%VPROJECT%"
 echo VPROJECT=%VPROJECT%
-
-
-echo Set the path to the Mesa Icons path
-echo ...
-SET XBMLANGPATH=""%~d0%~p0..\..\scripts\icons;"
-SETX XBMLANGPATH %XBMLANGPATH%
-echo XBMLANGPATH=%XBMLANGPATH%
-
-echo Set the name of your Game project here
-echo ...
-SET MAYA_SCRIPT_PATH="%~d0%~p0..\..\scripts;"
-SETX MAYA_SCRIPT_PATH %MAYA_SCRIPT_PATH%
-echo MAYA_SCRIPT_PATH=%MAYA_SCRIPT_PATH%

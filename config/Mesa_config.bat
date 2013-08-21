@@ -15,6 +15,7 @@ echo MESADIR=%MESADIR%
 :: The " is only at the beginning of the path, and there is not quote at the end and no whitespace.
 :: Example : 
 ::SET STEAMDIR="G:\Steam
+
 SET STEAMDIR="C:\Program Files (x86)\Steam
 SETX STEAMDIR %STEAMDIR%
 echo STEAMDIR=%STEAMDIR%
@@ -32,6 +33,20 @@ echo STEAMUSER=%STEAMUSER%
 SET MAYAVERSION=2014-x64
 SETX MAYAVERSION %MAYAVERSION%
 echo MAYAVERSION=%MAYAVERSION%
+
+
+echo Set the path to the Mesa Icons path
+echo ...
+SET XBMLANGPATH=%MESADIR%\icons;
+SETX XBMLANGPATH %XBMLANGPATH%
+echo XBMLANGPATH=%XBMLANGPATH%
+
+
+echo Set the name of your Game project here
+echo ...
+SET MAYA_SCRIPT_PATH=%MESADIR%\scripts;
+SETX MAYA_SCRIPT_PATH %MAYA_SCRIPT_PATH%
+echo MAYA_SCRIPT_PATH=%MAYA_SCRIPT_PATH%
 
 pause
 :: Maya VERSION Syntax examples:

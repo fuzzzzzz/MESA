@@ -79,29 +79,3 @@ echo [MOD_DIRECTORY] ! YOU MUST EDIT THIS PATH !
 SET VPROJECT="%STEAMDIR%\steamapps\SourceMods\[MOD_DIRECTORY]
 SETX VPROJECT "%VPROJECT%"
 echo VPROJECT=%VPROJECT%
-
-
-echo Set the path to the Mesa Icons path
-echo ...
-SET XBMLANGPATH=""%~d0%~p0..\..\scripts\icons;"
-SETX XBMLANGPATH %XBMLANGPATH%
-echo XBMLANGPATH=%XBMLANGPATH%
-
-echo Set the name of your Game project here
-echo ...
-SET MAYA_SCRIPT_PATH="%~d0%~p0..\..\scripts;"
-SETX MAYA_SCRIPT_PATH %MAYA_SCRIPT_PATH%
-echo MAYA_SCRIPT_PATH=%MAYA_SCRIPT_PATH%
-
-
-echo Set the path to the Mesa Icons path
-echo ...
-SET XBMLANGPATH=%MESADIR%\icons;
-SETX XBMLANGPATH %XBMLANGPATH%
-echo XBMLANGPATH=%XBMLANGPATH%
-
-echo Set the name of your Game project here
-echo ...
-SET MAYA_SCRIPT_PATH=%MESADIR%\scripts;
-SETX MAYA_SCRIPT_PATH %MAYA_SCRIPT_PATH%
-echo MAYA_SCRIPT_PATH=%MAYA_SCRIPT_PATH%

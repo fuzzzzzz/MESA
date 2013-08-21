@@ -77,16 +77,3 @@ echo ...
 SET VPROJECT="%STEAMDIR%\steamapps\common\Team Fortress 2\tf
 SETX VPROJECT "%VPROJECT%"
 echo VPROJECT=%VPROJECT%
-
-
-echo Set the path to the Mesa Icons path
-echo ...
-SET XBMLANGPATH=%MESADIR%\icons;
-SETX XBMLANGPATH %XBMLANGPATH%
-echo XBMLANGPATH=%XBMLANGPATH%
-
-echo Set the name of your Game project here
-echo ...
-SET MAYA_SCRIPT_PATH=%MESADIR%\scripts;
-SETX MAYA_SCRIPT_PATH %MAYA_SCRIPT_PATH%
-echo MAYA_SCRIPT_PATH=%MAYA_SCRIPT_PATH%
