@@ -1,0 +1,19 @@
+# Files to ignore when considering what GIT should commit.
+
+# Visual Studio 
+*.dll
+*.exe
+config.cfg
+*.tmp
+*.log
+*.smd
+*.vta
+*.mb
+thumbs.db
+
+*/models/*
+*/materials/*
+/.maya.swatches
+*.swatch
+*_diffuse.txt
+*_normal.txt
