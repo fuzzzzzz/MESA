@@ -1,0 +1,21 @@
+global proc orientAxisGui()
+{
+	source "smd/smdUpAxis.mel";	
+	
+	string $opt;
+	$opt =  `confirmDialog -title "SMD import options" 
+		-message "Choose 'model' options to re-orient the imported model.\nChoose 'world' to change Maya's coordinate system." 
+		-button "Model > Y-up" 
+		-button "Model > Z-up"
+		-button "World > Y-up"
+		-button "World > Z-up"
+		-button "No Change" -defaultButton "Model to Y-up" -cancelButton "No Change" -dismissString "No Change" `;
+
+	switch ($opt)
+	{
+		case "World > Y-up":  upAxis -ax y -rv; break;	
+		case "World > Z-up": upAxis -ax z -rv; break;
+		case "Model > Y-up": smdUpAxis -y; break;
+		case "Model > Z-up": smdUpAxis -z; break;		
+	}
+}

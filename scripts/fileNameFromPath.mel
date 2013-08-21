@@ -1,0 +1,18 @@
+//************************************************//
+// Credits : ValVeSoftware, Prall, Nicolas Kirsch
+// website http://puppetmaster.net ©2013
+//************************************************//
+
+
+global proc string fileNameFromPath ( string $path )
+// Extracts the name from an absolute filepath.
+// Input: e.g. "D:/projects/default/scenes/myScene.mb"
+// Result: e.g. "myScene.mb"
+//
+// Filepath can be delimited with
+// either slash ("/" or "\")
+{
+  string $filepart = match( "[^/\\]*$", $path );
+
+  return $filepart;
+}

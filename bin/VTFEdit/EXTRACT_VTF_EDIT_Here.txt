@@ -1,0 +1,6 @@
+VtfEdit is not hosted on Github
+so you must to put vtfedit.exe and the 3 dlls (devil, hlib and vtflib)
+
+donwload link : http://nemesis.thewavelength.net/index.php?c=178
+
+--red

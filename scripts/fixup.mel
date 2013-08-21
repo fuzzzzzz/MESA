@@ -1,0 +1,243 @@
+//************************************************//
+// Credits : ValVeSoftware, Prall, Nicolas Kirsch
+// website http://puppetmaster.net ©2013
+//************************************************//
+
+
+// Scripts that get called when the file loads + unloads
+global proc onLoad()
+	{
+	source "texFixup";
+	texFixup;
+	}
+
+
+global proc onUnload()
+	{
+	}
+
+
+
+// Fixes up the smd info node
+global proc smdInfoFixup()
+	{
+	// Remove the autoExport field of smdInfo...
+	string $check[] = `ls smdInfo`;
+	if (`size $check` == 0)
+		return;
+
+	int $autoExport = `attributeQuery -n smdInfo -ex autoExport`;
+	if ($autoExport != 0)
+		{
+		deleteAttr smdInfo.autoExport;
+		scriptNode -e  -afterScript "" smdInfo;
+		}
+
+	// For backwards compatibility: add in the 'seperateBodyGroup' attribute if it doesn't exist...
+	
+	int $bodyGroupExists = `attributeQuery -n smdInfo -ex seperateBodyGroup`;
+	if ($bodyGroupExists == 0)
+		{
+		addAttr -ln seperateBodyGroup -at bool  smdInfo;
+		}
+				
+	
+	int $fullCompileExists = `attributeQuery -n smdInfo -ex fullCompile`;
+	if ($fullCompileExists == 0)
+		{
+		addAttr -ln fullCompile -at bool  smdInfo;
+		}
+	int $texPathExists = `attributeQuery -n smdInfo -ex texPath`;
+	if ($texPathExists == 0)
+		{
+		addAttr -ln texPath -dt "string" smdInfo;
+		}
+	int $smdTargetExists = `attributeQuery -n smdInfo -ex smdTarget`;
+	if ($smdTargetExists == 0)
+		{
+		addAttr -ln smdTarget -dt "string" smdInfo;
+		}	
+	int $smdIdleExists = `attributeQuery -n smdInfo -ex smdIdle`;
+	if ($smdIdleExists == 0)
+		{
+		addAttr -ln smdIdle -at bool smdInfo;
+		}	
+	int $smdRefExists = `attributeQuery -n smdInfo -ex smdRef`;
+	if ($smdRefExists == 0)
+		{
+		addAttr -ln smdRef -at bool  smdInfo;
+		}	
+	int $smdPhyExists = `attributeQuery -n smdInfo -ex smdPhy`;
+	if ($smdPhyExists == 0)
+		{
+		addAttr -ln smdPhy -at bool smdInfo;
+		}
+	int $smdAniExists = `attributeQuery -n smdInfo -ex smdAni`;
+	if ($smdAniExists == 0)
+		{
+		addAttr -ln smdAni -at bool smdInfo;
+		}
+	
+	int $smdAniNameExists = `attributeQuery -n smdInfo -ex smdAniName`;
+	if ($smdAniNameExists == 0)
+		{
+		addAttr -ln smdAniName -dt "string" smdInfo;
+		setAttr "smdInfo.smdAniName" -type "string" "idle§#";
+		}
+	int $smdAniStartExists = `attributeQuery -n smdInfo -ex smdAniStart`;
+	if ($smdAniStartExists == 0)
+		{
+		addAttr -ln smdAniStart -dt "string" smdInfo;
+		setAttr "smdInfo.smdAniStart" -type "string" "0§#";
+		}		
+	int $smdAniEndExists = `attributeQuery -n smdInfo -ex smdAniEnd`;
+	if ($smdAniEndExists == 0)
+		{
+		addAttr -ln smdAniEnd -dt "string" smdInfo;
+		setAttr "smdInfo.smdAniEnd" -type "string" "1§#";
+		}								
+	
+	int $smdAniAddExists = `attributeQuery -n smdInfo -ex smdAniAdd`;
+	if ($smdAniAddExists == 0)
+		{
+		addAttr -ln smdAniAdd -dt "string" smdInfo;
+		setAttr "smdInfo.smdAniAdd" -type "string" "loop fps 1§#";
+		}							
+	
+	int $smdBreakExists = `attributeQuery -n smdInfo -ex smdBreak`;
+	if ($smdBreakExists == 0)
+		{
+		addAttr -ln smdBreak -at bool smdInfo;
+		}			
+	
+	
+	int $qcScaleExists = `attributeQuery -n smdInfo -ex qcScale`;
+	if ($qcScaleExists == 0)
+		{
+		addAttr -ln qcScale -dt "string" smdInfo;
+		setAttr "smdInfo.qcScale" -type "string" "1";
+		}			
+	
+	
+	int $qcStaticExists = `attributeQuery -n smdInfo -ex qcStatic`;
+	if ($qcStaticExists == 0)
+		{
+		addAttr -ln qcStatic -at bool smdInfo;
+		setAttr "smdInfo.qcStatic" 0;
+		}			
+	
+	
+	int $qcSurfaceExists = `attributeQuery -n smdInfo -ex qcSurface`;
+	if ($qcSurfaceExists == 0)
+		{
+		addAttr -ln qcSurface -dt "string" smdInfo;
+		setAttr "smdInfo.qcSurface" -type "string" "default";
+		}			
+	
+	
+	int $qcKeyExists = `attributeQuery -n smdInfo -ex qcKey`;
+	if ($qcKeyExists == 0)
+		{
+		addAttr -ln qcKey -dt "string" smdInfo;
+		setAttr "smdInfo.qcKey" -type "string" "--None--"; // default : Wooden.Large";	
+		}			
+
+// Few Attribute to check --red 
+	int $qcAddHeaderExists = `attributeQuery -n smdInfo -ex qcHeader`;
+	if ($qcAddHeaderExists == 0)
+		{
+		addAttr -ln qcHeader -dt "string" smdInfo;
+		}
+	
+	int $qcAddFooterExists = `attributeQuery -n smdInfo -ex qcFooter`;
+	if ($qcAddFooterExists == 0)
+		{
+		addAttr -ln qcFooter-dt "string" smdInfo;
+		}
+	int $qcAddExists = `attributeQuery -n smdInfo -ex qcAllowStatic`;
+	if ($qcAddExists == 0)
+		{
+		addAttr -ln qcAllowStatic -dt "string" smdInfo;
+		}
+//
+
+	int $qcMassExists = `attributeQuery -n smdInfo -ex qcMass`;
+	if ($qcMassExists == 0)
+		{
+		addAttr -ln qcMass -dt "string" smdInfo;
+		setAttr "smdInfo.qcMass" -type "string" "1";
+		}			
+	
+	int $qcTransExists = `attributeQuery -n smdInfo -ex smdFixTrans`;
+	if ($qcTransExists == 0)
+		{
+		addAttr -ln smdFixTrans -at bool smdInfo;
+		setAttr "smdInfo.smdFixTrans" 0;
+		}	
+	
+	int $qcColExists = `attributeQuery -n smdInfo -ex smdFixCol`;
+	if ($qcColExists == 0)
+		{
+		addAttr -ln smdFixCol -at bool smdInfo;
+		setAttr "smdInfo.smdFixCol" 0;
+		}	
+	int $qcCompileExists = `attributeQuery -n smdInfo -ex compile`;
+	if ($qcCompileExists == 0)
+		{
+		addAttr -ln compile -at bool smdInfo;
+		setAttr "smdInfo.compile" 1;
+		}
+	int $qcTexExists = `attributeQuery -n smdInfo -ex Tex`;
+	if ($qcTexExists == 0)
+		{
+		addAttr -ln Tex -at bool smdInfo;
+		setAttr "smdInfo.Tex" 1;
+		}
+	int $qcThumbExists = `attributeQuery -n smdInfo -ex Thumb`;
+	if ($qcThumbExists == 0)
+		{
+		addAttr -ln Thumb -at bool smdInfo;
+		setAttr "smdInfo.Thumb" 0;
+		}			
+	int $qcLODExists = `attributeQuery -n smdInfo -ex qcLOD`;
+	if ($qcLODExists == 0)
+		{
+		addAttr -ln qcLOD -at bool smdInfo;
+		setAttr "smdInfo.qcLOD" 0;
+		}							
+	}	
+		
+		
+
+global proc fixup()
+	{
+	source "texFixup";
+
+	// Strip out unnecessary (and invalid) smdInfo nodes. Files appear to have tons of them!
+	string $test;
+	string $bogusSmdInfo[] = `ls`;
+	for ( $test in $bogusSmdInfo )
+		{
+		if ((`match "smdInfo" $test`) == "smdInfo")
+			{
+			if ( $test != "smdInfo" )
+				{
+				delete $test;
+				}
+			}
+		}
+
+	smdInfoFixup;
+
+	// add auto-fixup calls to occur when files load + save
+	string $check[] = `ls valveFixup`;
+	if (`size $check` == 0)
+		{
+		scriptNode -st 2 -name "valveFixup";
+		scriptNode -e  -beforeScript "onLoad" valveFixup;
+		scriptNode -e  -afterScript "onUnload" valveFixup;
+		}
+
+	texFixup;
+	}
+

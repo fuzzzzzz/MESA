@@ -1,0 +1,198 @@
+//***********************************//
+// Credit Nicolas Kirsch, 
+// website http://puppetmaster.net
+//***********************************//
+
+
+// global proc guiStudioMdl()
+// {
+// system ("start G:\\Steam\\steamapps\\laudanum\\sourcesdk\\bin\\source2007\\bin\\GUIStudioMDL.exe ");
+	// system ("%SOURCE_BIN_PATH%\\vtfEdit.exe " + "-game %GAME_PROJECT%");
+// }
+
+/* Script Created by Nicolas Kirsch */
+global proc hammerApp()
+{
+system ("shell %SOURCE_BIN_PATH%\\hammer.exe " + "-game %GAME_PROJECT%");
+}
+
+global proc facePoserApp()
+{
+	system ("shell %SOURCE_BIN_PATH%\\hlfaceposer.exe " + "-game %GAME_PROJECT%");
+}
+
+global proc qcEyesApp()
+{
+	system ("shell %SOURCE_BIN_PATH%\\qc_eyes.exe "/* + "-game %GAME_PROJECT%"*/ );
+}
+
+
+global proc openMdlWithHlmv()
+{ 	
+	//Checks if the paths in the smdOptionWindow are set
+	source smdOptionWindow;
+	
+	if(isSmdInfoDefined())
+	{
+		string $smdTargetPath;
+		string $GameProjectSource = `getenv GAME_PROJECT_SRC`;
+		string $GameProjectPath = `getenv GAME_PROJECT`;
+		
+		// Get the Full path base on the SMD / QC path.
+		$smdTargetPath = `getAttr smdInfo.smdTarget`;
+		//Adjust the folder
+		$smdTargetPath = `substitute "^.*/modelsrc/" $smdTargetPath "/models/"`;
+		
+		//Store path
+		string $smdInfoTarget;
+		$smdInfoTarget = $smdTargetPath;
+		//Change the Extension type
+		$smdTargetPath = `substitute ".[Ss][Mm][Dd]" $smdTargetPath ".mdl"`;
+		
+		$smdTargetPath = $GameProjectPath + $smdTargetPath ;
+		//The path must be lowered to be read by HLMV.
+		$smdTargetPath = `tolower $smdTargetPath`;
+		
+		print ( "****************************************************\n" );
+		print ( "Model :" + $smdInfoTarget + " is Opened in HLMV ****\n" );
+
+
+		// HACK HACK "load " can't be preferred in that case" , that result in a freeze of maya until the launched aplication is closed.
+		
+		// Trying to load hlmv th
+		// TODO : FIX IT --red	EDIT : FIXED ! but let that as example	--red
+		string $openHlmvCmd;
+		string $openHlmvCmd = system ( "shell %SOURCE_BIN_PATH%\\hlmv.exe -nop4 -game %GAME_PROJECT% -model " + $smdTargetPath );
+		print ( $openHlmvCmd );
+	
+	}
+	//If the paths in the smdOptionWindow are not set
+	else
+	{
+		print ("Please check your SMD/QC Path in the SMD Option Window and set it up!");
+		return;
+	}
+	
+}
+
+
+	//Script Created by Martin Niehoff	
+	//Makes a full compile of the model if all needed informations are already entered
+	//Can be directly called over a seperate button
+	global proc mdlFullCompile()
+	{
+		source smdOptionWindow;
+
+		print("----------------------------------------------");
+		print("MDL Full Compile"); 
+		print("----------------------------------------------");
+		
+		//Checks if the smdinfos are defined
+		if ( isSmdInfoDefined() )
+		{
+			smdExport( 3, `getAttr smdInfo.seperateBodyGroup` );
+		}
+		//If not give a error message
+		else
+		{
+			print ("ERROR - You first have to set up the export settings in the smd options window!");
+		}
+	}
+
+
+global proc editQCScript()
+{ 	
+	//Checks if the paths in the smdOptionWindow are set
+	source smdOptionWindow;
+	
+	if(isSmdInfoDefined())
+	{
+		string $smdTargetPath;
+		string $GameProjectSource = `getenv GAME_PROJECT_SRC`;
+		
+		// Get the Full path base on the SMD / QC path.
+		$smdTargetPath = `getAttr smdInfo.smdTarget`;
+
+		//Change the Extension type
+		$smdTargetPath = `substitute ".[Ss][Mm][Dd]" $smdTargetPath ".qc"`;
+		//Convert path string in lowercase.
+		$smdTargetPath = `tolower $smdTargetPath`;
+		
+		print ( "****************************************\n" );
+		print ( "*** Open the the Qc File in notepad ****\n" );
+		print ( "****************************************\n" );
+				
+		string $openQcCmd;
+		
+		// HACK HACK "load " is preferred from "notepad " , that result in a freeze of maya until the launched aplication is closed.
+		// Load let window bases the application to open on the application set as default to open the associated extensions.
+		// TODO : FIX IT --red
+		string $openQcCmd = system ( "load " + $smdTargetPath );
+		print ( $smdTargetPath + "\n" );
+		print ( $openQcCmd );
+		print ( "***  The QC Script is successfully opened in Notepad  ***\n" );
+
+	}
+	else
+	{
+		print ("Please check your SMD/QC Path in the SMD Option Window and set it up!");
+		return;
+	}
+
+}
+
+// Procedure that opens the %Game_Project% Path set as environment variable.
+global proc openVProject()
+{
+	//Script Created by Martin Niehoff
+	//Says the windows command shell it should open a new explorer windows with the current VProject
+	system("explorer %GAME_PROJECT%");
+	
+	print("Current GProject is Opened");
+}
+// Procedure that opens the %Game_Project_Scr% Path set as environment variable.
+global proc openSourceProject()
+{
+	//Script Created by Martin Niehoff
+	//Says the windows command shell it should open a new explorer windows with the current VProject
+	system("explorer %GAME_PROJECT_SRC%");
+	
+	print("Current Game Project Source is Opened");
+}
+
+//-----------------------------------------------------------------------------------------//
+// Just for debug purpose, 
+// It will print waht is into the smd option panel. and is useful debugin the panel --red
+//-----------------------------------------------------------------------------------------//
+
+global proc mesaCheckPath()
+{
+
+	//Define String
+	string $sourceBinPathString = `getenv SOURCE_BIN_PATH`;
+	string $GameProjectSource = `getenv GAME_PROJECT_SRC`;
+	string $GameProjectName = `getenv GAME_PROJECT_NAME`;
+	string $GameProjectPath = `getenv GAME_PROJECT`;
+	string $VProjectPath = `getenv VPROJECT`;
+	
+	// check the Bin path
+	print ( "Source Bin Path :" + $sourceBinPathString );
+	print ( "\n");
+	
+	// check the GAME_PROJECT_path
+	print ( "Game Project Path :" + $GameProjectPath );
+	print ( "\n");
+
+	// check the GAME_PROJECT_SRC path
+	print ( "Game Project Source Path :" + $GameProjectSource );
+	print ( "\n");
+	
+	// check the GAME_PROJECT_Name
+	print ( "Game Project Name : " + $GameProjectName );		
+	print ( "\n");
+	
+	// check the VPROJECT Path
+	print ( "VProject Path is : " + $VProjectPath );		
+	print ( "\n");
+
+}

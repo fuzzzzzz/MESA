@@ -1,0 +1,8 @@
+//Maya 2011/2012/2013 x32 and x64 Project Definition
+
+// related to Source Engine and the project workspace
+workspace -fr "images" "materialsrc";  //tga location
+workspace -fr "sourceImages" "materialsrc";
+workspace -fr "scene" "modelsrc";
+//workspace -fr "mel" "scripts"; //source engine scripts location
+//workspace -fr "scripts" "scripts";

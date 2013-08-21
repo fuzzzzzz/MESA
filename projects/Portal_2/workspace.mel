@@ -1,0 +1,40 @@
+//Maya 2011/2012/2013 x32 and x64 Project Definition
+
+// related to Source Engine and the project workspace
+workspace -fr "images" "materialsrc";  //tga location
+workspace -fr "sourceImages" "materialsrc";
+workspace -fr "scene" "modelsrc";
+//workspace -fr "mel" "scripts"; //source engine scripts location
+//workspace -fr "scripts" "scripts";
+
+
+workspace -fr "offlineEdit" "scenes/edits";
+workspace -fr "translatorData" "data";
+workspace -fr "renderData" "renderData";
+
+workspace -fr "3dPaintTextures" "sourceimages/3dPaintTextures";
+workspace -fr "eps" "data";
+workspace -fr "mentalRay" "renderData/mentalray";
+workspace -fr "furShadowMap" "renderData/fur/furShadowMap";
+workspace -fr "particles" "particles";
+workspace -fr "audio" "sound";
+
+workspace -fr "sound" "sound";
+workspace -fr "furFiles" "renderData/fur/furFiles";
+workspace -fr "depth" "renderData/depth";
+workspace -fr "autoSave" "autosave";
+workspace -fr "furAttrMap" "renderData/fur/furAttrMap";
+workspace -fr "diskCache" "cache";
+workspace -fr "movie" "movies";
+workspace -fr "iprImages" "renderData/iprImages";
+workspace -fr "mayaAscii" "scenes";
+workspace -fr "furImages" "renderData/fur/furImages";
+workspace -fr "furEqualMap" "renderData/fur/furEqualMap";
+workspace -fr "illustrator" "data";
+workspace -fr "mayaBinary" "scenes";
+workspace -fr "move" "data";
+workspace -fr "fluidCache" "cache/fluid";
+workspace -fr "clips" "clips";
+workspace -fr "OBJ" "data";
+workspace -fr "templates" "assets";
+workspace -fr "shaders" "renderData/shaders";

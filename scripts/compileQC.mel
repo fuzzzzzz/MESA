@@ -1,0 +1,46 @@
+global proc compileQC ()
+{
+
+
+		
+		
+	//Checks if the paths in the smdOptionWindow are set
+	source smdOptionWindow;
+	
+	if(isSmdInfoDefined())
+	{
+		string $targetQCPath;
+		string $GameProjectSource = `getenv GAME_PROJECT_SRC`;
+		
+		// Get the Full path base on the SMD / QC path.
+		$targetQCPath = `getAttr smdInfo.smdTarget`;
+
+		//Change the Extension type
+		$targetQCPath = `substitute ".[Ss][Mm][Dd]" $targetQCPath ".qc"`;
+		//Convert path string in lowercase.
+		$targetQCPath = `tolower $targetQCPath`;
+		
+		print ( "\n" );
+		print ( "************************************\n" );
+		print ( "************ Compile QC ************\n" );
+		print ( "************************************\n" );
+		print ( "\n" );	
+		
+		string $compileQcCmd;
+		string $compileQcCmd = system ( "%SOURCE_BIN_PATH%\\studiomdl.exe -nop4 " + "\"" + $targetQCPath );
+
+		print ( $targetQCPath + "\n" );
+		print ( $compileQcCmd );
+		print ( "***  The QC has been compiled successfully ***\n" );
+
+	}
+	else
+	{
+		print ("Please check your SMD/QC Path in the SMD Option Window and set it up!");
+		print ( "\n" );
+		return;
+	}		
+}
+
+
+

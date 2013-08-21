@@ -1,0 +1,22 @@
+THIRD PARTY LICENCING INFORMATION
+
+VTF EDIT :
+
+NOTE for Mesaian users :
+
+VTF EDIT is not include in the Zip file when you download MESA from Github.com.
+You have to donwload VTFEdit on http://nemesis.thewavelength.net/, and extract the files 
+into "%MESADIR%/bin/VTFEdit/". (MESADIR= MESA root Directory path)
+
+VTFEDIT is Software Developped by Neil Jedrzejewski and Ryan Gregg.
+and release as GPL and LGP Licence terms.
+
+Email:
+jed@wunderboy.org (Neil Jedrzejewski)
+ryansgregg@hotmail.com (Ryan Gregg)
+
+Website:
+http://www.wunderboy.org/ (Neil Jedrzejewski)
+http://nemesis.thewavelength.net/ (Ryan Gregg)
+
+----------------------

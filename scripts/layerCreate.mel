@@ -1,0 +1,199 @@
+//************************************************//
+// Credits : ValVeSoftware, Prall, Nicolas Kirsch
+// website http://puppetmaster.net ©2013
+//************************************************//
+
+
+global proc create(int $nr,int $ty)
+	{
+	string $surf = "default:solidmetal:Metal_Box:metal:metal_bouncy:slipperymetal:metalgrate:metalvent:metalpanel:dirt:mud:slipperyslime:grass:tile:Wood:Wood_lowdensity:Wood_Box:Wood_Crate:Wood_Plank:Wood_Solid:Wood_Furniture:Wood_Panel:water:slime:quicksand:wade:ladder:glass:computer:concrete:rock:porcelain:boulder:gravel:brick:concrete_block:chainlink:chain:flesh:bloodyflesh:alienflesh:armorflesh:watermelon:snow:ice:carpet:plaster:cardboard:plastic_barrel:Plastic_Box:plastic:item:sand:rubber:rubbertire:jeeptire:slidingrubbertire:brakingrubbertire:slidingrubbertire_front:slidingrubbertire_rear:glassbottle:pottery:grenade:canister:metal_barrel:floating_metal_barrel:plastic_barrel_buoyant:roller:popcan:paintcan:paper:papercup:ceiling_tile:weapon:default_silent:player:player_control_clip:no_decal:foliage:";
+	string $key = "Cardboard.Small:Cardboard.Medium:Cardboard.Large:Cloth.Small:Cloth.Medium:Cloth.Large:Wooden.Tiny:Wooden.Small:Wooden.Medium:Wooden.Large:Wooden.ExtraLarge:Wooden.Huge:Stone.Small:Stone.Medium:Stone.Large:Stone.Huge:Glass.Small:Glass.Window:Metal.Small:Metal.Medium:Metal.Large:Plastic.Small:Plastic.Medium:Plastic.Large:Item.Small:Item.Medium:Item.Large:Pottery.Small:Pottery.Medium:Pottery.Large:Pottery.Huge:Flesh.Tiny:Flesh.Small:";
+	int $i;
+	string $layers[] = `ls -type "displayLayer"`;
+	string $layer;
+	string $lod;
+	int $offset = 0;
+	int $lodof =0 ;
+	int $exists =0;
+	for ($layer in $layers)
+		{
+		string $layerCheck = `match "[Rr][Ee][Ff]_[Bb][Rr][Ee][Aa][Kk].*" $layer`;
+		if ($layerCheck != "")
+			{
+			$offset++;
+			if ($ty == 3)
+				{
+				addAttr -ln mass -dt "string" $layer;
+				addAttr -ln surface -at "enum" -en $surf $layer;
+				addAttr -ln keyvalue -at "enum" -en $key $layer;
+				addAttr -ln health -dt "string" $layer;
+				addAttr -ln fadetime -dt "string" $layer;
+				setAttr ($layer+ ".mass") -type "string" `intField -q -v mass`;
+				setAttr ($layer+ ".health") -type "string" `intField -q -v health`;
+				setAttr ($layer+ ".fadetime") -type "string" `intField -q -v fade`;
+				int $s[] = `textScrollList -q -sii surf`;
+				setAttr ($layer+ ".surface") ($s[0]-1);
+				int $k[] = `textScrollList -q -sii keyv`;
+				setAttr ($layer+ ".keyvalue") ($k[0]-1);
+				setAttr ($layer+ ".fadetime") -type "string" `intField -q -v fade`;
+				setAttr ($layer+ ".health") -type "string" `intField -q -v health`;
+				}
+			}
+		string $lodCheck = `match "[Ll][Oo][Dd].*" $layer`;
+		if ($lodCheck != "")
+			{
+			$lodof++;
+			}
+		string $check = `match "[Rr][Ee][Ff][Ee][Rr][Ee][Nn][Cc][Ee].*" $layer`;
+		$check += `match "[Pp][Hh][Yy][Ss][Ii][Cc][Ss].*" $layer`;
+		if ($check != "")
+			{
+			$exists++;
+			}
+		
+			
+		}
+	
+		
+	
+	if ($ty == 1)
+		{
+		for ($i=1+$lodof; $i < $nr+1+$lodof; $i++)
+			{
+			createDisplayLayer -name ("LOD_" + $i  + "0") -number 1 -empty;
+			}
+		}
+	if ($ty == 2)
+		{
+		for ($i=1+$offset; $i < $nr+1+$offset; $i++)
+			{
+			createDisplayLayer -name ("ref_break0" + $i) -number 1 -empty;
+			createDisplayLayer -name ("phy_break0" + $i) -number 1 -empty;
+			addAttr -ln mass -dt "string" ("ref_break0" + $i);
+			setAttr ("ref_break0" + $i+ ".mass") -type "string" `intField -q -v mass`;
+			addAttr -ln surface -at "enum" -en $surf ("ref_break0" + $i);
+			addAttr -ln keyvalue -at "enum" -en $key ("ref_break0" + $i);
+			addAttr -ln health -dt "string" ("ref_break0" + $i);
+			setAttr ("ref_break0" + $i+ ".health") -type "string" `intField -q -v health`;
+			addAttr -ln fadetime -dt "string" ("ref_break0" + $i);
+			setAttr ("ref_break0" + $i+ ".fadetime") -type "string" `intField -q -v fade`;
+			int $s[] = `textScrollList -q -sii surf`;
+			setAttr ("ref_break0" + $i+  ".surface") ($s[0]-1);
+			int $k[] = `textScrollList -q -sii keyv`;
+			setAttr ("ref_break0" + $i+  ".keyvalue") ($k[0]-1);
+			setAttr ("ref_break0" + $i+ ".fadetime") -type "string" `intField -q -v fade`;
+			setAttr ("ref_break0" + $i+ ".health") -type "string" `intField -q -v health`;
+			}
+		}
+	if ($ty == 0)
+		{
+		if ($exists == 0)
+			{
+			createDisplayLayer -name ("Reference") -number 1 -empty;
+			createDisplayLayer -name ("Physics") -number 1 -empty;
+			}
+		else
+			{
+			print "Reference Layer exists";
+			}
+		}
+		
+	}
+	
+global proc layerCreate()
+	{
+	if(`window -exists layer`)
+			deleteUI layer;
+	if( `windowPref -exists layer` )
+			windowPref -r layer;
+
+	window -w 300 -h 250 -t "Layer Window" 
+			-titleBar 1 -mnb 1 -mxb 1 -mb 1 
+			-tlb 0 -sizeable 1 layer;
+
+	columnLayout -w 300 top;
+		rowLayout -nc 2 -columnWidth2 100 100 -p top;
+		button -l "ref/phy Layer" -align "center" 
+			-w 100 
+			-c "$x=`intField -q -v inp`;create($x,0);deleteUI -window layer;";
+		button -l "update break Layer" -align "center" 
+			-w 100 
+			-c "$x=`intField -q -v inp`;create($x,3);deleteUI -window layer;";
+		
+	rowLayout -nc 4 -columnWidth4 70 50 70 70 -p top;
+		text -vis 1 
+			-label "add # of layers"
+			-align "left";
+		intField -v 1 inp; 
+		button -l "LOD Layer" -align "center" 
+			-w 70
+			-c "$x=`intField -q -v inp`;create($x,1);deleteUI -window layer;";
+		button -l "break Layer" -align "center" 
+			-w 70
+			-c "$x=`intField -q -v inp`;create($x,2);deleteUI -window layer;";
+		
+	
+	
+	
+	separator -w 300 -hr 1 -st "single" -p top;
+		text -vis 1 
+			-label "Breakmodel default settings"
+			-align "left"
+			-p top;
+	
+	rowLayout -nc 2 -columnWidth2 100 100 -p top;
+		text -vis 1 
+			-label "mass"
+			-align "left";
+		intField -v 1 mass; 
+	rowLayout -nc 2 -columnWidth2 100 100 -p top;
+		text -vis 1 
+		-label "surfaceprop"
+		-align "left";
+	textScrollList surf;
+	textScrollList -e 	-a "default" -a "solidmetal" -a "Metal_Box" -a "metal" -a"metal_bouncy"
+				-a "slipperymetal" -a "metalgrate" -a "metalvent" -a "metalpanel" -a "dirt"
+				-a "mud" -a "slipperyslime" -a "grass" -a "tile" -a "Wood"
+				-a "Wood_lowdensity" -a "Wood_Box" -a "Wood_Crate" -a "Wood_Plank" -a "Wood_Solid"
+				-a "Wood_Furniture" -a "Wood_Panel" -a "water" -a "slime" -a "quicksand"
+				-a "wade" -a "ladder" -a "glass" -a "computer" -a "concrete"
+				-a "rock" -a "porcelain" -a "boulder" -a "gravel" -a "brick"
+				-a "concrete_block" -a "chainlink" -a "chain" -a "flesh" -a "bloodyflesh"
+				-a "alienflesh" -a "armorflesh" -a "watermelon" -a "snow" -a "ice"
+				-a "carpet" -a "plaster" -a "cardboard" -a "plastic_barrel" -a "Plastic_Box"
+				-a "plastic" -a "item" -a "sand" -a "rubber" -a "rubbertire"
+				-a "jeeptire" -a "slidingrubbertire" -a "brakingrubbertire" -a "slidingrubbertire_front" -a "slidingrubbertire_rear"
+				-a "glassbottle" -a "pottery" -a "grenade" -a "canister" -a "metal_barrel"
+				-a "floating_metal_barrel" -a "plastic_barrel_buoyant" -a "roller" -a "popcan" -a "paintcan"
+				-a "paper" -a "papercup" -a "ceiling_tile" -a "weapon" -a "default_silent"
+				-a "player" -a "player_control_clip" -a "no_decal" -a "foliage"
+				surf;
+	rowLayout -nc 2 -columnWidth2 100 100 -p top;
+		text -vis 1 
+		-label "Keyvalue"
+		-align "left";
+	textScrollList keyv;
+	textScrollList -e 	-a "Cardboard.Small" -a "Cardboard.Medium" -a "Cardboard.Large" -a "Cloth.Small" -a" Cloth.Medium"
+				-a "Cloth.Large" -a "Wooden.Tiny" -a "Wooden.Small" -a "Wooden.Medium" -a "Wooden.Large"
+				-a "Wooden.ExtraLarge" -a "Wooden.Huge" -a "Stone.Small" -a "Stone.Medium" -a "Stone.Large"
+				-a "Stone.Huge" -a "Glass.Small" -a "Glass.Window" -a "Metal.Small" -a "Metal.Medium"
+				-a "Metal.Large" -a "Plastic.Small" -a "Plastic.Medium" -a "Plastic.Large" -a "Item.Small"
+				-a "Item.Medium" -a "Item.Large" -a "Pottery.Small" -a "Pottery.Medium" -a "Pottery.Large"
+				-a "Pottery.Huge" -a "Flesh.Tiny" -a "Flesh.Small"
+				keyv;
+	rowLayout -nc 2 -columnWidth2 100 100 -p top;
+		text -vis 1 
+			-label "fadetime"
+			-align "left";
+		intField -v 0 fade; 			
+	rowLayout -nc 2 -columnWidth2 100 100 -p top;
+		text -vis 1 
+			-label "health"
+			-align "left";
+		intField -v 0 health; 
+
+	showWindow layer;
+
+	
+	}
+	

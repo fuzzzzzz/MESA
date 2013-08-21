@@ -1,0 +1,16 @@
+//************************************************//
+// Credits : ValVeSoftware, Prall, Nicolas Kirsch
+// website http://puppetmaster.net ©2013
+//************************************************//
+
+global proc string SourceCreateShader( string $name )
+{
+	string $newShader;
+	$newShader = `shadingNode -asShader phongE`;
+	return $newShader;
+	shadingNode -asShader phongE;
+	sets -renderable true -noSurfaceShader true -empty -name phongE1SG;
+	connectAttr -f phongE1.outColor phongE1SG.surfaceShader;
+	assignCreatedShader "phongE" "" phongE1 "pCube1";
+	sets -e -forceElement phongE1SG;
+}

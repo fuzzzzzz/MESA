@@ -1,0 +1,148 @@
+//*********************************************************//
+// Credits : Martin Niehoff and revised by Nicolas Kirsch
+// website http://puppetmaster.net
+//*********************************************************//
+global proc editvtf(string $vtfEditPath, int $texturetype)
+{
+	//****************************************************
+	//Script Created by Martin Niehoff and Nicolas Kirsch
+	//****************************************************
+	
+	print("*********************************************************************************** \n");
+	print("*****************************************EditVTF*********************************** \n");
+	print("***This will script will open the diffuse .vtf of your current scene in Notepad**** \n");
+	print("*********************************************************************************** \n");
+	print ( "\n" );
+	//Checks the texture Type
+	// 1 = Diffuse, 2 = NormalMap, 3 = Materials File
+	//print("TextureType: " +$texturetype + "\n");
+	
+	
+	//Checks if the paths in the smdOptionWindow are set
+	source smdOptionWindow;
+	if(isSmdInfoDefined())
+	{	
+		//Finds the name of the current set smd
+		string $vtfFileName =`getAttr smdInfo.smdTarget`;
+		//Checks if the smd exists
+		if($vtfFileName != "")
+		{
+			//Get the current VProject and Source folder
+			//string $sourceModPathString = `getenv GAME_PROJECT_SRC`;
+			string $GameProjectSource = `getenv GAME_PROJECT_SRC`;
+			
+			//string $sourceVProjectPathString = `getenv GAME_PROJECT`;
+			string $GameProjectPath = `getenv GAME_PROJECT`;
+			string $vtfFileRoot;
+			$vtfFileRoot = $vtfFileName;
+			
+			
+			//Adjust the folder
+			string $vtfFileRoot2 = `substitute "/modelsrc/" $vtfFileRoot "/models/"`;
+
+			//Replaces the .smd with a .vtf
+			string $vtfFileRoot = `substitute "\.smd$" $vtfFileRoot "_"`;
+		
+			//Adjust the folder
+			$vtfFileRoot = `substitute "^.*/modelsrc" $vtfFileRoot "/materials/models"`;
+			
+			//Adds the current VProject			
+			$vtfFileRoot = $GameProjectPath + $vtfFileRoot;
+
+			//Checks if the file is a diffusemap
+			if($texturetype ==1)
+			{
+				//Defines the diffuse in the var
+				$vtfFileRoot = $vtfFileRoot + "diffuse.vtf";
+				print ("Filename : " + $vtfFileRoot +"\n" );
+				//Checks if the .vtf exists
+				if (`filetest -f $vtfFileRoot` )
+				{
+					//Defines the cmd command
+					string $installpath = ("start \"" + $vtfEditPath + "\"" + " \"" + $vtfFileRoot + "\"");
+					print ( "\n");
+					//Open the Program with the file
+					system("\"" + $installpath + "\"");
+					print("VTFEdit has opened succesfully  the VTF ( Diffuse Map ) File.");
+					return;
+				}
+				//If the .vtf doesnt exist
+				else
+				{
+					error("Coudnt find the .vtf! Please check your SMD/QC Path in the SMD Option Window and make sure that the .vtf exists!");
+					return;
+				}
+			}
+			//Checks if the file is a normalmap
+			else if($texturetype ==2)
+			{
+				//Defines the diffuse in the var
+				$vtfFileRoot = $vtfFileRoot + "normal.vtf";
+				print ("Filename: " + $vtfFileRoot +"\n" );
+				//Checks if the .vtf exists
+				if (`filetest -f $vtfFileRoot` )
+				{
+					//Defines the cmd command
+					string $installpath = ("start \"" + $vtfEditPath + "\"" + " \"" + $vtfFileRoot + "\"");
+					//print ("Cmd Command: " + $installpath);
+					print ( "\n");
+					//Open the Program with the file
+					system("\"" + $installpath + "\"");
+					print("VTFEdit has opened succesfully  the VTF ( Normal Map ) File.");
+					return;
+				}
+				//If the .vtf doesnt exist
+				else
+				{
+					error("Coudnt find the .vtf! Please check your SMD/QC Path in the SMD Option Window and make sure that the .vtf exists!");
+					return;
+				}
+			}
+			//Checks if the file is a Material File
+			else if($texturetype ==3)
+			{
+				//Defines the diffuse in the var
+				$vtfFileRoot = $vtfFileRoot + ".vmt";
+				$vtfFileRoot = `substitute "_.vmt" $vtfFileRoot "_diffuse.vmt"`;
+				print ("Filename: " + $vtfFileRoot +"\n" );
+				//Checks if the .vtf exists
+				if (`filetest -f $vtfFileRoot` )
+				{
+					//Defines the cmd command
+					string $installpath = ("start \"" + $vtfEditPath + "\"" + " \"" + $vtfFileRoot + "\"");
+					//print ("Cmd Command: " + $installpath);
+					print ( "\n");
+					//Open the Program with the file
+					system("\"" + $installpath + "\"");
+					print(" VTFEdit has opened succesfully  the VMT File.");
+					return;
+				}
+				//If the .vtf doesnt exist
+				else
+				{
+					error("Coudnt find the .vtf! Please check your SMD/QC Path in the SMD Option Window and make sure that the .vtf exists!");
+					return;
+				}
+			}
+
+			else 
+			{
+				error("Wrong texturetype passed through. Please check your shelf button! Syntax: editvtf(\"Programpath\", filetype); Filetyps: 1 = Diffuse, 2 = NormalMap"); 
+			}
+		}
+		//If the smd doesnt exist
+		else
+		{
+			error("Coudnt find the .vtf! Your SMD/QC Path in the SMD Option Window is emty. Please set it up!");
+			return;
+		}
+	}
+	//If the smdOption Window isnt set up
+	else
+	{
+		error("Coudnt find the .vtf! Please check your SMD/QC Path in the SMD Option Window and set it up!");
+		return;
+	}
+	
+	return;
+}

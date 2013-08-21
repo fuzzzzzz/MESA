@@ -1,0 +1,18 @@
+//************************************************//
+// Credits : ValVeSoftware, Prall, Nicolas Kirsch
+// website http://puppetmaster.net ©2013
+//************************************************//
+
+global proc smdExportMenuItem ()
+	{
+	source "smdOptionWindow";
+
+	if (isSmdInfoDefined() == 0)
+		{
+		smdOptionWindow;
+		}
+	else
+		{
+		smdExport( `getAttr smdInfo.smdType`, `getAttr smdInfo.seperateBodyGroup` );
+		}
+	}

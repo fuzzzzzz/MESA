@@ -1,0 +1,6 @@
+//Maya 2014 x64 Project Definition
+
+workspace -fr "scene" "modelsrc";
+workspace -fr "particles" "particles";
+workspace -fr "sourceImages" "materialsrc";
+workspace -fr "images" "materialsrc";

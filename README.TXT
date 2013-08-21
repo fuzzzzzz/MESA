@@ -1,5 +1,3 @@
-MESA
-====
 MESA is a project created and maintained by Nicolas Kirsch.
 
 Mesa Source Code is shared on Github, you can take a part of the project by helping to improve Mesa.

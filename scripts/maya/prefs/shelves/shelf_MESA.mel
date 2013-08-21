@@ -1,0 +1,497 @@
+global proc shelf_MESA () {
+    global string $gBuffStr;
+    global string $gBuffStr0;
+    global string $gBuffStr1;
+
+
+    shelfButton
+        -enableCommandRepeat 1
+        -enable 1
+        -width 35
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Open Game Project Sources Directory" 
+        -enableBackground 0
+        -align "center" 
+        -label "source sourcetools.mel;\nopenGameProjectSource();" 
+        -labelOffset 0
+        -font "plainLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.2 
+        -image "SourceOpenSource.png" 
+        -image1 "SourceOpenSource.png" 
+        -style "iconOnly" 
+        -marginWidth 1
+        -marginHeight 1
+        -command "source sourcetools.mel;\nopenSourceProject();" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -enable 1
+        -width 35
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Open Game Project Directory" 
+        -enableBackground 0
+        -align "center" 
+        -label "openVProject();" 
+        -labelOffset 0
+        -font "plainLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.2 
+        -image "SourceOpenGame.png" 
+        -image1 "SourceOpenGame.png" 
+        -style "iconOnly" 
+        -marginWidth 1
+        -marginHeight 1
+        -command "source sourcetools.mel;\nopenVProject();" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -enable 1
+        -width 35
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "SMD Options Window" 
+        -enableBackground 0
+        -align "center" 
+        -label "SMD Options Window" 
+        -labelOffset 0
+        -font "plainLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.25 
+        -image "SourceSmdOptions.png" 
+        -image1 "SourceSmdOptions.png" 
+        -style "iconOnly" 
+        -marginWidth 1
+        -marginHeight 1
+        -command "source smdOptionWindow;\nsmdOptionWindow;" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -enable 1
+        -width 35
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Full Compile" 
+        -enableBackground 0
+        -align "center" 
+        -label "source smdOptionWindow;\nmdlFullCompile;" 
+        -labelOffset 0
+        -font "plainLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.2 
+        -image "SourceFullCompile.png" 
+        -image1 "SourceFullCompile.png" 
+        -style "iconOnly" 
+        -marginWidth 1
+        -marginHeight 1
+        -command "source sourcetools;\nmdlFullCompile;" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -enable 1
+        -width 35
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Compile the existent QC Script" 
+        -enableBackground 0
+        -align "center" 
+        -label "source compileQC.mdl;\ncompileQC;" 
+        -labelOffset 0
+        -font "plainLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.2 
+        -image "SourceCompileQC.png" 
+        -image1 "SourceCompileQC.png" 
+        -style "iconOnly" 
+        -marginWidth 1
+        -marginHeight 1
+        -command "source compileQC.mel;\ncompileQC;" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -enable 1
+        -width 35
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Export Morphs" 
+        -enableBackground 0
+        -align "center" 
+        -label "vtaExport;" 
+        -labelOffset 0
+        -font "plainLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.2 
+        -image "SourceExportVTA.png" 
+        -image1 "SourceExportVTA.png" 
+        -style "iconOnly" 
+        -marginWidth 1
+        -marginHeight 1
+        -command "vtaExport;" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -enable 1
+        -width 35
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Import SMD Reference Files" 
+        -enableBackground 0
+        -align "center" 
+        -label "smdImport;" 
+        -labelOffset 0
+        -font "plainLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.2 
+        -image "SourceImportSmd.png" 
+        -image1 "SourceImportSmd.png" 
+        -style "iconOnly" 
+        -marginWidth 1
+        -marginHeight 1
+        -command "smdImport;" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -enable 1
+        -width 35
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Import SMD Sequence Files" 
+        -enableBackground 0
+        -align "center" 
+        -label "smdImportani;" 
+        -labelOffset 0
+        -font "plainLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.2 
+        -image "SourceImportSmdAnim.png" 
+        -image1 "SourceImportSmdAnim.png" 
+        -style "iconOnly" 
+        -marginWidth 1
+        -marginHeight 1
+        -command "smdImportani;" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -enable 1
+        -width 35
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Create an Empty Layer" 
+        -enableBackground 0
+        -align "center" 
+        -label "Create an Empty Layer" 
+        -labelOffset 0
+        -font "tinyBoldLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.2 
+        -image "SourceEmptyLayer.png" 
+        -image1 "SourceEmptyLayer.png" 
+        -style "iconOnly" 
+        -marginWidth 1
+        -marginHeight 1
+        -command "layerCreate;" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -enable 1
+        -width 35
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Add Shader Attributes" 
+        -enableBackground 0
+        -align "center" 
+        -label "source sourceAddShaderAttributes.mel;" 
+        -labelOffset 0
+        -font "plainLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.2 
+        -image "SourceAddAttribute.png" 
+        -image1 "SourceAddAttribute.png" 
+        -style "iconOnly" 
+        -marginWidth 1
+        -marginHeight 1
+        -command "source sourceAddShaderAttributes.mel;" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -enable 1
+        -width 35
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Edit Vmt with Notepad" 
+        -enableBackground 0
+        -align "center" 
+        -label "source sourcetools.mel;\neditVMT2;" 
+        -labelOffset 0
+        -font "plainLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.2 
+        -image "SourceEditVMT.png" 
+        -image1 "SourceEditVMT.png" 
+        -style "iconOnly" 
+        -marginWidth 1
+        -marginHeight 1
+        -command "source sourcetools.mel;\neditVMT2;" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -enable 1
+        -width 35
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Edit QC with Notepad" 
+        -enableBackground 0
+        -align "center" 
+        -label "source editQC.mel;\neditqc();" 
+        -labelOffset 0
+        -font "plainLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.2 
+        -image "SourceEditQC.png" 
+        -image1 "SourceEditQC.png" 
+        -style "iconOnly" 
+        -marginWidth 1
+        -marginHeight 1
+        -command "source sourcetools.mel;\neditQCScript;" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -enable 1
+        -width 35
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Open the Diffuse Map in VTF Edit" 
+        -enableBackground 0
+        -align "center" 
+        -label "source editVTF;\neditvtf(\"%GAME_PROJECT_SRC%/../../bin/VTFEdit/VT..." 
+        -labelOffset 0
+        -font "plainLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.2 
+        -image "SourceVtfEditDiff.png" 
+        -image1 "SourceVtfEditDiff.png" 
+        -style "iconOnly" 
+        -marginWidth 1
+        -marginHeight 1
+        -command "source editVTF;\neditvtf(\"%MESADIR%/bin/VTFEdit/VTFEdit.exe\", 1);" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -enable 1
+        -width 35
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Open the Normal map ( VTF) with VTFEdit" 
+        -enableBackground 0
+        -align "center" 
+        -label "source editVTF;\neditvtf(\"bin/VTFEdit/VTFEdit.exe\", 1);" 
+        -labelOffset 0
+        -font "plainLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.2 
+        -image "SourceVtfEditNormal.png" 
+        -image1 "SourceVtfEditNormal.png" 
+        -style "iconOnly" 
+        -marginWidth 1
+        -marginHeight 1
+        -command "source editVTF;\neditvtf(\"%MESADIR%/bin/VTFEdit/VTFEdit.exe\", 2);" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -enable 1
+        -width 35
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Edit VMT with VtfEdit" 
+        -enableBackground 0
+        -align "center" 
+        -label "source sourcetools.mel;\neditVMT();" 
+        -labelOffset 0
+        -font "plainLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.2 
+        -image "SourceVtfEditMaterials.png" 
+        -image1 "SourceVtfEditMaterials.png" 
+        -style "iconOnly" 
+        -marginWidth 1
+        -marginHeight 1
+        -command "source editVTF;\neditvtf(\"%MESADIR%/bin/VTFEdit/VTFEdit.exe\", 3);" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -enable 1
+        -width 35
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Launch Hammer Editor" 
+        -enableBackground 0
+        -align "center" 
+        -label "source sourceTools.mel;\nhammerApp()" 
+        -labelOffset 0
+        -font "plainLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.2 
+        -image "SourceHammer.png" 
+        -image1 "SourceHammer.png" 
+        -style "iconOnly" 
+        -marginWidth 1
+        -marginHeight 1
+        -command "source sourceTools.mel;\nhammerApp()" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -enable 1
+        -width 35
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Launch Face Poser" 
+        -enableBackground 0
+        -align "center" 
+        -label "source sourceTools.mel;\nFacePoserApp();" 
+        -labelOffset 0
+        -font "plainLabelFont" 
+        -overlayLabelColor 0 0 0 
+        -overlayLabelBackColor 1 1 1 0.2 
+        -image "Sourcefaceposer.png" 
+        -image1 "Sourcefaceposer.png" 
+        -style "iconOnly" 
+        -marginWidth 1
+        -marginHeight 1
+        -command "source sourceTools.mel;\nfacePoserApp();" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -enable 1
+        -width 35
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Open the compiled MDL with HLMV" 
+        -enableBackground 0
+        -align "center" 
+        -label "source sourcetools.mel;\nhlmv($path);" 
+        -labelOffset 0
+        -font "plainLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.2 
+        -image "SourceHLMV.png" 
+        -image1 "SourceHLMV.png" 
+        -style "iconOnly" 
+        -marginWidth 1
+        -marginHeight 1
+        -command "source sourceTools.mel;\nopenMdlWithHlmv();" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -enable 1
+        -width 35
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Launch qcEyes" 
+        -enableBackground 0
+        -align "center" 
+        -label "source sourcetools.mel;\nqcEyeapp();" 
+        -labelOffset 0
+        -font "plainLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.2 
+        -image "SourceQCeyes.png" 
+        -image1 "SourceQCeyes.png" 
+        -style "iconOnly" 
+        -marginWidth 1
+        -marginHeight 1
+        -command "source sourcetools.mel;\nqcEyesApp();" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        
+    ;
+
+} 
