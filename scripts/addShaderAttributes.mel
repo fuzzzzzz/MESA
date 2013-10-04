@@ -1,0 +1,68 @@
+//************************************************//
+// Credits : ValVeSoftware, Prall, Nicolas Kirsch
+// website http://puppetmaster.net ©2013
+//************************************************//
+
+global proc addShaderAttributes()
+{
+
+	string $shade[] = `ls -sl`;
+	int $Exists;
+
+//	string $r = $shade[0] + ".roughness";
+//	setAttr $r = 0;
+//	string $h = $shade[0] + ".highlightSize";
+//	setAttr $h = 0;
+
+
+	$Exists = `attributeQuery -n $shade[0] -ex matType`;
+	if ($Exists == 0)
+	{
+		addAttr -ln matType -at "enum" -en "VertexLitGeneric:UnLitGeneric:" $shade[0];
+		setAttr -e -keyable true ($shade[0] +".matType");
+	}
+
+	$Exists = `attributeQuery -n $shade[0] -ex nocull`;
+	if ($Exists == 0)
+	{
+		addAttr -ln nocull -at bool $shade[0];
+		setAttr -e -keyable true ($shade[0] +".nocull") 0;
+	}
+	/* phong stuff -red
+	$Exists = `attributeQuery -n $shade[0] -ex phong`;
+	if ($Exists == 0)
+	{
+		addAttr -ln phong -at bool $shade[0];
+		setAttr -e -keyable true ($shade[0] +".phong") 0;
+	}
+	*/
+	
+	$Exists = `attributeQuery -n $shade[0] -ex alphatest`;
+	if ($Exists == 0)
+	{
+		addAttr -ln alphatest -at bool $shade[0];
+		setAttr -e -keyable true ($shade[0] +".alphatest") 0;
+	}
+
+	$Exists = `attributeQuery -n $shade[0] -ex skins`;
+	if ($Exists == 0)
+	{
+		addAttr -ln skins -dt "string" $shade[0];
+		setAttr -e -keyable true ($shade[0] +".skins");
+	}
+	
+	$Exists = `attributeQuery -n $shade[0] -ex nomip`;
+	if ($Exists == 0)
+	{
+		addAttr -ln nomip -at bool $shade[0];
+		setAttr -e -keyable true ($shade[0] +".nomip") 0;
+	}
+
+	$Exists = `attributeQuery -n $shade[0] -ex nonice`;
+	if ($Exists == 0)
+	{
+		addAttr -ln nonice -at bool $shade[0];
+		setAttr -e -keyable true ($shade[0] +".nonice") 0;
+	}
+
+}
