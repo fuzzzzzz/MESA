@@ -1,6 +1,6 @@
 global proc orientAxisGui()
 {
-	source "smd\smdUpAxis.mel";	
+	source "smdUpAxis.mel";	
 	
 	string $opt;
 	$opt =  `confirmDialog -title "SMD import options" 

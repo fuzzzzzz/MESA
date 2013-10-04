@@ -1,108 +1,64 @@
-Francais :
+English :
 
-Installation de MESA 2.0
 
-1. Télécharger mesa sur : http://puppet-master.net/mesa-for-maya/
+Installation Mesa 2.0
 
-2. Ouvrir le fichier Archive telechargé, avec un logiciel comme Winrar winZip ou 7-zip.
-Vous devez Extraire le Repertoire MESA (Dans Steam/steamapps/sourcemods/"MESA") sur votre disque dur.
+1. Download Mesa on: http://puppet-master.net/mesa-for-maya/
 
-3. Une fois Mesa decompressé sur votre disque dur,  rendez vous dans le repertoire "CONFIG".
-Faite une click Droit avec votre souris  sur le Fichier MESA_CONFIG.BAT car nous allons l'éditer (modifier) 
-afin de definir quelque informations sur l'emplacement de de Steam et des outil du SDK du Source engine.
+2. Open the downloaded archive file with a program like WinRAR, 7-zip or winZip.
+You must extract the Mesa directory where you want on your hard drive.
+For example: C :/ MESA /
 
-Note : Le Fichier MESA_CONFIG.BAT.BAK, est une copie de MESA_CONFIG.BAT, le fichier est en lecture Seule
-afin de prévenir de possible mauvaises manipulations.
 
-La Declaration Du Chemin d'acces à STEAMDIR est un peu spéciale, le Chemin qui doit être déclaré doit comporter un "guillemet au début, mais pas à la fin.
-Aussi il est important que les chemins ne contiennent pas d'espace blanc, à la fin du chemin.
+3. Once Mesa is decompressed on your hard drive, go to the directory "CONFIG".
+Made a right click with your mouse on the file MESA_CONFIG.BAT because we will edit (modify) the file
+to define some information about the location of Steam and the Source SDK tool engine.
+
+
+Note: The "MESA_CONFIG.BAT.BAK" file is a copy of MESA_CONFIG.BAT, the file is read-only
+to prevent possible mishandling.
+
+
+The definition of the path to "STEAMDIR" is a bit special, the access path must be defined to include a "quote at the beginning but not at the end.
+Also it is important that the paths do not contain any white space at the end of the defined path.
 
 [Image Notepad]
 
-Consulter le détails de l'usage des variables d'environement requis par MESA ( #1 ) afin de remplir comme il faut les informations requise.
-MESA est ultra sensible aux chemin du disque dur, il suffit de peu de chose pour que les outils ne fonctionnent pas normallement.
+Check the details of the use of environment variables required by MESA (# 1) to fill properly the information needed.
+MESA is highly sensitive to the HDD path, it does not take much for the tools do not work normally.
 
-4. Donc une fois ces information completées , sauvegarder les modifications, fermer le fichier.
-et Executez le fichier and double cliquant dessus.
+4. So once the completed information, save the changes and close the file, then run the file and double-click.
 
-Une fenetre cmd.exe va rapidement s'ouvrir et ce fermer, si aucune problem n'a été rencontré.
-Il se peut que sur certain ordinaires, l'execution du fichier BAT requière d'être executé and tant qu'administrateur.
-Si vous rencontrez des problèmes, consulté  ( #2 comment vérifié les variables d'environement utilisateur )
+A cmd.exe window will quickly open and close it if no problem was encountered.
+It is possible that on some computers, the execution of the BAT files and requires to be run as administrator.
+If you encounter problems, read the help section: 
 
-5. Maintenant il est venu le moment d'installer le Shelf dans maya.
-Executez le fichier "MESA/config/Mesa_Shelf_Install.bat"
-( #3 - Installer le Shelf Manuellement )
-
-Voila MESA est Installé.
-Les deux prochaines étapes obligatoire afin de pouvoir utilisez Mesa avant de démarré Maya.
+Read More : # 2 how  to check the user environment variables
 
 
- A. Definir les variables d'environement pour votre projets ou jeux cible avant de démarrer maya.
-Important : Maya ne mets à jour les variables d'environement seulement après que Maya ait été redémarré.
 
- B. La premier étape dans maya, sera de définir le Maya Project ( set project ) sur l'un des Repertoires présent dans MESA/projects/
 
-Pensez a sauvegarder Vos scenes maya dans "MESA/project/xxx/scenes/xxx/"
+5. Now it is time to install the Shelf in Maya.
+Run the "Mesa/config/Mesa_Shelf_Install.bat"
+
+The Shelf is supposed to be copied to "c :/User/Documents/Maya/[ MAYAVERSION ]/Prefs/shelves/".
+
+Read more : # 3 - Manually Install the Shelf)
+
+Here MESA is Installed.
+The next two steps required in order to use Mesa before starting Maya.
+
+ A. Define the environment variables for your project or target games.
+
+Important: Maya updates the environment variables only after a restart of Maya.
+
+ B. The first step in maya, will define the Maya Project (setproject) on one of the directories in this MESADIR%%/projects/"
+
+Do not forget to save your Maya Scene into the "Scenes" directory of the projects workspace.
+
+Read more : # 4 - Project  Workspace )
 
 
 Have Fun 
 Fuzz
-
-
-
-
-
-
-
-
-=======================================
-#1 Détail sur l'usage des variables d'environement requis par MESA.
-
-%STEAMDIR%
-Ce paramètre est necesaire afin de déterminer lemplacement de Steam et des outils de chaque jeux 
-qui utilisent le Source engine et propose des outils de modification de contenu.
-
-%STEAMUSER%
-C'est le nom d'utilisateur utilisé pour enregirstrer vos compte Steam. cette information permet de contruire le chemin d'accès
-aux repertoires, sourcesdk/source2009/, sourcesdk/bin/source2007/ , etc..
-Celui ci est absoluement nécessaire si vous utilisez les versions 2009, 2007 et 2006 (ep1, Orangebox ) du source sdk .
-
-%MESADIR%
-C'est le chemin où à été extrait MESA ( le repertoire Racine, qui contient les dossiers bin, projects, icons and scripts) .
-
-%MAYAVERSION%
-Ce paramétre est nécessaire afin que, lorsque vous executez le fichier de Batch qui copie le Shelf de Mesa dans le Répertoire prefs/Shelves/ de maya.
-qui se trouve logiquement dans  : c:/USER/DOCUMENTS/Maya/[VERSION]/prefs/shelves/
-
-Le choix dépend donc de la version de maya que vous utilisez.
-Pour utiliser "maya 2014" il faut déclaré "2014-x64" ( sans les guillemets ) Car il n'existe pas de version x86 de maya 2014.
-
-Autres Exemples : 
-
-Pour utiliser "maya 2012 win32" il faut déclaré "2012-x86" ( sans les guillemets )
-Pour utiliser "maya 2013 win64" il faut déclaré "2013-x64" ( sans les guillemets )
-
-
-====================================
-
-
-#2 comment vérifié les varaiable d'environement utilisateur 
-Pour vérifié que les variables d'environement ont bien été enregistrées, vous devez aller sur le panneau de configuration, puis système, puis dans paramètre de système avancées.
-Sur l'onglet tout en bas, cliquez sur Varaiables d'environement...
-
-Cette fenêtre apparait, les variables de MESA sont dans la Section Users.
-
-[IMAGE Propriété système avancés -variable d'environement.]
-
-
-====================================
-
-#3
-
-Pour installer le shelf de Mesa  Manuellement.
-Allez dans %MESADIR%/scripts/maya/prefs/shelves/ 
-Copiez les fichier "shelf_mesa.mel" Dans c:/user/documents/maya/[your_version]/prefs/shelves/.
-
-
-
 

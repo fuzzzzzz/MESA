@@ -2,20 +2,20 @@ Francais :
 
 Installation de MESA 2.0
 
-1. Télécharger mesa sur : http://puppet-master.net/mesa-for-maya/
+1. Télécharger MESA sur : http://puppet-master.net/mesa-for-maya/
 
-2. Ouvrir le fichier Archive telechargé, avec un logiciel comme Winrar winZip ou 7-zip.
-Vous devez Extraire le Repertoire MESA (Dans Steam/steamapps/sourcemods/"MESA") sur votre disque dur.
+2. Ouvrir le fichier archive téléchargé, avec un logiciel comme Winrar, winZip ou 7-zip.
+Vous devez extraire le répertoire MESA, où vous le souhaitez sur votre disque dur.
+Par exemple : C:/MESA/
 
-3. Une fois Mesa decompressé sur votre disque dur,  rendez vous dans le repertoire "CONFIG".
-Faite une click Droit avec votre souris  sur le Fichier MESA_CONFIG.BAT car nous allons l'éditer (modifier) 
-afin de definir quelque informations sur l'emplacement de de Steam et des outil du SDK du Source engine.
 
-Note : Le Fichier MESA_CONFIG.BAT.BAK, est une copie de MESA_CONFIG.BAT, le fichier est en lecture Seule
-afin de prévenir de possible mauvaises manipulations.
+3. Une fois Mesa est decompressé sur votre disque dur,  rendez vous dans le repertoire "CONFIG".
+Faite un clic Droit avec votre souris  sur le Fichier MESA_CONFIG.BAT car nous allons l'éditer (modifier) le fichier,
+afin de definir quelques informations sur l'emplacement de de Steam et des outil du SDK du Source engine.
 
-La Declaration Du Chemin d'acces à STEAMDIR est un peu spéciale, le Chemin qui doit être déclaré doit comporter un "guillemet au début, mais pas à la fin.
-Aussi il est important que les chemins ne contiennent pas d'espace blanc, à la fin du chemin.
+La définition du chemin d'accès à "STEAMDIR" est un peu spéciale, le chemin d'acces qui doit être défini doit comporter un "guillemet au début, mais pas à la fin.
+Aussi il est important que les chemins ne contiennent pas d'espace blanc, à la fin du chemin défini.
+
 
 [Image Notepad]
 
@@ -37,8 +37,10 @@ Voila MESA est Installé.
 Les deux prochaines étapes obligatoire afin de pouvoir utilisez Mesa avant de démarré Maya.
 
 
- A. Definir les variables d'environement pour votre projets ou jeux cible avant de démarrer maya.
-Important : Maya ne mets à jour les variables d'environement seulement après que Maya ait été redémarré.
+ A. Definir les variables d'environement pour votre projets ou jeux cible .
+
+Important : Maya ne met à jour les variables d'environement seulement après un redémarrage of Maya.
+
 
  B. La premier étape dans maya, sera de définir le Maya Project ( set project ) sur l'un des Repertoires présent dans MESA/projects/
 
