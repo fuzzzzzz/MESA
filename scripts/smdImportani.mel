@@ -7,7 +7,7 @@
 
 global proc string smdImportani()
 {
-source "smd/smdRead";
+//source "smdRead";
 string $test = `fileDialog -dm "*.smd"`;
 return `smdReadani $test`;
 //return `smdRead $test`;

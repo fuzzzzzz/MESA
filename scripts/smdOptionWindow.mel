@@ -59,7 +59,7 @@ proc smdMakeScriptNode ()
 		addAttr -ln Thumb -at bool smdInfo;
 		addAttr -ln Tex -at bool smdInfo;
 		addAttr -ln qcLOD -at bool smdInfo;
-		
+		addAttr -ln Tips -at bool smdInfo;
 		
 		
 		setAttr smdInfo.seperateBodyGroup 0;
@@ -85,6 +85,7 @@ proc smdMakeScriptNode ()
 		setAttr smdInfo.Thumb 0;
 		setAttr smdInfo.Tex 1;
 		setAttr smdInfo.qcLOD 0;
+		setAttr smdInfo.Tips 0;
 		//updatePaths;
 		}
 	
@@ -449,7 +450,37 @@ global proc vtaExport ()
 	//source smdOptionWindow;
 	source smdExport;
 	smdExport( 2, 0 );
+	}
 	
+global proc string openWebUrl ( string $mesaUrl )
+	{
+		//python("import os");
+		//python("os.startfile('http://www.google.com')");
+		//webBrowser -vis 1 -url "http://www.puppet-master.net";
+		$mesaUrl = "";
+	switch ($mesaUrl)
+		{
+		case "home":	
+			{
+				showHelp -a "http://www.puppet-master.net/plugins/mesa-2.0/";
+				//webBrowser -url "http://www.puppet-master.net";
+				print ( $mesaUrl );
+				break;
+			}
+		case "install":	
+			{
+				showHelp -a "http://www.puppet-master.net/plugins/mesa-2.0/installation/";
+				print ( $mesaUrl );
+				break;
+			}
+		case "install_help":	
+			{
+				showHelp -a "http://www.puppet-master.net/plugins/mesa-2.0/installation-help/";
+				print ( $mesaUrl );
+				break;
+			}
+		} /// end switch
+	return $mesaUrl;
 	}
 	
 global proc smdOptionWindow ()
@@ -480,8 +511,8 @@ global proc smdOptionWindow ()
 
 	window -title "MESA - Maya Exporter for Source Absolute v2.0"
 
-		-width 410
-		-height 500
+		-width 440
+		-height 520
 		-s 0
 		-mnb true
 		-mxb true
@@ -490,7 +521,7 @@ global proc smdOptionWindow ()
 
 columnLayout main;
 
-string $tabs = `tabLayout -h 500 -w 400 -innerMarginWidth 15 -innerMarginHeight 15 -scr 1 -hst 16 -vst 16 -cr 1 -p main tlay`;
+string $tabs = `tabLayout -h 550 -w 440 -innerMarginWidth 15 -innerMarginHeight 15 -scr 1 -hst 16 -vst 16 -cr 1 -p main tlay`;
 
 //create tab export
 string $tab1 = `columnLayout -adj 1 -p tlay tab1`;
@@ -499,80 +530,200 @@ string $tab1 = `columnLayout -adj 1 -p tlay tab1`;
 		//columnLayout -cal "left" -cat "both" 20 -cw 450 -rs 9;
 		//	text -w 380 -label $destination  -align "center";
 		
-		setParent topLayout;
-			columnLayout -cal "left" -cat "both" 15 -cw 370 -rs 10;
+		//setParent topLayout;
+							
+			image -i "mesa-about" -bgc 0 1 0 -p topLayout;
+			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl on -w 400 -label "Hello World !" -p topLayout f1;
+			text -label "Information :\n This is some note for you to know how to start with MESA 2.0\n --red\n" 
+				-align "left"
+				-p f1;
 
-			text -label "" ;
+			//help QC Commands
+			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl on -w 400 -label "Export Help" -p topLayout f1a;
+			rowLayout -nc 1 -p f1a;
+			//setParent f1a;
+			string $exphelp;
+				$exphelp += " -----===== Export Tab Options =====-----\n";
+				$exphelp += "\n";
+				$exphelp += "Export Tab Options:\n";  
+				$exphelp += "\n";
+				$exphelp += " -Export Reference smd from Layer \"reference\"\n";
+				$exphelp += "  Only uncheck if it already exists\n";
+				$exphelp += "  (to speed recompile)\n";
+				$exphelp += "\n";
+				$exphelp += " -Export Physics smd from Layer \"physics\"\n";
+				$exphelp += "  Only uncheck if it already exists\n";
+				$exphelp += "  (to speed recompile)\n";
+				$exphelp += "\n";
+				$exphelp += " -Freeze and reset transforms\n";
+				$exphelp += "  Better not use that..freeze transform and reset\n";
+				$exphelp += "  for every mesh in the scene\n";
+				$exphelp += "\n";
+				$exphelp += " -Combine and smooth collision meshes\n";
+				$exphelp += "  $collisionmodels seem to need a single node.\n";
+				$exphelp += "  This combines multiple collision meshes and\n";
+				$exphelp += "  combines them (per layer) and smoothes edges.\n";
+				$exphelp += "  Good if you just copy around some primitives\n";
+				$exphelp += "  as collision model\n";
+				$exphelp += "\n";
+				$exphelp += " -Export/compile break models from Layer\n";
+				$exphelp += "  Exports break smd's form Layers \n";
+				$exphelp += "  named \"ref_break*\" and \"phy_break*\".\n";
+				$exphelp += "   Example :\n";
+				$exphelp += "    ref_break01 > phy_break01\n";
+				$exphelp += "    ref_break02 > phy_break02\n";
+				$exphelp += "    etc.\n";
+				$exphelp += "  Creates qc's with same settings as base, \n";
+				$exphelp += "  compiles and adds break commands to base qc.\n";
+				$exphelp += "\n";
+				$exphelp += " -Export LOD Models from Layer \"LOD_range\"\n";
+				$exphelp += "  Creates a LOD model for each Layer called\n";
+				$exphelp += "  LOD_range where range is the min distance\n";
+				$exphelp += "  for this LOD Model\n";
+				$exphelp += "\n";
+				$exphelp += " -Export 1 frame Idle smd\n";
+				$exphelp += "  Use it to create dummy animation smd.\n";
+				$exphelp += "  Uncheck if you have your own idle animation in\n";
+				$exphelp += "  Animation Tab. It doesnt affec the dummy idle\n";
+				$exphelp += "  from break models, just the base model.\n";
+				$exphelp += "\n";
+				$exphelp += " -Export Animation smds\n";
+				$exphelp += "  Exports Animations set in Animations Tab.\n";
+				$exphelp += "\n";
+				$exphelp += " -Export Textures\n";
+				$exphelp += "  Exports Textures.\n";
+				$exphelp += "\n";
+				$exphelp += " -Generate QC\n";
+				$exphelp += "  Uncheck if you want to use your own qc,\n";
+				$exphelp += "  but compile will fail if the correct named\n";
+				$exphelp += "  (scenename.qc) and working qc doesnt exist.\n";
+				$exphelp += "\n";
+				$exphelp += " -Compile\n";
+				$exphelp += "  Run studiomdl\n";
+				$exphelp += "\n";
+				$exphelp += " -Body groups from \"reference\" Layer\n";
+				$exphelp += "  Generates bodygroups from the reference layer.\n";
+				$exphelp += "  It uses each mesh as body group with this\n";
+				$exphelp += "  mesh as submodel and a blank one.\n";
+				$exphelp += "  Mesh named \"main\" will be used as base mesh,\n";
+				$exphelp += "  if there is nomesh named main in the reference,\n";
+				$exphelp += "  layer base mesh will be the first mesh\n";
+				$exphelp += "  NOTE: gets turned off when using staticprop.\n";
+				$exphelp += "\n";
+				$exphelp += " -HLMV Thumbnail\n";
+				$exphelp += "  Renders a 640 x 480 jpg from framed\n";
+				$exphelp += "  perspective view to the mdl location\n";
+				$exphelp += "  as model icon in HLMV.\n";
+				$exphelp += "  Make sure you have a bright light in scene.\n";
+				$exphelp += "  default turns out too dark\n";
+				$exphelp += "\n";
+				$exphelp += "\n";			
 			
-			checkBox -label " Export Reference smd from Layer \"reference\"" 
+				scrollField -w 388 -h 150 -text $exphelp -ed 0 -p f1a;				
+				
+			columnLayout -cal "left" -cat "both" 15 -cw 400 -rs 10 -p topLayout;
+			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -w 400 -label "Export Options" -p topLayout f2;
+			
+			
+			checkBox -label "Reference Model" -ann "Export Reference smd from Layer \"reference\""
 				-value `getAttr smdInfo.smdRef`
 				-onCommand "setAttr smdInfo.smdRef 1"
 				-offCommand "setAttr smdInfo.smdRef 0"
+				-p f2;
 				;
-			checkBox -label " Export Physics smd from Layer \"physics\"" 
+
+			checkBox -label "Physics Model" -ann "Export Physics smd from Layer \"physics\"" 
 				-value `getAttr smdInfo.smdPhy` 
 				-onCommand "setAttr smdInfo.smdPhy 1"
 				-offCommand "setAttr smdInfo.smdPhy 0"
+				-p f2;
 				;
-			checkBox -label " Freeze and Reset Transforms (not with anims!)" 
-				-value `getAttr smdInfo.smdFixTrans` 
-				-onCommand "setAttr smdInfo.smdFixTrans 1"
-				-offCommand "setAttr smdInfo.smdFixTrans 0"
-				;
-			
-			checkBox -label " Combine and Smooth the Physics models" 
-				-value `getAttr smdInfo.smdFixCol` 
-				-onCommand "setAttr smdInfo.smdFixCol 1"
-				-offCommand "setAttr smdInfo.smdFixCol 0"
-				;
-						
-			checkBox -label " Export/Compile break models from Layer : " 
-				-value `getAttr smdInfo.smdBreak` 
-				-onCommand "setAttr smdInfo.smdBreak 1"
-				-offCommand "setAttr smdInfo.smdBreak 0"
-				;
-			text -label "      \"ref_break*\" and \"phy_break*\"" ;
-
-			checkBox -label " Export LOD Models from Layer \"LOD_range\"" 
-				-value `getAttr smdInfo.qcLOD` 
-				-onCommand "setAttr smdInfo.qcLOD 1"
-				-offCommand "setAttr smdInfo.qcLOD 0"
-				;
-						
-			checkBox -label " Export 1 frame Idle smd" 
-				-value `getAttr smdInfo.smdIdle` 
-				-onCommand "setAttr smdInfo.smdIdle 1"
-				-offCommand "setAttr smdInfo.smdIdle 0"
-				;
-			checkBox -label " Export Animation SMDs" 
-				-value `getAttr smdInfo.smdAni` 
-				-onCommand "setAttr smdInfo.smdAni 1"
-				-offCommand "setAttr smdInfo.smdAni 0"
-				;
-			checkBox -label " Export Textures ( Vtex )" 
-				-value `getAttr smdInfo.Tex` 
-				-onCommand "setAttr smdInfo.Tex 1"
-				-offCommand "setAttr smdInfo.Tex 0"
-				;
-			checkBox -label " Generate a new QC script (refresh it)" 
-				-value `getAttr smdInfo.fullCompile` 
-				-onCommand "setAttr smdInfo.fullCompile 1"
-				-offCommand "setAttr smdInfo.fullCompile 0"
-				;
-			checkBox -label " Compile QC" 
-				-value `getAttr smdInfo.compile` 
-				-onCommand "setAttr smdInfo.compile 1"
-				-offCommand "setAttr smdInfo.compile 0"
-				;
-			checkBox -label " Body groups from \"reference\" Layer" 
+			checkBox -p f2 -label "BodyGroups" -ann "Body groups from \"reference\" Layer" 
 				-value `getAttr smdInfo.seperateBodyGroup` 
 				-onCommand "setAttr smdInfo.seperateBodyGroup 1"
 				-offCommand "setAttr smdInfo.seperateBodyGroup 0"
 				sep;
+				
+			checkBox -label "Breakable Models" -ann "Export/Compile break models from Layer : \"ref_break_xx\" and \"phy_break_xx\"" 
+				-value `getAttr smdInfo.smdBreak` 
+				-onCommand "setAttr smdInfo.smdBreak 1"
+				-offCommand "setAttr smdInfo.smdBreak 0"
+				-p f2;
+				;
+			
+			checkBox -label "LOD Models" -ann "Export LOD Models from Layer \"LOD_range\"" 
+				-value `getAttr smdInfo.qcLOD` 
+				-onCommand "setAttr smdInfo.qcLOD 1"
+				-offCommand "setAttr smdInfo.qcLOD 0"
+				-p f2;
+				;
+			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -w 400 -label "Animation Sequences" -p topLayout f3;
+			
+			checkBox -label "Export Static Idle" -ann "Export 1 frame Idle smd" 
+				-value `getAttr smdInfo.smdIdle` 
+				-onCommand "setAttr smdInfo.smdIdle 1"
+				-offCommand "setAttr smdInfo.smdIdle 0"
+				-p f3;
+				;
+
+			checkBox -label "Export Animations" -ann "Export SMDs Animation Sequence set on the Animation Tab" 
+				-value `getAttr smdInfo.smdAni` 
+				-onCommand "setAttr smdInfo.smdAni 1"
+				-offCommand "setAttr smdInfo.smdAni 0"
+				-p f3;
+				;			
+			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -w 400 -label "Export Utilities" -p topLayout f4;
+			
+			checkBox -label "Freeze Transformations" -ann "Freeze and Reset Transforms (not with anims!)" 
+				-value `getAttr smdInfo.smdFixTrans` 
+				-onCommand "setAttr smdInfo.smdFixTrans 1"
+				-offCommand "setAttr smdInfo.smdFixTrans 0"
+				-p f4;
+				;
+				
+			checkBox -label "Fix Physic model Smooth groups" -ann "Combine and Smooth the Physics models" 
+				-value `getAttr smdInfo.smdFixCol` 
+				-onCommand "setAttr smdInfo.smdFixCol 1"
+				-offCommand "setAttr smdInfo.smdFixCol 0"
+				-p f4;
+				;
+						
+		
 			checkBox -label " HLMV Thumbnail" 
 				-value `getAttr smdInfo.Thumb` 
 				-onCommand "setAttr smdInfo.Thumb 1"
 				-offCommand "setAttr smdInfo.Thumb 0"
+				-p f4;
+				;
+				
+			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -w 400 -label "Compile Assets" -p topLayout f6;
+			checkBox -label "Export VTF/VMT" -ann "Export Textures ( Vtex )" 
+				-value `getAttr smdInfo.Tex` 
+				-onCommand "setAttr smdInfo.Tex 1"
+				-offCommand "setAttr smdInfo.Tex 0"
+				-p f6;
+				;
+
+			checkBox -label "Create QC Script" -ann "Generate a new QC script (refresh it)" 
+				-value `getAttr smdInfo.fullCompile` 
+				-onCommand "setAttr smdInfo.fullCompile 1"
+				-offCommand "setAttr smdInfo.fullCompile 0"
+				-p f6;
+				;
+			checkBox -label "Compile MDL" -ann "Compile the QC script with the generated Assets" 
+				-value `getAttr smdInfo.compile` 
+				-onCommand "setAttr smdInfo.compile 1"
+				-offCommand "setAttr smdInfo.compile 0"
+				-p f6;
+				;
+
+
+			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -w 400 -label "Templatize your Scripts" -p topLayout f5;
+			checkBox -label "Templatize QC and VMT files" -ann " Print Tips in QC scripts and VMT files" 
+				-value `getAttr smdInfo.Tips`
+				-onCommand "setAttr smdInfo.Tips 1"
+				-offCommand "setAttr smdInfo.Tips 0"
+				-p f5;
 				;
 			//text -label "" ;
 
@@ -588,18 +739,20 @@ string $tab2 = `columnLayout -adj 1 -p tlay tab2`;
 				
 				$smdTarget=`getAttr smdInfo.smdTarget`;
 				$texFolder=`getAttr smdInfo.texPath`;
-
-	
-				rowLayout -nc 1 -width 370 ;
+				image -i "mesa-about" -p tab2;
+			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -w 400 -label "Export Paths" -p tab2 fla1;
+				rowLayout -nc 1 -width 405 -p fla1;
 					text -vis 1 
+						-font "boldLabelFont"
 						-label "SMD / QC Path"
-						-align "left" ;
+						-align "left" 
+						;
 				
 				setParent top;
 
-			columnLayout -p tab2 smdtarget;
-				rowLayout -nc 1 -width 370 ;
-					textField -w 370 
+			columnLayout -p fla1 smdtarget;
+				rowLayout -nc 1 -width 405 ;
+					textField -w 405 
 						-text $smdTarget 
 						-editable 1 
 						-cc "updateNode;" 
@@ -608,18 +761,20 @@ string $tab2 = `columnLayout -adj 1 -p tlay tab2`;
 
 				setParent smdtarget;
 				
-			columnLayout -p tab2 vtex;
+			columnLayout -p fla1 vtex;
 					
-				rowLayout -nc 1 -width 370 ;
+				rowLayout -nc 1 -width 405 ;
 					text -vis 1 
+						-font "boldLabelFont"
 						-label "Materials/Textures Path"
+						-ann "This path is not editable\n and must ended at the /materialsrc/"
 						-align "left" ;
 				
 				setParent vtex;
 							
-			columnLayout -p tab2 texfolder;
-				rowLayout -nc 1 -width 370 ;
-					textField -w 570
+			columnLayout -p fla1 texfolder;
+				rowLayout -nc 1 -width 405 ;
+					textField -w 405 -ed 0
 						-text $texFolder 
 						-cc " " 
 						tex;
@@ -628,18 +783,20 @@ string $tab2 = `columnLayout -adj 1 -p tlay tab2`;
 				$smdIdle = `substitute ".[Ss][Mm][Dd]" $smdTarget "_idle.smd"`;
 					text -label " " -p texfolder;
 				//$output = "Physics Name   ";// + $smdPhy;
-					text -w 370 -label " Physics Name:" -align "left" -p texfolder phy; // phy;
+					text -w 405 -font "boldLabelFont" -label " Physics Name:" -align "left" -p texfolder phy; // phy;
 					text -label " " -p texfolder;
-					text -label $smdPhy -p texfolder;
+					textField -ed 0 -w 405 -text $smdPhy -p texfolder;
+					//text -label $smdPhy -p texfolder;
 					text -label " " -p texfolder;
-				//	text -label " " -p texfolder;
+				
 
 				//$output = "IDLE Name       ";// + $smdIdle;
-					text -w 370 -label " IDLE Name: " -align "left" -p texfolder idle; // idle;
+					text -w 405 -font "boldLabelFont" -label " IDLE Name: " -align "left" -p texfolder idle; // idle;
 					text -label " " -align "right" -p texfolder;
-					text -label $smdIdle -p texfolder;
+					textField -ed 0 -w 405 -text $smdIdle -p texfolder;
+					//text -label $smdIdle -p texfolder;
 					text -label " " -p texfolder;
-				button -label "GENERATE PATHS" -width 380 -align "left" 
+				button -label "GENERATE PATHS" -width 405 -align "left" 
 					-c "updatePaths;" 
 					-p texfolder;
 
@@ -647,11 +804,11 @@ string $tab2 = `columnLayout -adj 1 -p tlay tab2`;
 
 				setParent texfolder;
 
-			separator -h 10 -w 370;
-
-			columnLayout -p tab2 sourcecheckpath;
-				rowLayout -nc 1 -width 370 ;
-					
+			//separator -h 1 -w 405;
+			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl on -w 400 -label "MESA Environement variables" -p tab2 fla2;
+			columnLayout -p fla2 sourcecheckpath;
+				rowLayout -nc 1 -width 405 -cal 1 "right";
+					//text -fn "boldLabelFont" -label "MESA Environement variables" -w 405 -align "center" -p sourcecheckpath; 
 					text -label " " -p sourcecheckpath;
 				//Define String
 				string $sourceBinPathString = `getenv SOURCE_BIN_PATH`;
@@ -659,63 +816,168 @@ string $tab2 = `columnLayout -adj 1 -p tlay tab2`;
 				string $GameProjectName = `getenv GAME_PROJECT_NAME`;				
 				string $GameProjectPath = `getenv GAME_PROJECT`;	
 				string $VProjectPath = `getenv VPROJECT`;	
-
 				
-				
-				
-					text -label " Source Bin Path :" -w 370 -align left -p sourcecheckpath; 
-					text -label $sourceBinPathString -w 370 -p sourcecheckpath; 
+					text -fn "boldLabelFont" -label " Source Bin Path :" -w 400 -h 20 -align left -p sourcecheckpath; 
+					text  -label $sourceBinPathString -w 400 -p sourcecheckpath; 
 					
-					text -label " " -w 370 -p sourcecheckpath;
+					//text -label " " -w 400 -p sourcecheckpath;
 
-					text -label " Game Project Source :" -w 370 -align left -p sourcecheckpath; 
-					text -label $GameProjectSource -w 370 -p sourcecheckpath; 
+					text -fn "boldLabelFont" -label " Game Project Source :" -w 400 -h 20 -align left -p sourcecheckpath; 
+					text -fn "obliqueLabelFont" -label $GameProjectSource -w 400 -p sourcecheckpath; 
 
-					text -label " " -w 370 -p sourcecheckpath;
+					//text -label " " -w 400 -p sourcecheckpath;
 
-					text -label " GAME Project Name :" -w 370 -align left -p sourcecheckpath; 
-					text -label $GameProjectName -w 370 -p sourcecheckpath; 
+					text -fn "boldLabelFont" -label " GAME Project Name :" -w 400 -h 20 -align left -p sourcecheckpath; 
+					text -fn "obliqueLabelFont" -label $GameProjectName -w 400 -p sourcecheckpath; 
 					
-					text -label " " -w 370 -p sourcecheckpath;
+					//text -label " " -w 400 -p sourcecheckpath;
 
-					text -label " GAME_PROJECT :" -w 370 -align left -p sourcecheckpath; 
-					text -label $GameProjectPath -w 370 -p sourcecheckpath; 
+					text -fn "boldLabelFont" -label " GAME_PROJECT :" -w 400 -h 20 -align left -p sourcecheckpath; 
+					text -fn "obliqueLabelFont" -label $GameProjectPath -w 400 -p sourcecheckpath; 
 					
-					text -label " " -w 370 -p sourcecheckpath;
+					//text -label " " -w 400 -p sourcecheckpath;
 
-					text -label " VPROJECT Path :" -w 370 -align left -p sourcecheckpath; 
-					text -label $VProjectPath -w 370 -p sourcecheckpath; 
+					text -fn "boldLabelFont" -label " VPROJECT Path :" -w 400 -h 20 -align left -p sourcecheckpath; 
+					text -fn "obliqueLabelFont" -label $VProjectPath -w 400 -p sourcecheckpath; 
 
 				setParent sourcecheckpath;
+			
+			//Path Settings help
+			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl on -label "Path Settings Help" -p tab2 fla3;
+			rowLayout -nc 1 -p fla3;
+			//setParent f2;
+			string $pahelp;
+			$pahelp += "-SMD / QC Path\n";
+			$pahelp += "\t This is the models source path.\n";
+			$pahelp += "\t this field must contain /modelsrc/\n";
+			$pahelp += "\t The Maya Scene should be save\n";
+			$pahelp += "\t into the same folder.\n";
+			$pahelp += "\n";
+			$pahelp += "-Texture Path:\n";
+			$pahelp += "\t This is the textures source root path.\n";
+			$pahelp += "\t It must have /materialsrc/ at the end, exact\n";
+			$pahelp += "\t paths are take from the Texturefile Nodes\n";
+			$pahelp += "\t (tga files).\n";
+			$pahelp += "\n";
+			$pahelp += "-Default\n";
+			$pahelp += "\t This resets paths to default.\n";
+			$pahelp += "\t Both paths are taken form the scene file path\n";
+			$pahelp += "\t (works only with saved scene in /scenes/ dir).\n";
+			$pahelp += "NOTE:\n";
+			$pahelp += "\t The target paths are generated from the\n";
+			$pahelp += "\t vproject environment variable and the relative\n";
+			$pahelp += "\t paths from texturefile nodes and smd/qc path.\n";
 
+			scrollField -w 360 -h 310 -text $pahelp -ed 0 -p fla3;
+
+			//Path Settings help
+			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl on -label "Environment Variables Help" -p tab2 fla4;
+			rowLayout -nc 1 -p fla4;
+			//setParent f2;
+			string $envhelp;
+			$envhelp += "INSTRUCTIONS :\n";
+			$envhelp += "\n";
+			$envhelp += " -Paths\n";
+			$envhelp += "  Maya Scene path: '/Mesa/scenes/' \n";
+			$envhelp += "  The path must lies with '/modelsrc/'\n";
+			$envhelp += "  ex :'/Mesa/Scenes/' directory.\n";
+			$envhelp += "  \n";
+			$envhelp += "  If the Folder doesn't exists, Create it !\n";
+			$envhelp += "\n";
+			$envhelp += "  SMD Export Path: '%GAME_PROJECT_SRC%/modelsrc/'\n";
+			$envhelp += "\n";
+			$envhelp += "  MDL Path: '%GAME_PROJECT%/models/'\n";
+			$envhelp += "\n";
+			$envhelp += "  TGA Path: '%GAME_PROJECT_SRC%/materialsrc/'\n";
+			$envhelp += "\n";
+			$envhelp += "  VTF Path: '%GAME_PROJECT%/materials/'\n";
+			$envhelp += "\n";
+
+
+			scrollField -w 360 -h 310 -text $envhelp -ed 0 -p fla4;			
 // QC Script Tab
 string $tab3 = `columnLayout -adj 1 -p tlay tab3`;
 			
-			rowLayout -nc 2 -columnWidth2 60 340 -co2 2 2 -p tab3 scale;
-				text -vis 1 -label "Scale" -align "right" -p scale;
-				textField -w 60 -cc "setAttr smdInfo.qcScale -type \"string\" `textField -q -text qcScale`" -text `getAttr smdInfo.qcScale` -p scale qcScale;
+							//help with Animation Tab
+				frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl true -label "QC Settings Help" -p tab3 flayo1;
+				rowLayout -nc 1 -p flayo1;
+				//setParent f2;
+				string $qcshelp;
+				$qcshelp += "QC Settings:\n";
+				$qcshelp += "\n";
+				$qcshelp += " -Mass\n";
+				$qcshelp += "\t Mass for collisionmodel in Kilo.\n";
+				$qcshelp += "\n";
+				$qcshelp += " -Staticprop\n";
+				$qcshelp += "\t Sets staticprop in qc, disables seperate\n";
+				$qcshelp += "\t body groups, overrides keyvalues.\n";
+				$qcshelp += "\n";
+				$qcshelp += " -Scale\n";
+				$qcshelp += "\t Guess what...scale factor.\n";
+				$qcshelp += "\n";
+				$qcshelp += " -Surfaceprop\n";
+				$qcshelp += "\t Select what u think might fit\n";
+				$qcshelp += "\n";
+				$qcshelp += " -Keyvalues\n";
+				$qcshelp += "\t Select one from the list\n";
+				$qcshelp += "\n";
+				$qcshelp += " -Add to end of QC File\n";
+				$qcshelp += "\t Anything u write there will be added to\n";
+				$qcshelp += "\t the end of base qc file\n";
+				$qcshelp += "\n";
+				
+				scrollField -w 340 -h 150 -text $qcshelp -ed 0 -p flayo1;	
+				
+			rowLayout -nc 4 -columnWidth4 60 140 60 140 -co4 2 2 2 2 -p tab3 row2;
+				text -vis 1 -label "Scale" -align "right" -p row2;
+				textField -w 60 -cc "setAttr smdInfo.qcScale -type \"string\" `textField -q -text qcScale`" -text `getAttr smdInfo.qcScale` -p row2 qcScale;
+				checkBox -label "STATICPROP" -ann "coming soon"
+					-value `getAttr smdInfo.qcStatic` 
+					-onCommand "setAttr smdInfo.qcStatic 1;setAttr smdInfo.seperateBodyGroup 0;checkBox -e -value 0 sep"
+					-offCommand "setAttr smdInfo.qcStatic 0"
+					-align "left" -p row2
+					;
 
-			rowLayout -nc 2 -columnWidth2 60 340 -co2 2 2 -p tab3 surfprop;
-				text -vis 1 -label "Surfaceprop" -align "right" -p surfprop;
-				textScrollList -w 280 -sc "setAttr smdInfo.qcSurface -type \"string\" `textScrollList -q -si qcSurf`" -p surfprop qcSurf;
-
+			rowLayout -nc 4 -columnWidth4 60 140 60 140 -co4 2 2 2 2 -p tab3 row3;
+				text -vis 1 -label "Mass" -align "right" -p row3;
+				textField -w 60 -cc "setAttr smdInfo.qcMass -type \"string\" `textField -q -text qcMass`" -text `getAttr smdInfo.qcMass` -p row3 qcMass;
+				//text -vis 1 -label "bla" -p row3;
+				//text -vis 1 -w 60 -label "truc" -p row3;
+				checkBox -label "Allow prop_static" -ann "allow static for breakeable models"
+					-value `getAttr smdInfo.qcAllowStatic` 
+					-onCommand "setAttr smdInfo.qcAllowStatic 1;checkBox -e -value 0 sep" //smdInfo.seperateBodyGroup 0; //removed
+					-offCommand "setAttr smdInfo.qcAllowStatic 0"
+					-align "right" -p row3
+					;
+			separator -h 1;
+			rowLayout -nc 4 -columnWidth4 120 140 120 140 -co4 2 2 2 2 -p tab3 row4;
+				text -vis 1 -label "                    Surfaceprop" -p row4;
+				text -vis 0 -label "" -align "right" -p row4;
+				text -vis 1 -label "          Keyvalues" -align "center" -p row4;
+				text -vis 0 -label "" -align "right" -p row4;
+				
+			rowLayout -nc 4 -columnWidth4 60 40 60 140 -co4 2 2 2 2 -p tab3 surfprop;
+				//text -vis 1 -label "Surfaceprop" -align "right" -p surfprop;
+				textScrollList -w 188 -sc "setAttr smdInfo.qcSurface -type \"string\" `textScrollList -q -si qcSurf`" -p surfprop qcSurf;
+				text -vis 0 -label "" -align "right" -p surfprop;
+				textScrollList -w 188 -sc "setAttr smdInfo.qcKey -type \"string\" `textScrollList -q -si qcKey`" -p surfprop qcKey;
+				propList;
+				//text -vis 0 -label "" -align "right" -p surfpropt;
 				//separator -h 10 -w 370;
 
-			rowLayout -nc 2 -columnWidth2 60 340 -co2 2 2 -p tab3 massvalue;
-				text -vis 1 -label "Mass" -align "right" -p massvalue;
-				textField -w 60 -cc "setAttr smdInfo.qcMass -type \"string\" `textField -q -text qcMass`" -text `getAttr smdInfo.qcMass` -p massvalue qcMass;
+
 			
-			rowLayout -nc 2 -columnWidth2 60 360 -co2 2 2 -p tab3 keyvalues;
-				text -vis 1 -label "Keyvalue" -align "right" -p keyvalues;
-				textScrollList -w 280 -sc "setAttr smdInfo.qcKey -type \"string\" `textScrollList -q -si qcKey`" -p keyvalues qcKey;
-				propList;
+//			rowLayout -nc 2 -columnWidth2 60 360 -co2 2 2 -p tab3 keyvalues;
+//				text -vis 1 -label "Keyvalue" -align "right" -p keyvalues;
+//				textScrollList -w 180 -sc "setAttr smdInfo.qcKey -type \"string\" `textScrollList -q -si qcKey`" -p keyvalues qcKey;
+//				propList;
 
 		//	text -vis 1 -label "add to end of QC File" -align "left" -p tab3;
 		//	scrollField -w 600 -h 200 -text `getAttr smdInfo.qcAdd` -cc "setAttr smdInfo.qcAdd -type \"string\" `scrollField -q -text qcAdd`" -p tab3 qcAdd;
 
 			//rowLayout -nc 2 -columnWidth2 60 360 -co2 2 2 -p tab3 surfprops;
-			rowLayout -nc 2 -cat 1 "left" 60 -columnWidth2 240 400 -p tab3 surfprops;
-				checkBox -label "$staticprop"
+/*			rowLayout -nc 2 -cat 1 "left" 60 -columnWidth2 240 400 -p tab3 surfprops;
+				checkBox -label "$STATICPROP"
 					-value `getAttr smdInfo.qcStatic` 
 					-onCommand "setAttr smdInfo.qcStatic 1;setAttr smdInfo.seperateBodyGroup 0;checkBox -e -value 0 sep"
 					-offCommand "setAttr smdInfo.qcStatic 0"
@@ -728,7 +990,7 @@ string $tab3 = `columnLayout -adj 1 -p tlay tab3`;
 					-offCommand "setAttr smdInfo.qcAllowStatic 0"
 					-align "right"
 					;
-
+*/
 /*			rowLayout -numberOfColumns 6 -cw6 30 30 100 140 60 300 -co6 6 6 6 6 6 6 -p tab3 tt2;
 				text -vis 1 -label "Mass" -align "right" -p tt2;
 				textField -w 30 -cc "setAttr smdInfo.qcMass -type \"string\" `textField -q -text qcMass`" -text `getAttr smdInfo.qcMass` -p tt2 qcMass;
@@ -788,50 +1050,101 @@ string $tab3 = `columnLayout -adj 1 -p tlay tab3`;
 
 // QC EDIT TAB
 string $tab4 = `columnLayout -adj 1 -p tlay tab4`;
-			
-				text -vis 1 -label "add to the Top of QC File" -align "left" -p tab4;
-				scrollField -w 600 -h 200 -text `getAttr smdInfo.qcHeader` -cc "setAttr smdInfo.qcHeader -type \"string\" `scrollField -q -text qcHeader`" -p tab4 qcHeader;
-
-				text -vis 1 -label "add to end of QC File" -align "left" -p tab4;
-				scrollField -w 600 -h 200 -text `getAttr smdInfo.qcFooter` -cc "setAttr smdInfo.qcFooter -type \"string\" `scrollField -q -text qcFooter`" -p tab4 qcFooter;
-
-
+							//help QC Commands
+			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -label "QC Header" -p tab4 frla4;
+			rowLayout -nc 1 -p frla4;
+				text -vis 1 -label "Add on QC Header" -align "left" -p frla4;
+				scrollField -w 600 -h 170 -text `getAttr smdInfo.qcHeader` -cc "setAttr smdInfo.qcHeader -type \"string\" `scrollField -q -text qcHeader`" -p frla4 qcHeader;
+			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -label "QC Footer" -p tab4 frla5;
+			rowLayout -nc 1 -p frla5;
+				text -vis 1 -label "Add to QC Footer" -align "left" -p frla5;
+				scrollField -w 600 -h 170 -text `getAttr smdInfo.qcFooter` -cc "setAttr smdInfo.qcFooter -type \"string\" `scrollField -q -text qcFooter`" -p frla5 qcFooter;
+				//help QC Commands
+			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl on -label "Common QC commands" -p tab4 frla6;
+			rowLayout -nc 1 -p frla6;
+				//setParent f2;
+				string $qcCmdhelp;
+				$qcCmdhelp += " -----===== Common QC commands =====-----\n";
+				$qcCmdhelp += "  blabla bla blabla bla----\n";
+				scrollField -w 360 -h 100 -text $qcCmdhelp -ed 0 -p frla6;
+			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl true -label "QC Edit Help" -p tab4 frla7;
+			rowLayout -nc 1 -p frla7;
+				//setParent f2;
+				string $qcEdhelp;
+				$qcEdhelp += " -----===== QC Edit Help =====-----\n";
+				$qcEdhelp += "  blabla bla blabla bla----\n";
+				scrollField -w 360 -h 100 -text $qcEdhelp -ed 0 -p frla7;
+				
 string $tab5 = `columnLayout -adj 1 -p tlay tab5`;
-		
-			rowLayout -numberOfColumns 1 -w 370 -p tab5 t1;
+			
+			rowLayout -numberOfColumns 1 -w 400-p tab5 t1;
 				text -vis 1 -label "Animation Name" -align "left" -p t1;
 				setParent tab5;
 			columnLayout -p tab5 t2;
-				rowLayout -nc 1 -w 370 -p t2;
+				rowLayout -nc 1 -w 400 -p t2;
 
-					textScrollList -w 360 -h 200 -p t2 -ams false -sc "$sa = `textScrollList -q -sii aniName`;int $s = $sa[0];updateAniItem($s);" aniName;
+					textScrollList -w 420 -h 200 -p t2 -ams false -sc "$sa = `textScrollList -q -sii aniName`;int $s = $sa[0];updateAniItem($s);" aniName;
 					updateAni;
 					setParent t2;
 
-			rowLayout -numberOfColumns 2 -cw2 80 270 -co2 6 6 -p tab5 t3;	
+			rowLayout -numberOfColumns 2 -cw2 80 400 -co2 6 6 -p tab5 t3;	
 								
 				columnLayout -p t3 c1;
-					rowLayout -nc 2 -cw2 80 275 -co2 6 6 -p c1 r1;
+					rowLayout -nc 2 -cw2 100 400 -co2 6 6 -p c1 r1;
 						text -vis 1 -label "Sequence Name" -align "right" -p r1;
-						textField -w 275 -cc "" -p r1 aniNameField;
+						textField -w 317 -cc "" -p r1 aniNameField;
 												
-					rowLayout -nc 4 -cw4 80 100 75 95 -co4 6 6 6 6 -p c1 r2;
+					rowLayout -nc 5 -cw5 100 30 80 100 30 -co5 6 6 10 6 6 -p c1 r2;
 						text -vis 1 -label "Sequence Start" -align "right" -p r2;
-						textField -w 95 -cc " " -p r2 aniStart;
-						text -vis 1 -label "  Sequence End" -align "right" -p r2;
-						textField -w 95 -cc " " -p r2 aniEnd;
+						textField -w 25 -cc " " -p r2 aniStart;
+						text -vis 0 -w 80 -p r2;
+						text -vis 1 -label "  Sequence End" -align "left" -p r2;
+						textField -w 25 -cc " " -p r2 aniEnd;
 					
-					rowLayout -nc 2 -cw2 80 274 -co2 6 6 -p c1 r4;
+					rowLayout -nc 2 -cw2 100 400 -co2 6 6 -p c1 r4;
 						text -vis 1 -label "Add to the End" -align "right" -p r4;
-						textField -w 274 -cc "" -p r4 aniAdd;
+						textField -w 317 -cc "" -p r4 aniAdd;
 						
-					rowLayout -nc 3 -cw3 100 100 100 -co3 6 6 6 -ct3 "both" "both" "both" -p c1 r3;
+					rowLayout -nc 3 -cw3 138 138 138 -ct3 "both" "both" "both" -p c1 r3;
 						
 						button -label "Add" -c "addAniItem;" -p r3;
 						button -label "edit" -c "$sa = `textScrollList -q -sii aniName`;int $s = $sa[0];saveAniItem($s);" -p r3;
 						button -label "del" -c "$it = `textScrollList -q -sii aniName`;int $i = $it[0];delAniItem($i);" -p r3;
 				
-
+							//help with Animation Tab
+				frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl true -label "Animation Help" -p tab5 flay1;
+				rowLayout -nc 1 -p flay1;
+				//setParent f2;
+				string $animhelp;
+				$animhelp += " -----===== Animation Help =====-----\n";
+				$animhelp += "Animations:\n";
+				$animhelp += "\n";
+				$animhelp += " -Sequence Name\n";
+				$animhelp += "\t\t Name of the sequence\n";
+				$animhelp += "\n";
+				$animhelp += " -Start frame\n";
+				$animhelp += "\t\t Start frame in timeline for this sequence\n";
+				$animhelp += "\n";
+				$animhelp += " -End frame\n";
+				$animhelp += "\t\t Eframe in timeline for this sequence\n";
+				$animhelp += "\n";
+				$animhelp += " -Add on end\n";
+				$animhelp += "\t\t End of the sequence line...add your framerate,\n";
+				$animhelp += "\t\t rotation, events, whatever here\n";
+				$animhelp += "\n";
+				$animhelp += " -Add\n";
+				$animhelp += "\t\t Adds sequence with current Animation Settings\n";
+				$animhelp += "\n";
+				$animhelp += " -Edit\n";
+				$animhelp += "\t\t Save Animation Settings changes for\n";
+				$animhelp += "\t\t selected Sequence\n";
+				$animhelp += "\n";
+				$animhelp += " -Del\n";
+				$animhelp += "\t\t Remove selected sequence\n";
+				$animhelp += "\n";
+				$animhelp += "\n";
+				
+				scrollField -w 360 -h 150 -text $animhelp -ed 0 -p flay1;
 /*
 string $tab4 = `columnLayout -adj 1 -p tlay tab4`;
 			rowLayout -numberOfColumns 2 -cw2 150 400 -co2 6 6 -p tab4 t1;
@@ -872,34 +1185,14 @@ string $tab4 = `columnLayout -adj 1 -p tlay tab4`;
 
 // Help Tab
 string $tab6 = `columnLayout -adj 1 -p tlay tab6`;
+				
+				image -i "mesa-about" -p tab6;
+				
+				frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -label "MESA Help" -p tab6 fl1;
+				rowLayout -nc 1 -p fl1;
+				//setParent f1;
 				string $help;
-				$help += " -----===== MESA by Nicolas Kirsch =====-----\n";
-				$help += "  Maya Exporter for Source Absolute v2.0 ----\n";
-				$help += "  WebSite http://www.puppet-master.com/ -----\n";
-				$help += "  Credits: Valve software, Prall, and ------\n";
-				$help += " --------  Nicolas Kirsch, Martin Niehoff --\n";
-				$help += " --------------------------------------------\n";
-				$help += "\n";
-				$help += "\n";
 				$help += "INSTRUCTIONS :\n";
-				$help += "\n";
-				$help += " -Paths\n";
-				$help += "  Maya Scene path: '/Mesa/scenes/' \n";
-				$help += "  The path must lies with '/modelsrc/'\n";
-				$help += "  ex :'/Mesa/Scenes/' directory.\n";
-				$help += "  \n";
-				$help += "  If the Folder doesn't exists, Create it !\n";
-				$help += "\n";
-				$help += "  SMD Export Path: 'Mesa/modelsrc/'\n";
-				$help += "\n";
-				$help += "  MDL Path: '%GAME_PROJECT%/models/'\n";
-				$help += "\n";
-				$help += "  TGA Path: 'Mesa/materialsrc/'\n";
-				$help += "\n";
-				$help += "  VTF Path: '%GAME_PROJECT%/materials/'\n";
-				$help += "\n";
-				$help += "\n";
-				$help += " --------------------------------------------\n";
 				$help += "\n";
 				$help += " -No undo before export\n";
 				$help += "  Save before or maya will crash\n";
@@ -908,7 +1201,8 @@ string $tab6 = `columnLayout -adj 1 -p tlay tab6`;
 				$help += "  Do not use dupe shape names\n";
 				$help += "\n";
 				$help += " -Steam\n";
-				$help += "  Make sure it is running or export wont work\n";
+				$help += "  Make sure that Steam is running or Studiomdl and\n";
+				$help += "  Vtex will not correctly export the VTF and MDL \n  files.\n";
 				$help += "\n";
 				$help += " -Textures\n";
 				$help += "  Make sure the tgas have a resolution power of 2\n";
@@ -917,158 +1211,161 @@ string $tab6 = `columnLayout -adj 1 -p tlay tab6`;
 				$help += "  just name them *_normal for correct\n";
 				$help += "  export.\n";
 				$help += "\n";
-				$help += "Export Tab Options:\n";  
-				$help += "\n";
-				$help += " -Export Reference smd from Layer \"reference\"\n";
-				$help += "  Only uncheck if it already exists\n";
-				$help += "  (to speed recompile)\n";
-				$help += "\n";
-				$help += " -Export Physics smd from Layer \"physics\"\n";
-				$help += "  Only uncheck if it already exists\n";
-				$help += "  (to speed recompile)\n";
-				$help += "\n";
-				$help += " -Freeze and reset transforms\n";
-				$help += "  Better not use that..freeze transform and reset\n";
-				$help += "  for every mesh in the scene\n";
-				$help += "\n";
-				$help += " -Combine and smooth collision meshes\n";
-				$help += "  $collisionmodels seem to need a single node.\n";
-				$help += "  This combines multiple collision meshes and\n";
-				$help += "  combines them (per layer) and smoothes edges.\n";
-				$help += "  Good if you just copy around some primitives\n";
-				$help += "  as collision model\n";
-				$help += "\n";
-				$help += " -Export/compile break models from Layer\n";
-				$help += "  Exports break smd's form Layers \n";
-				$help += "  named \"ref_break*\" and \"phy_break*\".\n";
-				$help += "   Example :\n";
-				$help += "    ref_break01 > phy_break01\n";
-				$help += "    ref_break02 > phy_break02\n";
-				$help += "    etc.\n";
-				$help += "  Creates qc's with same settings as base, \n";
-				$help += "  compiles and adds break commands to base qc.\n";
-				$help += "\n";
-				$help += " -Export LOD Models from Layer \"LOD_range\"\n";
-				$help += "  Creates a LOD model for each Layer called\n";
-				$help += "  LOD_range where range is the min distance\n";
-				$help += "  for this LOD Model\n";
-				$help += "\n";
-				$help += " -Export 1 frame Idle smd\n";
-				$help += "  Use it to create dummy animation smd.\n";
-				$help += "  Uncheck if you have your own idle animation in\n";
-				$help += "  Animation Tab. It doesnt affec the dummy idle\n";
-				$help += "  from break models, just the base model.\n";
-				$help += "\n";
-				$help += " -Export Animation smds\n";
-				$help += "  Exports Animations set in Animations Tab.\n";
-				$help += "\n";
-				$help += " -Export Textures\n";
-				$help += "  Exports Textures.\n";
-				$help += "\n";
-				$help += " -Generate QC\n";
-				$help += "  Uncheck if you want to use your own qc,\n";
-				$help += "  but compile will fail if the correct named\n";
-				$help += "  (scenename.qc) and working qc doesnt exist.\n";
-				$help += "\n";
-				$help += " -Compile\n";
-				$help += "  Run studiomdl\n";
-				$help += "\n";
-				$help += " -Body groups from \"reference\" Layer\n";
-				$help += "  Generates bodygroups from the reference layer.\n";
-				$help += "  It uses each mesh as body group with this\n";
-				$help += "  mesh as submodel and a blank one.\n";
-				$help += "  Mesh named \"main\" will be used as base mesh,\n";
-				$help += "  if there is nomesh named main in the reference,\n";
-				$help += "  layer base mesh will be the first mesh\n";
-				$help += "  NOTE: gets turned off when using staticprop.\n";
-				$help += "\n";
-				$help += " -HLMV Thumbnail\n";
-				$help += "  Renders a 640 x 480 jpg from framed\n";
-				$help += "  perspective view to the mdl location\n";
-				$help += "  as model icon in HLMV.\n";
-				$help += "  Make sure you have a bright light in scene.\n";
-				$help += "  default turns out too dark\n";
-				$help += "\n";
-				$help += "\n";
-				$help += "Path Settings:\n";
-				$help += "\n";
-				$help += " -SMD / QC Path\n";
-				$help += "  This is the models source path.\n";
-				$help += "  this field must contain /modelsrc/\n";
-				$help += "  The Maya Scene should be save\n";
-				$help += "  into the same folder.\n";
-				$help += "\n";
-				$help += " -Texture Path:\n";
-				$help += "  This is the textures source root path.\n";
-				$help += "  It must have /materialsrc/ at the end, exact\n";
-				$help += "  paths are take from the Texturefile Nodes\n";
-				$help += "  (tga files).\n";
-				$help += "\n";
-				$help += " -Default\n";
-				$help += "  This resets paths to default.\n";
-				$help += "  Both paths are taken form the scene file path\n";
-				$help += "  (works only with saved scene in /scenes/ dir).\n";
-				$help += "  NOTE: The target paths are generated from the\n";
-				$help += "  vproject environment variable and the relative\n";
-				$help += "  paths from texturefile nodes and smd/qc path.\n";
-				$help += "\n";
-				$help += "QC Settings:\n";
-				$help += "\n";
-				$help += " -Mass\n";
-				$help += "  Mass for collisionmodel in Kilo.\n";
-				$help += "\n";
-				$help += " -Staticprop\n";
-				$help += "  Sets staticprop in qc, disables seperate\n";
-				$help += "  body groups, overrides keyvalues.\n";
-				$help += "\n";
-				$help += " -Scale\n";
-				$help += "  Guess what...scale factor.\n";
-				$help += "\n";
-				$help += " -Surfaceprop\n";
-				$help += "  Select what u think might fit\n";
-				$help += "\n";
-				$help += " -Keyvalues\n";
-				$help += "  Select one from the list\n";
-				$help += "\n";
-				$help += " -Add to end of QC File\n";
-				$help += "  Anything u write there will be added to\n";
-				$help += "  the end of base qc file\n";
-				$help += "\n";
-				$help += "Animations:\n";
-				$help += "\n";
-				$help += " -Sequence Name\n";
-				$help += "  Name of the sequence\n";
-				$help += "\n";
-				$help += " -Start frame\n";
-				$help += "  Start frame in timeline for this sequence\n";
-				$help += "\n";
-				$help += " -End frame\n";
-				$help += "  End frame in timeline for this sequence\n";
-				$help += "\n";
-				$help += " -Add on end\n";
-				$help += "  End of the sequence line...add your framerate,\n";
-				$help += "  rotation, events, whatever here\n";
-				$help += "\n";
-				$help += " -Add\n";
-				$help += "  Adds sequence with current Animation Settings\n";
-				$help += "\n";
-				$help += " -Edit\n";
-				$help += "  Save Animation Settings changes for\n";
-				$help += "  selected Sequence\n";
-				$help += "\n";
-				$help += " -Del\n";
-				$help += "  Remove selected sequence\n";
-				$help += "\n";
-				$help += "\n";
-								
-				scrollField -w 360 -h 466 -text $help -ed 0 -p tab6;
 
+				scrollField -w 360 -h 250 -text $help -ed 0 -p fl1;
+				
+				//help QC Commands
+				frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl true -label "QC Commands" -p tab6 fl2;
+				rowLayout -nc 1 -p fl2;
+				//setParent f2;
+				string $qchelp;
+				$qchelp += "- $upaxis [X|Y|Z] \n";
+				$qchelp += "\t Override The Maya UpAxis\n\t When your Maya upaxis is set on Y axis use\n\t '$upaxis Z', to fix your model in Source Engine. \n";
+				$qchelp += "- $origin [0 0 0 rotZ]\n";
+				$qchelp += "\t Override the Maya world origin \n\t '$origin 0 0 0 -90', to rotate the model\n\t on the Z Rotation Axis in Source Engine. \n";
+				
+				scrollField -w 360 -h 150 -text $qchelp -ed 0 -p fl2;
 
+				
+				//help with NPC
+				frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl true -label "NPC Guide" -p tab6 fl3;
+				rowLayout -nc 1 -p fl3;
+				//setParent f2;
+				string $npchelp;
+				//$npchelp += " -----===== NPC Guide =====-----\n";
+				$npchelp += "\tcoming soon...\n";
+				
+				scrollField -w 360 -h 150 -text $npchelp -ed 0 -p fl3;				
 
+				//help Vehicles Help
+				frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl true -label "Vehicles Guide" -p tab6 fl4;
+				rowLayout -nc 1 -p fl4;
+				//setParent f2;
+				string $vhelp;
+				//$vhelp += " -----===== Vehicles Guide =====-----\n";
+				$vhelp += "\tcoming soon...\n";
+				
+				scrollField -w 360 -h 150 -text $vhelp -ed 0 -p fl4;	
+				
+				//help with Weapons & Items
+				frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl true -label "Weapons & Items Guide" -p tab6 fl5;
+				rowLayout -nc 1 -p fl5;
+				//setParent f2;
+				string $wihelp;
+				//$wihelp += " -----===== Weapons & Items Guide =====-----\n";
+				$wihelp += "\tcoming soon...\n";
+
+				scrollField -w 360 -h 150 -text $wihelp -ed 0 -p fl5;
+
+				
+				//help with props models
+				frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl true -label "Prop Models Guide" -p tab6 fl6;
+				rowLayout -nc 1 -p fl6;
+				//setParent f2;
+				string $prophelp;
+				//$prophelp += " -----===== Props Models Guide =====-----\n";
+				$prophelp += "\tcoming soon...\n";
+				
+				scrollField -w 360 -h 150 -text $prophelp -ed 0 -p fl6;				
+
+				//help Attachments Help
+				frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl true -label "Attachements Help" -p tab6 fl7;
+				rowLayout -nc 1 -p fl7;
+				//setParent f2;
+				string $atthelp;
+				//$atthelp += " -----===== Attachements Help =====-----\n";
+				$atthelp += "\tcoming soon...\n";
+				
+				scrollField -w 360 -h 150 -text $atthelp -ed 0 -p fl7;
+				
+				//help with Pose Parameters
+				frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl true -label "Pose parameter Help" -p tab6 fl8;
+				rowLayout -nc 1 -p fl8;
+				//setParent f2;
+				string $pphelp;
+				//$pphelp += " -----===== Pose parameter Help =====-----\n";
+				$pphelp += "\tcoming soon...\n";
+				
+				scrollField -w 360 -h 150 -text $pphelp -ed 0 -p fl8;
+				
+// About Tab
+string $tab7 = `columnLayout -adj 1 -p tlay tab7`;
+				//string $myurl = "http://puppet-master.net";
+				//string $webCommand = `webBrowser -url $myurl`;
+				//rowLayout -numberOfColumns 1 -w 390 -p tab7 rl1;
+					//columnLayout -h 1 -p rl1 c1;
+					//separator -h 1;
+				rowLayout -numberOfColumns 1 -w 390 -p tab7 rl2;	
+					columnLayout -h 130 -p rl2 c1;
+						image -i "mesa-about" -p c1;
+						//text -font "boldLabelFont" -vis 1 -label "WebSite" -align "left" -p c1;
+					//separator -h 1;
+						setParent tab7;
+				
+				//MESA Credits
+				frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl false -label "Credits" -p tab7 fral10;
+				rowLayout -nc 1 -p fral10;
+				//setParent f2;
+				string $credhelp;
+				$credhelp += " MESA* by Nicolas Kirsch\n";
+				$credhelp += " Credits :\n\t\t\t Nicolas Kirsch, Valve software, Prall\n";
+				$credhelp += " Thanks  :\n\t\t\t Martin Niehoff, Robert Olender,\n\t\t\t Thiago Tvidotto  \n";
+				$credhelp += "(*Maya Exporter for Source Absolute|Assets)";
+				
+				scrollField -w 320 -h 120 -text $credhelp -ed 0 -p fral10;
+
+				frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl true -label "WebSite" -p tab7 fral11;
+				rowLayout -nc 1 -p fral11;
+				string $webhelp;
+				
+				$webhelp += "WebSite :\n\t http://www.puppet-master.com/ \n";
+				$webhelp += "GitHub :\n\t https://github.com/fuzzzzzz/MESA \n";
+				$webhelp += "Youtube Channel :\n\t http://www.youtube.com/user/JurassicLifeTeam \n";
+				$webhelp += "FaceBook :\n https://www.facebook.com/pages/Puppet-Masternet/167600013398411";
+				scrollField -w 320 -h 160 -text $webhelp -ed 0 -p fral11;				
+
+				frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl true -label "Tutorials" -p tab7 fral12;
+				rowLayout -nc 1 -p fral12;
+				string $dochelp;
+				
+				$dochelp += "Installation :\n\t http://puppet-master.net/plugins/mesa-2-0/mesa-2-0-installation/ \n";
+				$dochelp += "Installation Help :\n\t http://puppet-master.net/plugins/mesa-2-0/mesa-2-0-installation/installation-help/ \n";
+				$dochelp += "Export tutorial :\n\t http://puppet-master.net/plugins/mesa-for-maya/workflow-tutorial/ \n";
+				$dochelp += "Export tutorial (video):\n\t http://youtu.be/It-hL1xCYiI ";
+				
+				scrollField -w 320 -h 160 -text $dochelp -ed 0 -p fral12;
+				
+				/*
+				rowLayout -bgc 0.2 0.2 0.2 -numberOfColumns 2 -cw2 100 290 -p fral8 rl3;
+					
+					columnLayout -adj 1 -h 70 -bgc 0.5 0.5 0.5 -p rl3 c2;
+						text -vis 1 -w 100 -al "left" -h 23 -label "Visit the Website" -p c2;
+						text -vis 1 -w 100 -al "left" -h 23 -label "Installation" -p c2;
+						text -vis 1 -w 100 -al "left" -h 23 -label "Installation Help" -p c2;
+					columnLayout -h 70 -bgc 0.5 0.51 0.5 -p rl3 c3;
+						button -label "Link" -w 307 -align "left" -p c3 -c openWebUrl "home";
+						button -label "Link" -w 307 -align "left" -p c3 -c openWebUrl "install";
+						button -label "Link" -w 307 -align "left" -p c3 -c openWebUrl "install_help";
+				*/
+				/*
+				frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -label "Tutorials" -p tab7 fral9;
+				rowLayout -bgc 0.2 0.2 0.2 -numberOfColumns 2 -cw2 100 290 -p fral9 rl4;						
+
+					columnLayout -h 70 -bgc 0.5 0.5 0.5 -p rl4 c4;
+						text -vis 1 -w 100 -h 23 -label "Youtube Channel" -p c4;
+						text -vis 1 -w 100 -h 23 -label "Facebook Page" -p c4;
+						text -vis 1 -w 100 -h 23 -label "Installation Help" -p c4;
+					columnLayout -h 70 -bgc 0.5 0.51 0.5 -p rl4 c5;
+						button -label "Link" -w 307 -align "left" -p c5 -c openWebUrl "yt";
+						button -label "Link" -w 307 -align "left" -p c5 -c openWebUrl "fb";
+						button -label "Link" -w 307 -align "left" -p c5 -c openWebUrl "install_help";
+				*/
+
+				
 rowLayout -numberOfColumns 4 
 					-height 32
 					//-cw4 130 130 130 130
-					-cw4 95 95 95 95
+					-cw4 105 105 105 105
 					-ct4 "both" "both" "both" "both"
 					-co4 1 1 1 1
 		 			-p main;
@@ -1077,13 +1374,17 @@ rowLayout -numberOfColumns 4
 					button -label "Export only" -c "updateNode;deleteUI -window smdOptWin; smdExport( `getAttr smdInfo.smdType`, `getAttr smdInfo.seperateBodyGroup` )" -align "center";
 					button -label "Cancel" -c "deleteUI -window smdOptWin" -align "center";	
 
+					
+
+				
 tabLayout -edit
 -tabLabel $tab1 "Export" 
 -tabLabel $tab2 "Paths"
--tabLabel $tab3 "QC Script"
+-tabLabel $tab3 "QC Settings"
 -tabLabel $tab4 "QC Edit"
 -tabLabel $tab5 "Animations"
--tabLabel $tab6 "Help"
+-tabLabel $tab6 "Guide"
+-tabLabel $tab7 "About"
 
 $tabs;
 

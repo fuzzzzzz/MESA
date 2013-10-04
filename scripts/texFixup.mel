@@ -48,7 +48,7 @@ global proc texFixup ()
 	source "paths";
 	source "smdExport";
 	source "vmt";
-	source "smd/fileNodeInfo";
+	source "fileNodeInfo";
 		
 	global string $smdShaderGrps[];
 	global string $smdFileTx[];

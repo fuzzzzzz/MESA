@@ -1013,7 +1013,7 @@ proc int buildExportLists( string $meshList[] )
 //-----------------------------------------------------------------------------
 proc int beginSMDFile( string $smdFileName )
 	{
-	print "-----------------------------------------------------\n";
+	print "\n-----------------------------------------------------\n";
 	print " Writing SMD files\n";
 	print "-----------------------------------------------------\n";
 	print ("exporting to " + ($smdFileName)+ "\n");
@@ -1350,6 +1350,14 @@ proc int exportQC( string $qcFileName, string $refFileName, int $type)		//type 1
 			string $isbreak = `match "[Bb][Rr][Ee][Aa][Kk]" $name`;
 			if ($isbreak != "")
 				{
+				// Reference Model Tips
+				if (`getAttr smdInfo.Tips`== 1)
+					{
+						fprint $qcFileHandle  "\n/*\n";
+						fprint $qcFileHandle  "Reference model Tips \n";
+						fprint $qcFileHandle  "Coming Soon... \n";
+						fprint $qcFileHandle  "*/\n";
+					}				
 				string $layer = `substitute "^.*_" $name "ref_"`;
 				int $Exists = `attributeQuery -n $layer -ex surface`;
 				if ($Exists != 0)
@@ -1375,15 +1383,51 @@ proc int exportQC( string $qcFileName, string $refFileName, int $type)		//type 1
 				fprint $qcFileHandle  $surf;
 				fprint $qcFileHandle  "\"\n";
 				}
-
+			// print useful QC command Tips
+			if (`getAttr smdInfo.Tips` == 1)
+				{
+				// Tips For Static props
+					fprint $qcFileHandle  "\n/*\n";
+					fprint $qcFileHandle  "QC commands tips : \n";
+					fprint $qcFileHandle  "https://developer.valvesoftware.com/wiki/Category:QC_Commands \n";
+					fprint $qcFileHandle  "\t$upaxis \t[X|Y|Z] \n";
+					fprint $qcFileHandle  "\t$origin \t[X Y Z Rotate] \n";
+					fprint $qcFileHandle  "\t$autocenter :\n";
+					fprint $qcFileHandle  "\t\t Description : The $autocenter QC command aligns the model's $origin to the center of its bounding box and creates an attachment point called placementOrigin where its origin used to be \n";
+					fprint $qcFileHandle  "\t$root \t[bone] \n";
+					fprint $qcFileHandle  "\t\tDescription : Resets what bone is used as the ROOT bone if there are multiple root - no parent - bones. \n";
+					fprint $qcFileHandle  "\t\t\tThe root bone is used for all movement and rotation calculations, as well as setting the root bone for ragdolls. This command is usually used to remove controller bones from the animation process. \n";
+					fprint $qcFileHandle  "\t$bonemerge \t [bone] \n";
+					fprint $qcFileHandle  "\t\t Description : required with weapon and item that are merge on the player skeleton \n";
+					fprint $qcFileHandle  "\t$attachment\t <string|name> <string|parent bone> <Vector|offset> [absolute] [rigid] [rotate <angle|orientation>]\n";
+					fprint $qcFileHandle  "\t\t Description : $attachment is a QC command that defines a location on a model. Attachments are identified by their name, and can be either relative to the model's origin or parented to a bone.\n";
+					fprint $qcFileHandle  "*/\n";
+				}
+					
 			if (`getAttr smdInfo.qcStatic` == 1)
 				{
+				if (`getAttr smdInfo.Tips` == 1)
+					{
+					// Tips For Static props
+						fprint $qcFileHandle  "\n/*\n";
+						fprint $qcFileHandle  "Static props tips : \n";
+						fprint $qcFileHandle  "https://developer.valvesoftware.com/wiki/$staticprop \n";
+						fprint $qcFileHandle  "*/\n";
+					}					
+				
 				fprint $qcFileHandle "$staticprop\n";
 				}
 
 			if (`getAttr smdInfo.qcKey` != "--None--")
 				{
-
+				if (`getAttr smdInfo.Tips` == 1)
+					{
+					// Tips For Breakable props
+						fprint $qcFileHandle  "\n/*\n";
+						fprint $qcFileHandle  "Breakeable props tips : \n";
+						fprint $qcFileHandle  "https://developer.valvesoftware.com/wiki/$keyvalues \n";
+						fprint $qcFileHandle  "*/\n";
+					}
 				string $isbreak = `match "[Bb][Rr][Ee][Aa][Kk]" $name`;
 				if ($isbreak != "")
 					{
@@ -1428,7 +1472,7 @@ proc int exportQC( string $qcFileName, string $refFileName, int $type)		//type 1
 			// BodyGroups
 			if (`getAttr smdInfo.seperateBodyGroup` == 0 || $type != 2)
 				{
-				fprint $qcFileHandle  "$body \"Body\" \""; 
+				fprint $qcFileHandle  "$model \"studio\" \""; //removed = $body \"Body\" \"";
 				fprint $qcFileHandle $name;
 				fprint $qcFileHandle "\"\n";
 				}
@@ -1446,6 +1490,14 @@ proc int exportQC( string $qcFileName, string $refFileName, int $type)		//type 1
 			// Level of Detail
 			if (`getAttr smdInfo.qcLOD`== 1 && $type == 2)
 				{
+				// Tips For Level of Detail
+				if (`getAttr smdInfo.Tips`== 1)
+					{
+						fprint $qcFileHandle  "\n/*\n";
+						fprint $qcFileHandle  "Level of Details Tips \n";
+						fprint $qcFileHandle  "https://developer.valvesoftware.com/wiki/$lod \n";
+						fprint $qcFileHandle  "*/\n";
+					}
 				string $LODModel;
 				for ($LODModel in $LODNameList)
 					{
@@ -1453,7 +1505,7 @@ proc int exportQC( string $qcFileName, string $refFileName, int $type)		//type 1
 					string $LODRange = `substitute "^.*[Ll][Oo][Dd]_" $LODModel ""`;
 					fprint $qcFileHandle  "\n$lod ";
 					fprint $qcFileHandle  $LODRange;
-					fprint $qcFileHandle  "\n{\nreplacemodel \"";
+					fprint $qcFileHandle  "\n{\n\treplacemodel \"";
 					fprint $qcFileHandle  $name;
 					fprint $qcFileHandle  "\" \"";
 					fprint $qcFileHandle  $LODModel;
@@ -1461,10 +1513,20 @@ proc int exportQC( string $qcFileName, string $refFileName, int $type)		//type 1
 					}
 				
 				}
-			
+
+				
 			// skins families
 			if (`size $skinlist` != 0)
 				{
+				// Tips For Skin Families
+				if (`getAttr smdInfo.Tips`== 1)
+					{
+						fprint $qcFileHandle  "\n/*\n";
+						fprint $qcFileHandle  "Skin Families Tips \n";
+						fprint $qcFileHandle  "https://developer.valvesoftware.com/wiki/$texturegroup \n";
+						fprint $qcFileHandle  "*/\n";
+					}
+					
 				global string $skinlines[];
 				clear $skinlines;
 				fprint $qcFileHandle "$texturegroup skinfamilies {";
@@ -1500,6 +1562,14 @@ proc int exportQC( string $qcFileName, string $refFileName, int $type)		//type 1
 			// One Idle Frame
 			if (`getAttr smdInfo.smdIdle` == 1 || $type == 1 )
 				{
+				if (`getAttr smdInfo.Tips`== 1)
+					{
+						fprint $qcFileHandle  "\n/*\n";
+						fprint $qcFileHandle  "One Idle Sequences Tips \n";
+						fprint $qcFileHandle  "Coming Soon... \n";
+						fprint $qcFileHandle  "*/\n";
+					}
+					
 				fprint $qcFileHandle  "$sequence idle \"";
 				fprint $qcFileHandle  $name;
 				fprint $qcFileHandle  "_idle\" loop fps 1.00\n";
@@ -1507,6 +1577,15 @@ proc int exportQC( string $qcFileName, string $refFileName, int $type)		//type 1
 			// Animation Sequences	
 			if (`getAttr smdInfo.smdAni`== 1 && $type == 2 )
 				{
+				// Tips For Animation Sequences
+				if (`getAttr smdInfo.Tips`== 1)
+					{
+						fprint $qcFileHandle  "/*\n";
+						fprint $qcFileHandle  "Animation Sequences Tips \n";
+						fprint $qcFileHandle  "https://developer.valvesoftware.com/wiki/$sequence \n";
+						fprint $qcFileHandle  "*/\n";
+					}
+					
 				string $aniNameList[];
 				string $aniAddList[];
 				
@@ -1539,6 +1618,14 @@ proc int exportQC( string $qcFileName, string $refFileName, int $type)		//type 1
 			// Collision Models
 			if ($type == 1 || $type == 2 && `getAttr smdInfo.smdPhy`==1 )
 				{
+				// Collision Model Tips
+				if (`getAttr smdInfo.Tips`== 1)
+					{
+						fprint $qcFileHandle  "\n/*\n";
+						fprint $qcFileHandle  "Collision Model Tips \n";
+						fprint $qcFileHandle  "https://developer.valvesoftware.com/wiki/$collisionmodel \n";
+						fprint $qcFileHandle  "*/\n";
+					}
 				string $isbreak = `match "[Bb][Rr][Ee][Aa][Kk]" $name`;
 				if ($isbreak != "")
 					{

@@ -24,6 +24,13 @@ if ($Exists == 0)
 	setAttr -e -keyable true ($shade[0] +".nocull") 0;
 	}
 
+$Exists = `attributeQuery -n $shade[0] -ex phong`;
+if ($Exists == 0)
+	{
+	addAttr -ln phong -at bool $shade[0];
+	setAttr -e -keyable true ($shade[0] +".phong") 0;
+	}
+
 $Exists = `attributeQuery -n $shade[0] -ex alphatest`;
 if ($Exists == 0)
 	{

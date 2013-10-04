@@ -3,7 +3,7 @@
 // website http://puppetmaster.net ©2013
 // Notes :
 // Export VMT File
-// State : Not tested
+// State : Functional
 //************************************************//
 
 
@@ -144,8 +144,8 @@ proc int createVMTExportDirectories( string $relativeVMTFileName )
 //-----------------------------------------------------------------------------
 global proc int vmt (string $shader)
 	{
-	source "smd/fileNodeInfo";	// broke these out into another file for organization
-	source "smd/tgaExport";		// and moved them to the smd subfolder
+	source "fileNodeInfo";	// broke these out into another file for organization
+	source "tgaExport";		// and moved them to the smd subfolder
 	source "paths";
 
 	computeVMTDirectories( );
@@ -333,8 +333,15 @@ global proc int vmt (string $shader)
 		string $nc = $shader + ".nocull";
 		$nocull = `getAttr $nc`;
 		}
-	
-		
+
+	// phong stuff --red
+	int $phongExists = `attributeQuery -n $shader -ex phong`;
+	int $phong = 0;
+	if ($phongExists == 1)
+		{
+		string $ph = $shader + ".phong";
+		$phong = `getAttr $ph`;
+		}		
 	
 	// prepare to write the vmt file
 	string $vmtFileName = getFullMaterialPath( $relativeVMTFileName + ".vmt" );
@@ -350,6 +357,17 @@ global proc int vmt (string $shader)
 	fprint $fileHandle "\"";
 	fprint $fileHandle $matType;
 	fprint $fileHandle "\"\r\n{\r\n";
+
+	// print useful QC command Tips
+	if (`getAttr smdInfo.Tips` == 1)
+		{
+		// Tips For Static props
+		fprint $fileHandle  "\n//\n";
+		fprint $fileHandle  "// Shader commands tips : \n";
+		fprint $fileHandle  "// https://developer.valvesoftware.com/wiki/Category:List_of_Shader_Parameters \n";
+		fprint $fileHandle  "//\n";
+		}
+		
 	if ($matType != "VertexLitGeneric")
 		{
 		fprint $fileHandle "\t\"$model\"\t\t\t\t1\r\n";
@@ -365,6 +383,9 @@ global proc int vmt (string $shader)
 		fprint $fileHandle $selfIllum;
 		if ($selfIllum) 
 			{
+// should be here --red
+//			fprint $fileHandle "\r\n\t\"$selfIllum\"\t\t\t";
+//			fprint $fileHandle $selfIllum;
 			fprint $fileHandle "\r\n\t\"$selfIllumTint\"\t\t\t\t";
 			fprint $fileHandle ("\"[" + $selfIllumTint[0] + " " + $selfIllumTint[1] + " " +$selfIllumTint[2] + "]\""); 
 			}
@@ -374,12 +395,12 @@ global proc int vmt (string $shader)
 	fprint $fileHandle $translucent;
 	if ($atest == 1 && $alpha == 1)
 		{
-		fprint $fileHandle "\r\n\t\"$alphatest\"\t\t\t\t";
+		fprint $fileHandle "\r\n\t\"$alphatest\"\t\t\t";
 		fprint $fileHandle $alpha;
 		}
 	if ($atest == 0 && $alpha == 1)	
 		{
-		fprint $fileHandle "\r\n\t\"$alphatest\"\t\t\t\t";
+		fprint $fileHandle "\r\n\t\"$alphatest\"\t\t\t";
 		fprint $fileHandle $alpha;
 		}
 
@@ -388,8 +409,18 @@ global proc int vmt (string $shader)
 		fprint $fileHandle "\r\n\t\"$nocull\"\t\t\t\t";
 		fprint $fileHandle $nocull;
 		}
-
-	
+/*
+	if ($phong == 1)	
+		{
+		fprint $fileHandle "\r\n\t\"$phong\"\t\t\t\t";
+		fprint $fileHandle $phong;
+		}
+	if ($selfillumi == 1)	
+		{
+		fprint $fileHandle "\r\n\t\"$selfillum\"\t\t\t\t";
+		fprint $fileHandle $selfillumi;
+		}
+*/
 	if (`size $envMap` > 0) 
 		{
 		fprint $fileHandle "\r\n\t\"$envMap\"\t\t\t\t";
@@ -425,6 +456,8 @@ global proc int vmt (string $shader)
 		fprint $fileHandle ("\"" + $normalMap + "\"");
 		}
 	fprint $fileHandle "\r\n}\r\n";
+	$mesaSignature = "// Created With MESA by www.puppet-master.net";
+	fprint $fileHandle $mesaSignature;
 	fclose $fileHandle;
 
 	print ("  exported " + $vmtFileName + "\n");

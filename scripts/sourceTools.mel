@@ -83,9 +83,9 @@ global proc openMdlWithHlmv()
 	{
 		source smdOptionWindow;
 
-		print("----------------------------------------------");
-		print("MDL Full Compile"); 
-		print("----------------------------------------------");
+		print("----------------------------------------------\n");
+		print("MDL Full Compile\n"); 
+		print("----------------------------------------------\n");
 		
 		//Checks if the smdinfos are defined
 		if ( isSmdInfoDefined() )
@@ -196,3 +196,10 @@ global proc mesaCheckPath()
 	print ( "\n");
 
 }
+
+
+
+global proc editVtfRed()
+{
+	
+}	
