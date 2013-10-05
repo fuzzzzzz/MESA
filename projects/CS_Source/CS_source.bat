@@ -1,38 +1,7 @@
 @echo off
 echo Configuring Source SDK environment variables for Counter-Strike Source.
 
-if "%STEAMDIR%"=="" (
-	if exist "..\..\config\check_steam_dir.bat" (
-		call "..\..\config\check_steam_dir.bat"
-	) else (
-		echo WARNING: STEAMDIR not set, and check_steam_dir.bat file not present.
-		pause
-	)
-) else (
-	echo STEAMDIR=%STEAMDIR%
-)
-
-if "%STEAMUSER%"=="" (
-	if exist "..\..\config\check_steam_dir.bat" (
-		call "..\..\config\check_steam_dir.bat"
-	) else (
-		echo WARNING: STEAMUSER not set, and check_steam_dir.bat file not present.
-		pause
-	)
-) else (
-	echo STEAMDIR=%STEAMUSER%
-)
-
-if "%MAYAVERSION%"=="" (
-	if exist "..\..\config\check_steam_dir.bat" (
-		call "..\..\config\check_steam_dir.bat"
-	) else (
-		echo WARNING: MAYAVERSION not set, and check_steam_dir.bat file not present.
-		pause
-	)
-) else (
-	echo STEAMDIR=%MAYAVERSION%
-)
+call "..\..\check_mesa_env.bat"
 
 echo "Set Bin directory path, where Studiomdl.exe and "vtex.exe" are located."
 echo ...
