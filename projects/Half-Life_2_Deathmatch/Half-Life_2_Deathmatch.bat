@@ -2,7 +2,7 @@
 echo Configuring MESA environment variables for Half-Life 2 Deathmatch.
 echo Credits http://puppet-master.net by Nicolas.Kirsch
 
-call "..\..\check_mesa_env.bat" 
+call "..\..\config\mesa_check_env.bat"
 
 echo "Set Bin directory path, where Studiomdl.exe and "vtex.exe" are located."
 echo ...
@@ -30,6 +30,6 @@ echo GAME_PROJECT_NAME=%GAME_PROJECT_NAME%
 
 echo Set the VPROJECT Directory, it must be the same path than GAME_PROJECT.
 echo ...
-SET VPROJECT="%STEAMDIR%\steamapps\common\Half-Life 2 Deathmatch\hl2mp\
+SET VPROJECT=%STEAMDIR%\steamapps\common\Half-Life 2 Deathmatch\hl2mp\
 SETX VPROJECT "%VPROJECT%"
 echo VPROJECT=%VPROJECT%

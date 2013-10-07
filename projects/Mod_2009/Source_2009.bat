@@ -4,7 +4,7 @@ echo WANRNING :
 echo This tools are deprecated by Valve Software, use the sdk of the game you want to modify.
 echo Credits http://puppet-master.net by Nicolas.Kirsch
 
-call "..\..\check_mesa_env.bat"
+call "..\..\config\mesa_check_env.bat"
 
 echo "Set Bin directory path, where Studiomdl.exe and "vtex.exe" are located."
 echo ...
@@ -17,7 +17,7 @@ echo Set the Game Project Directory, it must be the same path than VPROJECT.
 echo ...  [MOD_DIRECTORY] ! YOU MUST EDIT THIS 'PATH' !
 
 SET GAME_PROJECT=%STEAMDIR%\steamapps\SourceMods\[MOD_DIRECTORY]
-SETX GAME_PROJECT %GAME_PROJECT%
+SETX GAME_PROJECT "%GAME_PROJECT%"
 echo GAME_PROJECT=%GAME_PROJECT%
 
 
@@ -36,6 +36,6 @@ echo GAME_PROJECT_NAME=%GAME_PROJECT_NAME%
 echo Set the VPROJECT Directory, it must be the same path than GAME_PROJECT.
 echo ...
 echo [MOD_DIRECTORY] ! YOU MUST EDIT THIS PATH !
-SET VPROJECT="%STEAMDIR%\steamapps\SourceMods\[MOD_DIRECTORY]
-SETX VPROJECT %VPROJECT%
+SET VPROJECT=%STEAMDIR%\steamapps\SourceMods\[MOD_DIRECTORY]
+SETX VPROJECT "%VPROJECT%"
 echo VPROJECT=%VPROJECT%

@@ -6,10 +6,9 @@ echo Credits http://puppet-master.net by Nicolas.Kirsch
 :: Set mesa Root Directory path on the disk.
 :: Example:
 ::SET MESADIR=C:\MESA
-SET MESADIR=[ENTER-MESA-PATH]
+SET MESADIR=[ENTER-MESA_PATH]
 SETX MESADIR %MESADIR%
 echo MESADIR=%MESADIR%
-
 
 
 :: WARNING ! 
@@ -22,7 +21,7 @@ echo STEAMDIR=%STEAMDIR%
 
 :: WARNING !
 :: This is the username profile create on steam, and refer to the steam\steamapps\<USERNAME>\ directory to find the Binaries tools for source 2006, 2007 and 2009 tools.
-SET STEAMUSER =ENTER-STEAM-USER
+SET STEAMUSER=[ENTER-STEAM-USERNAME]
 SETX STEAMUSER %STEAMUSER%
 echo STEAMUSER=%STEAMUSER%
 

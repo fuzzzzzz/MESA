@@ -2,7 +2,7 @@
 echo Configuring MESA environment variables for Source FilmMaker
 echo Credits http://puppet-master.net by Nicolas.Kirsch
 
-call "..\..\check_mesa_env.bat"
+call "..\..\config\mesa_check_env.bat"
 
 echo "Set Bin directory path, where Studiomdl.exe and "vtex.exe" are located."
 echo ...
@@ -14,7 +14,7 @@ echo Set the Game Project Directory, it must be the same path than VPROJECT.
 echo WARNING 
 echo Edit the path if you need a custom path to your mod...
 SET GAME_PROJECT=%STEAMDIR%\steamapps\common\SourceFilmmaker\game\usermod
-SETX GAME_PROJECT %GAME_PROJECT%
+SETX GAME_PROJECT "%GAME_PROJECT%"
 echo GAME_PROJECT=%GAME_PROJECT%
 
 echo Maya Project Workspace directory.
@@ -34,6 +34,6 @@ echo Set the VPROJECT Directory, it must be the same path than GAME_PROJECT.
 echo ...
 echo WARNING 
 echo Edit the path if you need a custom path to your mod...
-SET VPROJECT="%STEAMDIR%\steamapps\common\SourceFilmmaker\game\usermod
+SET VPROJECT=%STEAMDIR%\steamapps\common\SourceFilmmaker\game\usermod
 SETX VPROJECT "%VPROJECT%"
 echo VPROJECT=%VPROJECT%

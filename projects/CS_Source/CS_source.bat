@@ -1,7 +1,7 @@
 @echo off
 echo Configuring Source SDK environment variables for Counter-Strike Source.
 
-call "..\..\check_mesa_env.bat"
+call "..\..\config\mesa_check_env.bat"
 
 echo "Set Bin directory path, where Studiomdl.exe and "vtex.exe" are located."
 echo ...
@@ -11,7 +11,7 @@ echo SOURCE_BIN_PATH=%SOURCE_BIN_PATH%
 
 echo Set the Game Project Directory, it must be the same path than VPROJECT.
 SET GAME_PROJECT=%STEAMDIR%\steamapps\common\Counter-Strike source\cstrike
-SETX GAME_PROJECT %GAME_PROJECT%
+SETX GAME_PROJECT "%GAME_PROJECT%"
 echo GAME_PROJECT=%GAME_PROJECT%
 
 echo Mesa Path root directory
@@ -29,6 +29,6 @@ echo GAME_PROJECT_NAME=%GAME_PROJECT_NAME%
 
 echo Set the VPROJECT Directory, it must be the same path than GAME_PROJECT.
 echo ...
-SET VPROJECT="%STEAMDIR%\steamapps\common\Counter-Strike source\cstrike
+SET VPROJECT=%STEAMDIR%\steamapps\common\Counter-Strike source\cstrike
 SETX VPROJECT "%VPROJECT%"
 echo VPROJECT=%VPROJECT%
