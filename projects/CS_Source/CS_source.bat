@@ -16,13 +16,13 @@ echo GAME_PROJECT=%GAME_PROJECT%
 
 echo Mesa Path root directory
 echo ...
-SET GAME_PROJECT_SRC=%STEAMDIR%\steamapps\SourceMods\MESA\projects\CS_source
+SET GAME_PROJECT_SRC=%MESADIR%\projects\CS_source
 SETX GAME_PROJECT_SRC %GAME_PROJECT_SRC%
 echo GAME_PROJECT_SRC=%GAME_PROJECT_SRC%
 
 echo Set the name of your Game project here
 echo ...
-SET GAME_PROJECT_NAME="Portal"
+SET GAME_PROJECT_NAME="Counter-Strike Source"
 SETX GAME_PROJECT_NAME %GAME_PROJECT_NAME%
 echo GAME_PROJECT_NAME=%GAME_PROJECT_NAME%
 

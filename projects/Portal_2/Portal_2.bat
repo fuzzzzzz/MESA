@@ -17,7 +17,7 @@ echo GAME_PROJECT=%GAME_PROJECT%
 
 echo Maya Project Workspace directory.
 echo ...
-SET GAME_PROJECT_SRC=%STEAMDIR%\steamapps\SourceMods\MESA\projects\Portal_2
+SET GAME_PROJECT_SRC=%MESADIR%\projects\Portal_2
 SETX GAME_PROJECT_SRC %GAME_PROJECT_SRC%
 echo GAME_PROJECT_SRC=%GAME_PROJECT_SRC%
 

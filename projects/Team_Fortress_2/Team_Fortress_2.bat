@@ -17,13 +17,13 @@ echo GAME_PROJECT=%GAME_PROJECT%
 
 echo Maya Project Workspace directory.
 echo ...
-SET GAME_PROJECT_SRC=%STEAMDIR%\steamapps\SourceMods\MESA\projects\Team_Fortress_2
+SET GAME_PROJECT_SRC=%MESADIR%\projects\Team_Fortress_2
 SETX GAME_PROJECT_SRC %GAME_PROJECT_SRC%
 echo GAME_PROJECT_SRC=%GAME_PROJECT_SRC%
 
 echo Set the name of your Game project here
 echo ...
-SET GAME_PROJECT_NAME="Dota 2"
+SET GAME_PROJECT_NAME="Team Fortress 2"
 SETX GAME_PROJECT_NAME %GAME_PROJECT_NAME%
 echo GAME_PROJECT_NAME=%GAME_PROJECT_NAME%
 
