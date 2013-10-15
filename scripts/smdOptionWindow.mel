@@ -585,7 +585,7 @@ global proc smdOptionWindow ()
 		deleteUI -window smdOptWin;
 		}
 
-	window -title "MESA - Maya Exporter for Source Absolute v2.0"
+	window -title "MESA - Maya Exporter for Source Absolute v2.01"
 
 		-width 440
 		-height 520
@@ -833,7 +833,7 @@ string $tab2 = `columnLayout -adj 1 -p tlay tab2`;
 				$texFolder=`getAttr smdInfo.texPath`;
 				image -i "mesa-about" -p tab2_main;
 			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -w 400 -label "Export Paths" -p tab2_main smdpath_frame;
-				rowLayout -nc 1 -width 405 -p smdpath_frame;
+				rowLayout -nc 1 -width 400 -p smdpath_frame;
 					text -vis 1 
 						-font "boldLabelFont"
 						-label "SMD / QC Path"
@@ -843,8 +843,8 @@ string $tab2 = `columnLayout -adj 1 -p tlay tab2`;
 				setParent tab2_main;
 
 			columnLayout -p smdpath_frame smdtarget;
-				rowLayout -nc 1 -width 405 ;
-					textField -w 405 
+				rowLayout -nc 1 -width 380 ;
+					textField -w 380
 						-text $smdTarget 
 						-editable 1 
 						-cc "updateNode;" 
@@ -855,7 +855,7 @@ string $tab2 = `columnLayout -adj 1 -p tlay tab2`;
 				
 			columnLayout -p smdpath_frame vtex;
 					
-				rowLayout -nc 1 -width 405 ;
+				rowLayout -nc 1 -width 380 ;
 					text -vis 1 
 						-font "boldLabelFont"
 						-label "Materials/Textures Path"
@@ -865,8 +865,8 @@ string $tab2 = `columnLayout -adj 1 -p tlay tab2`;
 				setParent vtex;
 							
 			columnLayout -p smdpath_frame texfolder;
-				rowLayout -nc 1 -width 405 ;
-					textField -w 405 -ed 0
+				rowLayout -nc 1 -width 380 ;
+					textField -w 380 -ed 0
 						-text $texFolder 
 						-cc " " 
 						tex;
@@ -875,20 +875,20 @@ string $tab2 = `columnLayout -adj 1 -p tlay tab2`;
 				$smdIdle = `substitute ".[Ss][Mm][Dd]" $smdTarget "_idle.smd"`;
 					text -label " " -p texfolder;
 				//$output = "Physics Name   ";// + $smdPhy;
-					text -w 405 -font "boldLabelFont" -label " Physics Name:" -align "left" -p texfolder phy; // phy;
+					text -w 380 -font "boldLabelFont" -label " Physics Name:" -align "left" -p texfolder phy; // phy;
 					text -label " " -p texfolder;
-					textField -ed 0 -w 405 -text $smdPhy -p texfolder;
+					textField -ed 0 -w 380 -text $smdPhy -p texfolder;
 					//text -label $smdPhy -p texfolder;
 					text -label " " -p texfolder;
 				
 
 				//$output = "IDLE Name       ";// + $smdIdle;
-					text -w 405 -font "boldLabelFont" -label " IDLE Name: " -align "left" -p texfolder idle; // idle;
+					text -w 380 -font "boldLabelFont" -label " IDLE Name: " -align "left" -p texfolder idle; // idle;
 					text -label " " -align "right" -p texfolder;
-					textField -ed 0 -w 405 -text $smdIdle -p texfolder;
+					textField -ed 0 -w 380 -text $smdIdle -p texfolder;
 					//text -label $smdIdle -p texfolder;
 					text -label " " -p texfolder;
-				button -label "GENERATE PATHS" -width 405 -align "left" 
+				button -label "GENERATE PATHS" -width 380 -align "center" 
 					-c "updatePaths;" 
 					-p texfolder;
 
@@ -899,8 +899,8 @@ string $tab2 = `columnLayout -adj 1 -p tlay tab2`;
 			//separator -h 1 -w 405;
 			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl on -w 400 -label "MESA Environement variables" -p tab2_main envvars_frame;
 			columnLayout -p envvars_frame sourcecheckpath;
-				rowLayout -nc 1 -width 405 -cal 1 "right";
-					text -label " " -p sourcecheckpath;
+				rowLayout -nc 1 -width 400 -cal 1 "right";
+					//text -label " " -p sourcecheckpath;
 				//Define String
 				string $sourceBinPathString = `getenv SOURCE_BIN_PATH`;
 				string $GameProjectSource = `getenv GAME_PROJECT_SRC`;
@@ -908,19 +908,19 @@ string $tab2 = `columnLayout -adj 1 -p tlay tab2`;
 				string $GameProjectPath = `getenv GAME_PROJECT`;	
 				string $VProjectPath = `getenv VPROJECT`;	
 				
-					text -fn "boldLabelFont" -label " Source Bin Path :" -w 400 -h 20 -align left -p sourcecheckpath; 
+					text -fn "boldLabelFont" -label " %SOURCE BIN PATH% :" -w 400 -h 20 -align left -p sourcecheckpath; 
 					text  -label $sourceBinPathString -w 400 -p sourcecheckpath; 
 					
-					text -fn "boldLabelFont" -label " Game Project Source :" -w 400 -h 20 -align left -p sourcecheckpath; 
+					text -fn "boldLabelFont" -label " %GAME PROJECT SRC% :" -w 400 -h 20 -align left -p sourcecheckpath; 
 					text -fn "obliqueLabelFont" -label $GameProjectSource -w 400 -p sourcecheckpath; 
 
-					text -fn "boldLabelFont" -label " GAME Project Name :" -w 400 -h 20 -align left -p sourcecheckpath; 
+					text -fn "boldLabelFont" -label " %GAME PROJECT NAME% :" -w 400 -h 20 -align left -p sourcecheckpath; 
 					text -fn "obliqueLabelFont" -label $GameProjectName -w 400 -p sourcecheckpath; 
 					
-					text -fn "boldLabelFont" -label " GAME_PROJECT :" -w 400 -h 20 -align left -p sourcecheckpath; 
+					text -fn "boldLabelFont" -label " %GAME_PROJECT% :" -w 400 -h 20 -align left -p sourcecheckpath; 
 					text -fn "obliqueLabelFont" -label $GameProjectPath -w 400 -p sourcecheckpath; 
 										
-					text -fn "boldLabelFont" -label " VPROJECT Path :" -w 400 -h 20 -align left -p sourcecheckpath; 
+					text -fn "boldLabelFont" -label " %VPROJECT% :" -w 400 -h 20 -align left -p sourcecheckpath; 
 					text -fn "obliqueLabelFont" -label $VProjectPath -w 400 -p sourcecheckpath; 
 
 				setParent sourcecheckpath;
