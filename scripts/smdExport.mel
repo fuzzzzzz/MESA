@@ -1938,7 +1938,7 @@ global proc int smdExport (int $reference, int $separateBodyGroups)
 				
 				$retval = exportQC($bname+".qc",$bname,1);
 				string $std;
-				$std = `system ("%SOURCE_BIN_PATH%/studiomdl.exe \"" + $bname + ".qc\"")`;
+				$std = `system ("%SOURCE_BIN_PATH%//studiomdl.exe \"" + $bname + ".qc\"")`;
 				print $std;
 				
 				}
@@ -2015,10 +2015,14 @@ global proc int smdExport (int $reference, int $separateBodyGroups)
 	if ( $reference == 3 && `getAttr smdInfo.compile` == 1)
 		{	
 		string $std;
+		string $SourceBinPath = `getenv SOURCE_BIN_PATH`;
 		print "-----------------------------------------------------\n";
 		print ( " STUDIOMDL COMPILATION \n");
 		print "-----------------------------------------------------\n";
-		$std = `system ( "%SOURCE_BIN_PATH%\\studiomdl.exe -nop4 "  + "\"" + $qcName +"\"" )`;
+		$std = `system ( "\"" + "\"" + $SourceBinPath + "/studiomdl.exe" + "\"" + " -nop4 " + "\"" + $qcName +"\"" )`;
+		print ( "\"" + "\"" + $SourceBinPath + "/studiomdl.exe" + "\"" + " -nop4 " + "\"" + $qcName +"\"\n" );
+		//string $gameProjectPath = `getenv GAME_PROJECT`;
+		//$std = `system ( "\"" + $gameProjectPath + "\\studiomdl.exe -nop4 " + "\"" + $qcName + "\"" )`;
 		print $std;
 		}
 	

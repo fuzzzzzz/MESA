@@ -10,20 +10,35 @@
 	// system ("%SOURCE_BIN_PATH%\\vtfEdit.exe " + "-game %GAME_PROJECT%");
 // }
 
-/* Script Created by Nicolas Kirsch */
+//string $GameProjectPath = `getenv GAME_PROJECT`;
+//string $SourceBinPath = `getenv SOURCE_BIN_PATH`;
+//string $GameProjectSource = `getenv GAME_PROJECT_SRC`;
+
 global proc hammerApp()
 {
-system ("shell %SOURCE_BIN_PATH%\\hammer.exe " + "-game %GAME_PROJECT%");
+	//gets paths
+	string $GameProjectPath = `getenv GAME_PROJECT`;
+	string $SourceBinPath = `getenv SOURCE_BIN_PATH`;
+
+	system ("shell " + "\"" + "\"" + $SourceBinPath + "/hammer.exe" + "\"" + " -nop4 -game " + "\"" + $GameProjectPath + "\"");
+	//debug path
+	print ( "shell " + "\"" + "\"" + $SourceBinPath + "/hammer.exe" + "\"" + " -game " + "\"" + $GameProjectPath + "\"\n");
 }
 
 global proc facePoserApp()
 {
-	system ("shell %SOURCE_BIN_PATH%\\hlfaceposer.exe " + "-game %GAME_PROJECT%");
+	string $GameProjectPath = `getenv GAME_PROJECT`;
+	string $SourceBinPath = `getenv SOURCE_BIN_PATH`;
+	//system ("shell %SOURCE_BIN_PATH%\\hlfaceposer.exe " + "-game " + "%GAME_PROJECT%" + "\""); //+ "%GAME_PROJECT%");
+	system ("shell " + "\"" + "\"" + $SourceBinPath + "/hlfaceposer.exe" + "\"" + " -game " + "\"" + $GameProjectPath + "\"");
+	//debug path
+	print ( "shell " + "\"" + "\"" + $SourceBinPath + "/hlfaceposer.exe" + "\"" + " -game " + "\"" + $GameProjectPath + "\"\n" );
 }
 
 global proc qcEyesApp()
 {
-	system ("shell %SOURCE_BIN_PATH%\\qc_eyes.exe "/* + "-game %GAME_PROJECT%"*/ );
+	string $qceyes = system ("shell %SOURCE_BIN_PATH%\\qc_eyes.exe "/* + "-game %GAME_PROJECT%"*/ );
+	print ($qceyes);
 }
 
 
@@ -37,7 +52,7 @@ global proc openMdlWithHlmv()
 		string $smdTargetPath;
 		string $GameProjectSource = `getenv GAME_PROJECT_SRC`;
 		string $GameProjectPath = `getenv GAME_PROJECT`;
-		
+		string $SourceBinPath = `getenv SOURCE_BIN_PATH`;
 		// Get the Full path base on the SMD / QC path.
 		$smdTargetPath = `getAttr smdInfo.smdTarget`;
 		//Adjust the folder
@@ -54,7 +69,7 @@ global proc openMdlWithHlmv()
 		$smdTargetPath = `tolower $smdTargetPath`;
 		
 		print ( "****************************************************\n" );
-		print ( "Model :" + $smdInfoTarget + " is Opened in HLMV ****\n" );
+		print ( "Model :" + $smdTargetPath + " is Opened in HLMV ****\n" );
 
 
 		// HACK HACK "load " can't be preferred in that case" , that result in a freeze of maya until the launched aplication is closed.
@@ -62,8 +77,9 @@ global proc openMdlWithHlmv()
 		// Trying to load hlmv th
 		// TODO : FIX IT --red	EDIT : FIXED ! but let that as example	--red
 		string $openHlmvCmd;
-		string $openHlmvCmd = system ( "shell %SOURCE_BIN_PATH%\\hlmv.exe -nop4 -game %GAME_PROJECT% -model " + $smdTargetPath );
+		string $openHlmvCmd = system ( "shell " + "\"" + "\"" + $SourceBinPath + "/hlmv.exe" + "\"" +  " -nop4 -game " + "\"" + $GameProjectPath + "/\"" + " -model \"" + $smdTargetPath + "\"" );
 		print ( $openHlmvCmd );
+		print ( "shell " + "\"" + "\"" + $SourceBinPath + "/hlmv.exe" + "\"" +  " -nop4 -game " + "\"" + $GameProjectPath + "/\"" + " -model \"" + $smdTargetPath + "\"" );
 	
 	}
 	//If the paths in the smdOptionWindow are not set
@@ -108,7 +124,7 @@ global proc editQCScript()
 	if(isSmdInfoDefined())
 	{
 		string $smdTargetPath;
-		string $GameProjectSource = `getenv GAME_PROJECT_SRC`;
+//		string $GameProjectSource = `getenv GAME_PROJECT_SRC`;
 		
 		// Get the Full path base on the SMD / QC path.
 		$smdTargetPath = `getAttr smdInfo.smdTarget`;
@@ -148,7 +164,7 @@ global proc openVProject()
 	//Says the windows command shell it should open a new explorer windows with the current VProject
 	system("explorer %GAME_PROJECT%");
 	
-	print("Current GProject is Opened");
+	print("Current Game Project is Opened");
 }
 // Procedure that opens the %Game_Project_Scr% Path set as environment variable.
 global proc openSourceProject()
