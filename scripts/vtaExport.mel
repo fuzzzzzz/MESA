@@ -1,7 +1,6 @@
-// global proc vtaExport ()
-	// {
-	// source smdOptionWindow;
-	// source smdExport;
-	// smdExport( 2, 0 );
-	
-	// }
+global proc vtaExport ()
+{
+ source smdOptionWindow;
+ source smdExport;
+ smdExport( 2, 0 );
+}

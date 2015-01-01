@@ -7,7 +7,7 @@ call "..\..\config\mesa_check_env.bat"
 SET SOURCE_BIN_PATH=%STEAMDIR%\steamapps\common\Source SDK Base 2013 Singleplayer\bin
 SET GAME_PROJECT=%STEAMDIR%\steamapps\SourceMods\Dreams
 SET GAME_PROJECT_SRC=%MESADIR%\Projects\Dreams_2013_SP
-SET GAME_PROJECT_NAME="Dreams 2013 SinglePlayer"
+SET GAME_PROJECT_NAME=Dreams 2013 SinglePlayer
 SET VPROJECT=%STEAMDIR%\steamapps\SourceMods\Dreams
 
 echo "Set Bin directory path, where Studiomdl.exe and "vtex.exe" are located."
