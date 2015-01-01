@@ -6,6 +6,7 @@
 global proc smdUpAxis (string $axis)
 // rotates unparented joints from y-up to z-up and vice-versa.
 {
+//waitCursor -st off;
 float $rotate = "90";
 $axis = `tolower $axis`;
 $axis = `substitute "-" $axis ""`;
@@ -14,7 +15,7 @@ if ($axis == "y")
 	$rotate = "-90";
 	}
 select -r `ls -type joint`;
-string $each[];
+string $each;
 int $ct;
 for ($each in `ls -sl`)
 	{
@@ -28,4 +29,5 @@ string $group = `group -w`;
 
 rotate $rotate 0 0  -p 0 0 0 -ws $group;
 ungroup -w;
+waitCursor -st off;
 }

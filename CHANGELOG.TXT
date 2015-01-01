@@ -1,0 +1,56 @@
+// smd export script version 2.4
+// by theo 8/17/2001
+// updated by Prall 6/23/2005
+
+// can be called from command line as
+// "smdExport( #, # )" where arg0: 0 = animation , 1 = reference smd , 2= Vta animation ,3= full compile
+//arg1: 0 = all in the same body group, 1 = each piece in a separate body group
+
+// change history
+// 1.02 improved handling of shader export failure
+// 1.03 added support for joint orientation
+//	improved detection of non-shaded surfaces
+// 1.04 added progress bar with support for cancelling export
+// 1.05 fixed exporting transforms with rotate-orient and joint-orient values other than 0
+// 1.06 corrected handling of offset pivot points
+//	another fix for non-shaded surfaces
+// 1.07 added check for large numbers of skin influences.
+// 1.08 animation smd's don't export vmt files.
+// 1.09 (BRJ) Added seperate body groups, removed need for setting the project workspace, lots of bug fixes
+
+// 1.5  prall: added smd animation import  
+// 2.0  prall: added vertex animation export
+// 2.1  prall: improved vta export....multiple meshes and change filter
+// 2.2  prall:  -improved export gui
+//	        -added export from layers for ref,phy and break models	
+//	        -added qc generation
+//		-added multiple animations export
+//		-changed path calculations
+//		-added full compile
+//		
+// 2.3 prall:   -multiple texture subdirs
+//		-HLMV thumbnail rendering
+//		-material attributes
+//		-skinfamilies
+//		-compile on/off
+//		-export textures on/off
+//		-some bugs fixed		
+//
+// 2.4 prall:   -tried to fix some path probs
+//		-fixed pCube1,pCube11 filter probs
+//		-removed need for sourcesdk/bin path variable...uses sourcesdk variable now
+//		-fixed wooden.large error
+//		-added LOD model support
+//		-hl2shader update
+//
+// 2.5 prall:   -break model options
+//		-create layer GUI
+//		-shelf
+//
+//=======================================================================================//
+//						Nicolas Kirsch aka RedEyes modification Changelog
+//=======================================================================================//
+// MESA 1.02  beta Nicolas Kirsch
+//
+//	 weird task; i can't list that, is extented on several months, time after time...
+//

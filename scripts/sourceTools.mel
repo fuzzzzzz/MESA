@@ -77,9 +77,9 @@ global proc openMdlWithHlmv()
 		// Trying to load hlmv th
 		// TODO : FIX IT --red	EDIT : FIXED ! but let that as example	--red
 		string $openHlmvCmd;
-		string $openHlmvCmd = system ( "shell " + "\"" + "\"" + $SourceBinPath + "/hlmv.exe" + "\"" +  " -nop4 -game " + "\"" + $GameProjectPath + "/\"" + " -model \"" + $smdTargetPath + "\"" );
+		string $openHlmvCmd = system ( "shell " + "\"" + $SourceBinPath + "/hlmv.exe" + "\"" +  " -nop4 -game " + "\"" + $GameProjectPath + "/\"" + " -model \"" + $smdTargetPath + "\"" );
 		print ( $openHlmvCmd );
-		print ( "shell " + "\"" + "\"" + $SourceBinPath + "/hlmv.exe" + "\"" +  " -nop4 -game " + "\"" + $GameProjectPath + "/\"" + " -model \"" + $smdTargetPath + "\"" );
+		print ( "shell " + "\"" + $SourceBinPath + "/hlmv.exe" + "\"" +  " -nop4 -game " + "\"" + $GameProjectPath + "/\"" + " -model \"" + $smdTargetPath + "\"" );
 	
 	}
 	//If the paths in the smdOptionWindow are not set

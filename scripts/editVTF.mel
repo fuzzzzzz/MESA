@@ -127,7 +127,7 @@ global proc editvtf(string $vtfEditPath, int $texturetype)
 
 			else 
 			{
-				error("Wrong texturetype passed through. Please check your shelf button! Syntax: editvtf(\"Programpath\", filetype); Filetyps: 1 = Diffuse, 2 = NormalMap"); 
+				error("Wrong texturetype passed through. Please check your shelf button! Syntax: editvtf(\"Programpath\", filetype); Filetyps: 1 = Diffuse, 2 = NormalMap, 3 = Materials (vtfedit) "); 
 			}
 		}
 		//If the smd doesnt exist

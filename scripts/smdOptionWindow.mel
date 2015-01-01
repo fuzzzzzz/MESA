@@ -499,7 +499,7 @@ global proc urlInstallationHelp ()
 global proc urlExportTutorial ()
 	{
 	python("import os");
-	python("os.startfile('http://puppet-master.net/plugins/mesa-2-0/workflow-tutorial/')");
+	python("os.startfile('http://puppet-master.net/plugins/mesa-2-0/export-tutorial/')");
 	}
 
 global proc urlExportTutorialYT ()
@@ -585,7 +585,7 @@ global proc smdOptionWindow ()
 		deleteUI -window smdOptWin;
 		}
 
-	window -title "MESA - Maya Exporter for Source Absolute v2.01"
+	window -title "MESA - Maya Exporter for Source Absolute v2.0.2"
 
 		-width 440
 		-height 520

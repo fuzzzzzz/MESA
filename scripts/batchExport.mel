@@ -126,8 +126,8 @@ global proc batchExport()
 		print $sceneFile;
 		print "\n";
 
-//		file -f -options "v=0" -typ "mayaBinary" -o $sceneFile;
-		file -f -options "v=0" -typ "mayaAscii" -o $sceneFile;
+		file -f -options "v=0" -typ "mayaBinary" -o $sceneFile;
+//		file -f -options "v=0" -typ "mayaAscii" -o $sceneFile;
 
 		int $ok = 1;
 		if ( isSmdInfoDefined() )

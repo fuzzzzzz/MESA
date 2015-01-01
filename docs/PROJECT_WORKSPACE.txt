@@ -1,0 +1,184 @@
+================================
+FRANCAIS
+================================
+
+<h3>Les Espaces de travail</h3>
+
+MESA propose des espaces de travail prédéfini pour tout les jeux du Source Engine.
+Ces Espaces de Travail sont localisés dans "%MESADIR%/PROJECTS/".
+
+Voici la liste des projets prédéfinis :
+[mesa-project-workspace.png] image
+
+Ce répertoire correspond à la variable d'environnement "GAME_PROJECT_SRC" qui est défini dans les fichiers de Batches.
+
+L'espace de travail est en réalité un workspace Maya , qui est utilisé comme le répertoire C:/mymod qui était proposé lorsque vous lancez les outils de création de mod du SDK launcher.
+lien = http://puppet-master.net/tutorials/source-engine/create-a-source-engine-mod/
+
+Le project Actif de Maya doit pointer sur ce répertoire.
+Lire  : Maya Settings for source Engine ( http://puppet-master.net/tutorials/source-engine/maya-settings-for-source-engine/#Set_Project )
+
+
+[mesa-workspace-content.png]image
+
+
+Note: Le projet Dreams 2013 est un projet d'exemple il contient : 
+
+Une scène maya d'exemple dans le répertoire <code>SCENES</code>
+Les fichier SMD et QC dans <code>MODELSRC</code>
+Les fichiers TGA dans le répertoire <code>MATERIALSRC</code>
+un fichier de Batch qui défini l'environnement de travail sur ce dossier: ici il se nomme Dreams_2013_SP
+
+Important : 
+Si vous souhaitez éditer un jeu officiel, vous n'avez pas besoin de modifier le contenu des fichiers de batches qui sont localisé dans les sous répertoires du dossier <code>PROJECTS</code>.
+Tout les chemins déjà prédéfini pour vous. Seul le fichier <code>%MESADIR%/CONFIG/mesa_config.bat</code> doit être édité.
+
+Note : Si vous souhaitez modifié un jeu deja existant comme dota 2, ou Team Fortress 2. le répertoire de travail n'est pas fourni par valve.
+Ces répertoires vous offrent donc la possibilité de regrouper tout vos fichiers sources, pour facilité les sauvegardes de vos créations et les centralisant dans un seul et même endroit.
+
+
+________________________
+
+<h3>Regardons de plus prêt le contenu du fichier de batch du projet</h3>
+
+Ici nous apprenons que le projet  utilise les outils du <code>Source SDK base 2013 Singleplayer</code>
+
+<pre>
+echo "Set Bin directory path, where Studiomdl.exe and "vtex.exe" are located."
+echo ...
+SET SOURCE_BIN_PATH=""%STEAMDIR%\steamapps\common\Source SDK Base 2013 Singleplayer\bin"
+</pre>
+
+<hr />
+Le projet de destination du mod qui se trouve dans <code>Steamapps/Sourcemods</code>
+
+<pre>
+echo Set the Game Project Directory, it must be the same path than VPROJECT.
+echo ...  [MOD_DIRECTORY] ! YOU MUST EDIT THIS 'PATH' !
+SET GAME_PROJECT=%STEAMDIR%\steamapps\SourceMods\Dreams
+</pre>
+
+<hr />
+
+La Variables d'environnement "GAME_PROJECT_SRC" peut être modifié dans le cas où vous utiliseriez déjà un répertoire similaire pour stocker vos fichiers Sources,  tel que les 
+fichiers the texture TGA, les fichier SMD et QC avant d'être compilés  et les scènes maya de vos créations.
+
+<pre>
+echo Maya Project Workspace directory.
+echo ...
+:: example :
+:: SET  GAME_PROJECT_SRC=C:\MYMOD
+SET GAME_PROJECT_SRC=%MESADIR%\Projects\Dreams_2013_SP
+</pre>
+
+<hr />
+
+Pour que MESA précise le nom du projet sur lequel vous travail dans l'onglet Path de l'exporter.
+Vous aurez a entrer le nom de votre projet
+
+<pre>
+SET GAME_PROJECT_NAME="Mod 2013 SinglePlayer"
+</pre>
+
+<hr />
+
+Afin d’être sur que le VPROJECT soit définis sur le projet sur lequel vous travaillez dans maya, le VPROJECT est redéfini.
+Il est pratique car le SDK Launcher est en phase d'être complètement retiré.
+
+<pre>
+:: example 
+:: SET VPROJECT ="%STEAMDIR%\steamapps\MYMOD
+SET VPROJECT="%STEAMDIR%\steamapps\SourceMods\Dreams
+</pre>
+
+================================
+ENGLISH
+================================
+
+<h3>Project Workspace</h3>
+
+
+MESA provides predefined workspaces for all Source Engine games.
+These Workspaces are located in "%MESADIR%/PROJECTS/".
+
+Here is the list of predefined projects
+[mesa-project-workspace.png] image
+
+This directory is the environment variable "GAME_PROJECT_SRC" which is defined in the batch file.
+
+The workspace is actually a Maya workspace, 
+which is used as the C:\MYMOD directory that is proposed by the SDK launcher,when you create a new mod.
+link = http://puppet-master.net/tutorials/source-engine/create-a-source-engine-mod/
+
+The active project in MAya must to point on this directory.
+
+[How to set maya active project] Maya Settings for source Engine ( http://puppet-master.net/tutorials/source-engine/maya-settings-for-source-engine/#Set_Project )
+
+Note ; The Dreams 2013 SP is a sample project, it contains :
+
+A Sample Maya Scene into the <code>SCENES</code> directory.
+The SMD and the qc scripts files into <code>MODELSRC</code> directory.
+The Texture with the TGA format file into <code>MATERIALSRC</code> directory.
+Abatch file that Set the environement varaible on that project directory  ici il se nomme Dreams_2013_SP
+
+
+
+________________________
+
+<h3>RLet's look closer at the contents of the project batch file</h3>
+
+
+Here the Project set the the Binary tools where the SDK tools are stored
+Here  the Source SDK base 2013 Singleplayer is in use
+NoTe : DO not edit that line.
+<pre>
+echo "Set Bin directory path, where Studiomdl.exe and "vtex.exe" are located."
+echo ...
+SET SOURCE_BIN_PATH=""%STEAMDIR%\steamapps\common\Source SDK Base 2013 Singleplayer\bin"
+</pre>
+
+<hr />
+
+
+The destination path of your Mod in Steamapps/Sourcemods/ directory
+<pre>
+echo Set the Game Project Directory, it must be the same path than VPROJECT.
+echo ...  [MOD_DIRECTORY] ! YOU MUST EDIT THIS 'PATH' !
+SET GAME_PROJECT=%STEAMDIR%\steamapps\SourceMods\Dreams
+</pre>
+
+<hr />
+
+
+The environment variables "GAME_PROJECT_SRC" can be changed in case you ever would use a similar directory to store your Sources Files,
+such as the TGA textures files, SMD and QC script files, before that Sdk Tools compile them to a readable format for the Source Engine
+in your VPROJECT/GAMEPROJECT* ( * that must be the same path )
+<pre>
+echo Maya Project Workspace directory.
+echo ...
+:: example :
+:: SET  GAME_PROJECT_SRC=C:\MYMOD
+SET GAME_PROJECT_SRC=%MESADIR%\Projects\Dreams_2013_SP
+</pre>
+
+<hr />
+
+For MESA specifies the name of the project that you are currently working with and is displayed on the Path tab of the exporter panel.
+You will have to enter the name of your project here.
+
+<pre>
+:: example 
+:: SET GAME_PROJECT_NAME="My Mod"
+SET GAME_PROJECT_NAME="Dreams 2013 SinglePlayer"
+</pre>
+
+<hr />
+
+To be sure that the VPROJECT be defined on the project you are working in Maya, the VPROJECT is redefined.
+It is convenient because the SDK Launcher is in the process of being completely removed.
+
+<pre>
+:: example 
+:: SET VPROJECT ="%STEAMDIR%\steamapps\MYMOD
+SET VPROJECT="%STEAMDIR%\steamapps\SourceMods\Dreams
+</pre>

@@ -9,6 +9,11 @@ config.cfg
 *.smd
 *.vta
 *.mb
+*.psd
+*.png
+*.graphml
+*.mel_
+*.py
 thumbs.db
 
 */models/*
@@ -17,3 +22,9 @@ thumbs.db
 *.swatch
 *_diffuse.txt
 *_normal.txt
+*/VTFEdit/*
+*.dat
+*/obsolete/*
+*/delete/*
+*/sources/*
+*/Dreams_2013_SP/*

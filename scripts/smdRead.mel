@@ -10,7 +10,7 @@ proc readUntil (string $tag, int $fileHandle)
 	string $exp = "^" + $tag;
 	while	(`match $exp $lineIn` != $tag)
 		{
-		if (`feof $fileHandle`) error ("end of file readched without tag " + $tag);
+		if (`feof $fileHandle`) error ("end of file reached without tag " + $tag);
 		$lineIn = `fgetline $fileHandle`;
 		}
 }
@@ -90,7 +90,8 @@ global proc string smdRead (string $smdFile, int $getTextures)
 
 //	float $time = `timerX`;
 //	print `system "time"`;
-	file -force -new;
+	//file -force -new;
+	//file -i;
 	undoInfo -state off;
 
 	global string $g_smdTexturePath = "";
@@ -190,6 +191,7 @@ global proc string smdRead (string $smdFile, int $getTextures)
 
 	// now grab and apply the poses
 	$line = "";
+	//readUntil "^\$time" $fileHandle;
 	readUntil "time" $fileHandle;
 	$line = `fgetline $fileHandle`;
 
@@ -414,7 +416,7 @@ for ($v = 0; $v < $vc; $v ++)
 	}
 
 polySelectConstraint -m 0;
-//waitCursor -state off; //0;
+//waitCursor -state off; 
 print "done\n";
 //print ("elapsed time: " + `timerX -st $time` + " seconds\n");
 
@@ -549,5 +551,11 @@ while (`match  "^end" $line` != "end")
 }
 undoInfo -state on;
 fclose $fileHandle;
+waitCursor -st off;
+
+select -r unknownDag1;
+rename "unknownDag1" "unknownDag";
+
 return $smdFile;
+
 }

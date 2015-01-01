@@ -5,10 +5,10 @@ echo Credits http://puppet-master.net by Nicolas.Kirsch
 call "..\..\config\mesa_check_env.bat" 
 
 SET SOURCE_BIN_PATH=%STEAMDIR%\steamapps\common\Source SDK Base 2013 Singleplayer\bin
-SET GAME_PROJECT=%STEAMDIR%\steamapps\SourceMods\dreams
+SET GAME_PROJECT=%STEAMDIR%\steamapps\SourceMods\Dreams
 SET GAME_PROJECT_SRC=%MESADIR%\Projects\Dreams_2013_SP
 SET GAME_PROJECT_NAME="Dreams 2013 SinglePlayer"
-SET VPROJECT=%STEAMDIR%\steamapps\SourceMods\dreams
+SET VPROJECT=%STEAMDIR%\steamapps\SourceMods\Dreams
 
 echo "Set Bin directory path, where Studiomdl.exe and "vtex.exe" are located."
 echo ...
@@ -22,12 +22,12 @@ echo GAME_PROJECT=%GAME_PROJECT%
 
 echo Maya Project Workspace directory.
 echo ...
-SETX GAME_PROJECT_SRC %GAME_PROJECT_SRC%
+SETX GAME_PROJECT_SRC "%GAME_PROJECT_SRC%"
 echo GAME_PROJECT_SRC=%GAME_PROJECT_SRC%
 
 echo Set the name of your Game project here
 echo ...
-SETX GAME_PROJECT_NAME %GAME_PROJECT_NAME%
+SETX GAME_PROJECT_NAME "%GAME_PROJECT_NAME%"
 echo GAME_PROJECT_NAME=%GAME_PROJECT_NAME%
 
 

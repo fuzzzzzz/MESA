@@ -177,7 +177,7 @@ global proc int tgaExport( string $fileNode, int $overwriteMode )
 		print "-----------------------------------------------------\n";
 		string $SourceBinPath = `getenv SOURCE_BIN_PATH`;
 		$vtexapp = "\"" + "\"" + $SourceBinPath + "/vtex.exe" + "\"" + " -nop4 -nopause ";
-		$vtex += `system ( $vtexapp  + "\"" + $textFile + "\"" )`;
+		$vtex += `system ( $vtexapp  + "\"" + $textFile + "\"\n" )`;
 		print ( $vtex );
 		$vtex += "\n";
 		}
@@ -192,7 +192,7 @@ global proc int tgaExport( string $fileNode, int $overwriteMode )
 		string $SourceBinPath = `getenv SOURCE_BIN_PATH`;
 		$vtexapp = "\"" + "\"" + $SourceBinPath + "/vtex.exe" + "\"" + " -nop4 -nopause ";
 		$vtex += `system ( $vtexapp  + "\"" + $textFile  + "\"" )`;
-		$vtexdebug = $vtexapp  + "\"" + $textFile  + "\"";
+		$vtexdebug = $vtexapp  + "\"" + $textFile  + "\"\n";
 		print ( $vtexdebug );
 		print ( $vtex );
 		}
