@@ -2,8 +2,8 @@
 echo Configuring MESA environment variables for Source Engine powered by ValveSoftware.
 echo Credits http://puppet-master.net by Nicolas.Kirsch
 
-SET MESADIR=G:\programming\MESA\mesa_git
-SET STEAMDIR=G:\Steam
+SET MESADIR=C:\MESA
+SET STEAMDIR=C:\Program Files (x86)\Steam
 SET MAYAVERSION=2015-x64
 
 :: Set mesa Root Directory path on the disk.

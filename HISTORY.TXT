@@ -1,4 +1,36 @@
 ================================
+ENGLISH :
+================================
+
+History of MESA
+
+In the 2000s, ValveSoftware has developed a tool to export the Source Engine, Maya was their version of the 4.5, "ValveSoftware" had chosen the "MELScript" to develop this tool.
+
+At this point in the development of HalfLife 2, Valve Software used mainly Softimage XSI and 3D Studio Max.
+Nowadays, ValveSoftware has designed these production tools around the environment of maya, offering faster and more comprehensive tools.
+
+2009 ~ 2010, Prall reprograms the export tool written in Mel script and adds new features. (# Read Changelog)
+
+In 2012, I integrated in the tool production of Jurassic Life, the prall Edition of the Exporter. i was on maya 2012, and some function was deprecated by autodesk.
+Well I decided to revrite the tools to fit the source engine mod development environement, and so the MelScripts were recasted, corrected and debugged,  to integrate the tool into a directory that contains the major source file that are shared between us in our team.
+I solved the issues with the access to the Sdk Executable that compile the smd files in MDL, and the TGA in VTF file readeable byt the source engine.
+My main objective was to reduce the tasks you usualy do into a text editor. the very first version of MESA comes with lot of broken commands ont the shelf, and so most of them has been removed at the next version of mesa ( 1.01 beta).
+Mesa 1.1 had been the mort cleanner version, many script that valve use at some point have been removed, the shelf do not contain bad script and has been download 
+
+User requests on youtube discovering that the compilation of models and textures were functional, and that all steps could be carried out in the interface of Maya have asked me to publish the exporter.
+This tool should not be available for download, but it would have been a shame not to share it with other projects.
+At this moment Puppet-Master.net was born, to host the documentation and to help support for users of MESA with a help forum .
+Then it is the choice of a name for the tools, and so MESA is the name for  "Maya Exporter for Source "Absolute", giving a knowing wink to HL1 that I had already started to modify it in 1999.
+
+
+2013, MESA 2.0 is release.
+Following the relatively high return Encounters problems during installation of Mesa, installing mesa required a good knowledge of Maya source sdk, all this has been improved with mesa 2.0.
+Some bugs have been fixed, and new options have emerged.
+Mesa is compatible with all games that Valve Software has been transfered to Steampipe.
+The development of MESA is now available on Github, you can henceforth, suggest improvements via this tool for collaborative development.
+
+
+================================
 FRANCAIS :
 ================================
 
@@ -34,33 +66,3 @@ Nicolas Kirsch
 
 
 
-================================
-ENGLISH :
-================================
-
-History of MESA
-
-In the 2000s, ValveSoftware has developed a tool to export the Source Engine, Maya was their version of the 4.5, "ValveSoftware" had chosen the "MELScript" to develop this tool.
-
-At this point in the development of HalfLife 2, Valve Software used mainly Softimage XSI and 3D Studio Max.
-Nowadays, ValveSoftware has designed these production tools around the environment of maya, offering faster and more comprehensive tools.
-
-2009 ~ 2010, Prall reprograms the export tool written in Mel script and adds new features. (# Read Changelog)
-
-In 2012, I integrated in the tool production of Jurassic Life, the prall Edition of the Exporter. i was on maya 2012, and some function was deprecated by autodesk.
-Well I decided to revrite the tools to fit the source engine mod development environement, and so the MelScripts were recasted, corrected and debugged,  to integrate the tool into a directory that contains the major source file that are shared between us in our team.
-I solved the issues with the access to the Sdk Executable that compile the smd files in MDL, and the TGA in VTF file readeable byt the source engine.
-My main objective was to reduce the tasks you usualy do into a text editor. the very first version of MESA comes with lot of broken commands ont the shelf, and so most of them has been removed at the next version of mesa ( 1.01 beta).
-Mesa 1.1 had been the mort cleanner version, many script that valve use at some point have been removed, the shelf do not contain bad script and has been download 
-
-User requests on youtube discovering that the compilation of models and textures were functional, and that all steps could be carried out in the interface of Maya have asked me to publish the exporter.
-This tool should not be available for download, but it would have been a shame not to share it with other projects.
-At this moment Puppet-Master.net was born, to host the documentation and to help support for users of MESA with a help forum .
-Then it is the choice of a name for the tools, and so MESA is the name for  "Maya Exporter for Source "Absolute", giving a knowing wink to HL1 that I had already started to modify it in 1999.
-
-
-2013, MESA 2.0 is release.
-Following the relatively high return Encounters problems during installation of Mesa, installing mesa required a good knowledge of Maya source sdk, all this has been improved with mesa 2.0.
-Some bugs have been fixed, and new options have emerged.
-Mesa is compatible with all games that Valve Software has been transfered to Steampipe.
-The development of MESA is now available on Github, you can henceforth, suggest improvements via this tool for collaborative development.

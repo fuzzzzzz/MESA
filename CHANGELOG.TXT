@@ -54,3 +54,52 @@
 //
 //	 weird task; i can't list that, is extented on several months, time after time...
 //
+=========
+MESA 2.0
+=========
+
+Core Modification :
+
+    The new environment System is now completely independent from the Source Sdk Environment variables.
+    Maya.env files is no longer used to define the environment variables that MESA require to work.
+    Mesa provides the project environment workspaces for 20 Games powered by the Source Engine.
+    All paths can contains some whitespaces.
+
+The installation has been greatly simplified. Read the installation Tutorial and the Update instructions to upgrade from an older version of MESA.
+
+Note : working with multiple Source Engine projects is very easy, and you don’t need to jump from directory to another one, with windows explorer, just click on the shelf icon to open the Sources and/or the Game directory.
+
+PROCESS : you just need to execute one batch file to modify all the environment variables for another Source Engine Game or Mod, but you must to restart Maya for the modifications to take effect.
+
+    MESA Shelf installation is automatically copied into the right location in c:/Users/documents/maya/prefs/shelves/”.
+    MESA has been refine with a new User interface.
+    VtfEdit integration.
+    And some more
+
+
+=========
+MESA 1.1
+=========
+    Filemenu.mel that overwrite the maya filemenu has been removed, all the commands are now available from the MESA shelf.
+    The Compile Log is now displayed now into the script Editor.
+    The Cube sample scene has been remade in maya 2012 , so more people could open the scene on different version of maya ( 2012, 2013, 2014)
+    New icons : Import SMD reference, Import SMD sequence, Export VTA
+
+Removed
+
+    Connect poly shape
+    flipanim
+    create Tube
+    jsCreateCreature
+    usersetup.mel ( old custom valve menu with IK limb commands ).
+
+Use Maya native tools instead of those very old commands :
+
+    ajrAutosave : maya as his own native autosave feature
+    autoconnectNonlinear.mel
+    WireframeOnShadedTog.mel
+    xrayTog.mel
+    PaintCrease.mel
+    PaintSmooth.mel
+    vertweld
+    UniteFaceUv
