@@ -32,5 +32,3 @@ echo Set the VPROJECT Directory, it must be the same path than GAME_PROJECT.
 echo ...
 SETX VPROJECT "%VPROJECT%"
 echo VPROJECT=%VPROJECT%
-
-pause

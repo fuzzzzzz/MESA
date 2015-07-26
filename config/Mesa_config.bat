@@ -21,6 +21,9 @@ echo STEAMDIR=%STEAMDIR%
 
 :: This is required to copy the MESA shelf into the proper place in maya user folders.
 :: Refer to the Suggested list of version of maya.
+:: Maya VERSION Syntax examples:
+:: 2015-x64, 2014-x64, 2013-x64, 2013, 2012-x64, 2012, 2011-x64, 2011, ...
+
 SETX MAYAVERSION "%MAYAVERSION%"
 echo MAYAVERSION=%MAYAVERSION%
 
@@ -40,5 +43,4 @@ echo MAYA_SCRIPT_PATH=%MAYA_SCRIPT_PATH%
 
 pause
 
-:: Maya VERSION Syntax examples:
-:: 2015-x64, 2014-x64, 2013-x64, 2013, 2012-x64, 2012, 2011-x64, 2011, ...
+

@@ -35,5 +35,3 @@ echo WARNING
 echo Edit the path if you need a custom path for your mod...
 SETX VPROJECT "%VPROJECT%"
 echo VPROJECT=%VPROJECT%
-
-pause
