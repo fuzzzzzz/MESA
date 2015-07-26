@@ -48,7 +48,7 @@
 //		-shelf
 //
 //=======================================================================================//
-//						Nicolas Kirsch aka RedEyes modification Changelog
+//	Nicolas "RedEyes" Kirsch Changelog
 //=======================================================================================//
 // MESA 1.02  beta Nicolas Kirsch
 //
