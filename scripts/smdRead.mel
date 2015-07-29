@@ -11,7 +11,7 @@ proc readUntil (string $tag, int $fileHandle)
 	while	(`match $exp $lineIn` != $tag)
 		{
 		if (`feof $fileHandle`) error ("end of file reached without tag " + $tag);
-		$lineIn = `fgetline $fileHandle`;
+		$lineIn = strip (`fgetline $fileHandle`);
 		}
 }
 
@@ -93,6 +93,7 @@ global proc string smdRead (string $smdFile, int $getTextures)
 	//file -force -new;
 	//file -i;
 	undoInfo -state off;
+	waitCursor -st on;
 
 	global string $g_smdTexturePath = "";
 	global string $g_smd_textureList[];
@@ -191,7 +192,6 @@ global proc string smdRead (string $smdFile, int $getTextures)
 
 	// now grab and apply the poses
 	$line = "";
-	//readUntil "^\$time" $fileHandle;
 	readUntil "time" $fileHandle;
 	$line = `fgetline $fileHandle`;
 
@@ -261,7 +261,7 @@ global proc string smdRead (string $smdFile, int $getTextures)
 	// grab each vertex entry line
 	for ($vert = 0; $vert < 3; $vert ++) 
 		{
-		flicker (); // twiddle the watch cursor
+		//flicker (); // twiddle the watch cursor
 		$line = `fgetline $fileHandle`;
 		tokenizeList ($line, $parseLine);
 		
@@ -412,14 +412,14 @@ for ($v = 0; $v < $vc; $v ++)
 	$cmd += " -nrm true " + $skin + " " + $vt + ";";
 	trace ($cmd + "\n");
 	eval $cmd;
-	flicker();
+	//flicker();
 	}
 
 polySelectConstraint -m 0;
 //waitCursor -state off; 
 print "done\n";
 //print ("elapsed time: " + `timerX -st $time` + " seconds\n");
-
+waitCursor -st off;
 
 string $opt;
 $opt =  `confirmDialog -title "SMD import options" 
@@ -440,6 +440,7 @@ switch ($opt)
 
 print $opt;
 undoInfo -state on;
+
 
 
 select $badVertList;

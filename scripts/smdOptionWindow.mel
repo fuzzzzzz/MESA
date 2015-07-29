@@ -585,7 +585,7 @@ global proc smdOptionWindow ()
 		deleteUI -window smdOptWin;
 		}
 
-	window -title "MESA - Maya Exporter for Source Absolute v2.0.2"
+	window -title "MESA - Maya Exporter for Source Absolute v2.1"
 
 		-width 440
 		-height 520
