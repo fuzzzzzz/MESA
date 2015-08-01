@@ -554,8 +554,8 @@ undoInfo -state on;
 fclose $fileHandle;
 waitCursor -st off;
 
-select -r unknownDag1;
-rename "unknownDag1" "unknownDag";
+//select -r unknownDag1;
+//rename "unknownDag1" "unknownDag";
 
 return $smdFile;
 

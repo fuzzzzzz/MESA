@@ -22,7 +22,7 @@ global proc hammerApp()
 
 	system ("shell " + "\"" + "\"" + $SourceBinPath + "/hammer.exe" + "\"" + " -nop4 -game " + "\"" + $GameProjectPath + "\"");
 	//debug path
-	print ( "shell " + "\"" + "\"" + $SourceBinPath + "/hammer.exe" + "\"" + " -game " + "\"" + $GameProjectPath + "\"\n");
+	//print ( "shell " + "\"" + "\"" + $SourceBinPath + "/hammer.exe" + "\"" + " -game " + "\"" + $GameProjectPath + "\"" + "\n");
 }
 
 global proc facePoserApp()
@@ -32,12 +32,13 @@ global proc facePoserApp()
 	//system ("shell %SOURCE_BIN_PATH%\\hlfaceposer.exe " + "-game " + "%GAME_PROJECT%" + "\""); //+ "%GAME_PROJECT%");
 	system ("shell " + "\"" + "\"" + $SourceBinPath + "/hlfaceposer.exe" + "\"" + " -game " + "\"" + $GameProjectPath + "\"");
 	//debug path
-	print ( "shell " + "\"" + "\"" + $SourceBinPath + "/hlfaceposer.exe" + "\"" + " -game " + "\"" + $GameProjectPath + "\"\n" );
+	//print ( "shell " + "\"" + "\"" + $SourceBinPath + "/hlfaceposer.exe" + "\"" + " -game " + "\"" + $GameProjectPath + "\"\n" );
 }
 
 global proc qcEyesApp()
 {
-	string $qceyes = system ("shell %SOURCE_BIN_PATH%\\qc_eyes.exe "/* + "-game %GAME_PROJECT%"*/ );
+	string $SourceBinPath = `getenv SOURCE_BIN_PATH`;
+	string $qceyes = system ("shell " + "\"" + "\"" + $SourceBinPath + "/qc_eyes.exe"/* + "-game %GAME_PROJECT%"*/ );
 	print ($qceyes);
 }
 
@@ -77,9 +78,9 @@ global proc openMdlWithHlmv()
 		// Trying to load hlmv th
 		// TODO : FIX IT --red	EDIT : FIXED ! but let that as example	--red
 		string $openHlmvCmd;
-		string $openHlmvCmd = system ( "shell " + "\"" + $SourceBinPath + "/hlmv.exe" + "\"" +  " -nop4 -game " + "\"" + $GameProjectPath + "/\"" + " -model \"" + $smdTargetPath + "\"" );
+		string $openHlmvCmd = system ( "shell " + "\"" + "\"" + $SourceBinPath + "/hlmv.exe" + "\"" +  " -nop4 -game " + "\"" + $GameProjectPath + "/\"" + " -model \"" + $smdTargetPath + "\"" );
 		print ( $openHlmvCmd );
-		print ( "shell " + "\"" + $SourceBinPath + "/hlmv.exe" + "\"" +  " -nop4 -game " + "\"" + $GameProjectPath + "/\"" + " -model \"" + $smdTargetPath + "\"" );
+		//print ( "shell " + "\"" + $SourceBinPath + "/hlmv.exe" + "\"" +  " -nop4 -game " + "\"" + $GameProjectPath + "/\"" + " -model \"" + $smdTargetPath + "\"" );
 	
 	}
 	//If the paths in the smdOptionWindow are not set

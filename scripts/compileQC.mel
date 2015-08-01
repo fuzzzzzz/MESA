@@ -1,16 +1,13 @@
 global proc compileQC ()
 {
-
-
-		
-		
 	//Checks if the paths in the smdOptionWindow are set
 	source smdOptionWindow;
 	
 	if(isSmdInfoDefined())
 	{
 		string $targetQCPath;
-		string $GameProjectSource = `getenv GAME_PROJECT_SRC`;
+		//string $GameProjectSource = `getenv GAME_PROJECT_SRC`;
+		string $SourceBinPath = `getenv SOURCE_BIN_PATH`;
 		
 		// Get the Full path base on the SMD / QC path.
 		$targetQCPath = `getAttr smdInfo.smdTarget`;
@@ -22,16 +19,15 @@ global proc compileQC ()
 		
 		print ( "\n" );
 		print ( "************************************\n" );
-		print ( "************ Compile QC ************\n" );
+		print ( "************ Compiling QC ************\n" );
 		print ( "************************************\n" );
 		print ( "\n" );	
 		
 		string $compileQcCmd;
-		string $compileQcCmd = system ( "%SOURCE_BIN_PATH%\\studiomdl.exe -nop4 " + "\"" + $targetQCPath );
-
-		print ( $targetQCPath + "\n" );
+		string $compileQcCmd = system ( "\"" + $SourceBinPath + "/studiomdl.exe" + "\"" + " -nop4 " + $targetQCPath );
+		print ( "QC path : \n" + $targetQCPath + "\n" );
 		print ( $compileQcCmd );
-		print ( "***  The QC has been compiled successfully ***\n" );
+		//print ( "***  The QC has been compiled successfully ***\n" );
 
 	}
 	else
