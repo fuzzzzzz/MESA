@@ -283,7 +283,7 @@ global proc string smdRead (string $smdFile, int $getTextures)
 					$w[$vert][$i] = float ($parseLine[11 + ($i * 2)]);
 				}
 			//normalize
-			while ($w[$vert][0] + $w[$vert][1] + $w[$vert][2] > 1)
+/*			while ($w[$vert][0] + $w[$vert][1] + $w[$vert][2] > 1)
 				{
 				int $cnt;
 				for ($cnt = 0; $cnt < 3; $cnt ++)
@@ -291,7 +291,7 @@ global proc string smdRead (string $smdFile, int $getTextures)
 						$w[$vert][$cnt] = $w[$vert][$cnt] * 0.9;
 					}
 				}
-			}
+*/			}
 			
 		// store the normal and position data in $p and $n arrays
 	for ($comp = 1; $comp < 4; $comp ++)
@@ -366,13 +366,13 @@ string $edgeVerts[] = `ls -sl`;
 $edgeVerts = `filterExpand -sm 31 $edgeVerts`;
 select $edgeVerts;
 print "merging verts\n";
-polyMergeVertex  -d 0.001 -texture true -ch off;
+polyMergeVertex -d 0.001 -texture true -ch off;
 
 // now add the skin cluster
 print "skinning\n";
 select `ls -type joint`;
 select -add $unite[0];
-string $skinCluster[] = `skinCluster -mi 3 -dr 3`;
+string $skinCluster[] = `skinCluster -mi 3 -dr 3 -pr`;
 
 // for ease of use, make these into simple strings
 string $mesh = $unite[0];
@@ -520,7 +520,7 @@ while (`match  "^end" $line` != "end")
 	int $id = $parseLine[0];
 	string $jnt[];
 	float $tx, $ty, $tz, $rx, $ry, $rz;
-	$jnt = `listConnections ("unknownDag.comps[" + $id + "]")`;
+	$jnt = `listConnections ("unknownDag1.comps[" + $id + "]")`;
 	$tx = $parseLine[1];
 	$ty = $parseLine[2];
 	$tz = $parseLine[3];

@@ -2020,7 +2020,7 @@ global proc int smdExport (int $reference, int $separateBodyGroups)
 		print ( " STUDIOMDL COMPILATION \n");
 		print "-----------------------------------------------------\n";
 		$std = `system ( "\"" + "\"" + $SourceBinPath + "/studiomdl.exe" + "\"" + " -nop4 " + "\"" + $qcName +"\"" )`;
-		print ( "\"" + "\"" + $SourceBinPath + "/studiomdl.exe" + "\"" + " -nop4 " + "\"" + $qcName +"\"\n" );
+		print ( "\"" + $SourceBinPath + "/studiomdl.exe" + "\"" + " -nop4 " + "\"" + $qcName +"\"\n" );
 		//string $gameProjectPath = `getenv GAME_PROJECT`;
 		//$std = `system ( "\"" + $gameProjectPath + "\\studiomdl.exe -nop4 " + "\"" + $qcName + "\"" )`;
 		print $std;
