@@ -1,0 +1,33 @@
+Update mesa Version
+--------------------------------
+
+the easier and the safer way to update from mesa  2.0.1 to  2.1
+
+1. go at the location of the MESA installation directory
+2. rename the folder from c:/MESA to c:/MESA_201
+3. extract mesa 2.1 on your drive it could be that: "c:/MESA"
+
+4. go to c:/mesa_201/projects/ and accordingly to the context follow the sub sections :
+
+a. you are using a project workspace that is shipped by default with mesa
+b. you have created a custom project workspace for your mod project
+
+
+A. Default projects workspace
+example for source filmmaker :
+1. open the c:/mesa201/projects/sourcefilmmaker/
+2. copy modelsrc, materialsrc and scenes directories, to c:/mesa/projects/sourcefilmmaker/
+3. you can now, edit the mesa/mesa_config.bat and execute the batch file  with run as administrator.
+4. run as administrator the batch : c:/mesa/projects/sourcefilmmaker/source_filmmaker.bat
+5. run maya, and set the project to c:/mesa/projects/sourcefilmmaker/
+6. enjoy ;)
+
+B. Custom projects workspace
+
+the most easiest thing you could do is to apply the change i made to the batch file at the root of your project workspace.
+
+Now test out the new version and if there is no special issue with this version, you can delete c:/MESA_201/
+
+
+
+
