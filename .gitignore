@@ -13,6 +13,7 @@ config.cfg
 *.py
 thumbs.db
 
+
 */models/*
 */materials/*
 /.maya.swatches
@@ -21,9 +22,9 @@ thumbs.db
 *_normal.txt
 */VTFEdit/*
 *.dat
-*/obsolete/*
+icons/obsolete/*
 */delete/*
-*/sources/*
+icons/sources/*
 */Dreams_2013_SP/*
 
 addons/humans_sdk/male/group03m/scenes/male_05_reference.scn
