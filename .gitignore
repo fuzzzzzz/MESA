@@ -22,9 +22,9 @@ thumbs.db
 *_normal.txt
 */VTFEdit/*
 *.dat
-icons/obsolete/*
-*/delete/*
-icons/sources/*
+icons/obsolete/
+icons/sources/
+scripts/delete/
 */Dreams_2013_SP/*
 
 addons/humans_sdk/male/group03m/scenes/male_05_reference.scn
