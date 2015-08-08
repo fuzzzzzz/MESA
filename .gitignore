@@ -6,9 +6,6 @@
 config.cfg
 *.tmp
 *.log
-*.smd
-*.vta
-*.mb
 *.psd
 *.png
 *.graphml
@@ -28,7 +25,5 @@ thumbs.db
 */delete/*
 */sources/*
 */Dreams_2013_SP/*
-config/Mesa_config.bat
-addons/humans_sdk/player/_body_poses_lean.qci
-addons/humans_sdk/player/bak2_player_macros.qci
+
 addons/humans_sdk/male/group03m/scenes/male_05_reference.scn

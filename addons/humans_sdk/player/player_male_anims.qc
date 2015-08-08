@@ -9,10 +9,8 @@ $lockbonelengths
 
 //$lockdefinebones
 
-
-
-$include "_player_anims.qci"
-$include "_player_macros.qci"
+$include "player_anims.qci"
+$include "player_macros.qci"
 
 $attachment "eyes" "ValveBiped.Bip01_Head1" 0 -4 67.5 absolute
 $include "body_poses_lean.qci"

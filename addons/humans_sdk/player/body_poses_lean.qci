@@ -11,25 +11,6 @@ $weightlist upperspinenohead "ValveBiped.Bip01_Pelvis" 1.0 "ValveBiped.Bip01_R_T
 $ikautoplaylock rfoot 1.0 0.1
 $ikautoplaylock lfoot 1.0 0.1
 
-/*
-$animation a_pose_neutral "../../../../../addons/humans_sdk/male_animations/body_poses_lean.smd" frames 0 0
-
-$animation a_body_rot "../../../../../addons/humans_sdk\male_animations\body_poses_lean" frame 0 0 noanimation
-$animation a_body_rot_z_rt "../../../../../addons/humans_sdk\male_animations\body_poses_lean" frame 58 58 subtract a_pose_neutral 0 weightlist fullspinenohead 
-$animation a_body_rot_z_lt "../../../../../addons/humans_sdk\male_animations\body_poses_lean" frame 67 67 subtract a_pose_neutral 0 weightlist fullspinenohead 
-$animation a_spine_rot "../../../../../addons/humans_sdk\male_animations\body_poses_lean" frame 0 0 noanimation
-$animation a_spine_rot_z_rt "../../../../../addons/humans_sdk\male_animations\body_poses_lean" frame 88 88 subtract a_pose_neutral 0 weightlist upperspinenohead
-$animation a_spine_rot_z_lt "../../../../../addons/humans_sdk\male_animations\body_poses_lean" frame 96 96 subtract a_pose_neutral 0 weightlist upperspinenohead
-$animation a_head_rot ".../../../../../addons/humans_sdk\male_animations\body_poses_lean" frame 0 0 noanimation
-$animation a_head_rot_lt "../../../../../addons/humans_sdk\male_animations\body_poses_lean" frame 97 97 subtract a_pose_neutral 0 weightlist upperspine 
-$animation a_head_rot_rt "../../../../../addons/humans_sdk\male_animations\body_poses_lean" frame 98 98 subtract a_pose_neutral 0 weightlist upperspine 
-$animation a_head_rot_dwn "../../../../../addons/humans_sdk\male_animations\body_poses_lean" frame 101 101 subtract a_pose_neutral 0 weightlist upperspine 
-$animation a_head_rot_up "../../../../../addons/humans_sdk\male_animations\body_poses_lean" frame 102 102 subtract a_pose_neutral 0 weightlist upperspine 
-$animation a_head_rot_z_rt "../../../../../addons/humans_sdk\male_animations\body_poses_lean" frame 104 104 subtract a_pose_neutral 0 weightlist upperspine 
-$animation a_head_rot_z_lt "../../../../../addons/humans_sdk\male_animations\body_poses_lean" frame 106 106 subtract a_pose_neutral 0 weightlist upperspine 
-*/
-
-
 $animation a_pose_neutral "..\male_animations\body_poses_lean.smd" frames 0 0
 
 $animation a_body_rot "..\male_animations\body_poses_lean" frame 0 0 noanimation
