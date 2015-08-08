@@ -5,8 +5,7 @@ $definebone "ValveBiped.Bip01_Spine2" "ValveBiped.Bip01_Spine1" 3.518566 0.00000
 $definebone "ValveBiped.Bip01_Spine4" "ValveBiped.Bip01_Spine2" 8.942642 -0.000000 -0.000000 0.000000 11.120881 0.000000 0.000000 -0.000001 0.000000 0.000000 -0.000002 0.000000
 $definebone "ValveBiped.Bip01_Neck1" "ValveBiped.Bip01_Spine4" 3.307270 0.000000 0.000000 0.000000 22.945694 179.999863 0.000000 0.000000 0.000000 -0.000000 0.000005 0.000000
 $definebone "ValveBiped.Bip01_Head1" "ValveBiped.Bip01_Neck1" 3.593712 0.000000 0.000000 -0.000057 23.295723 0.000000 0.000000 0.000000 0.000000 -0.000000 0.000004 -0.000000
-//$definebone "ValveBiped.forward" "ValveBiped.Bip01_Head1" 2 -3 0 0 -76 -90
-$definebone "ValveBiped.forward" "ValveBiped.Bip01_Pelvis" 0 0 0 0 0 0
+$definebone "ValveBiped.forward" "ValveBiped.Bip01_Head1" 2 -3 0 0 -76 -90
 $definebone "ValveBiped.Bip01_R_Clavicle" "ValveBiped.Bip01_Spine4" 2.033352 1.000771 -1.937610 73.712029 168.618774 -95.596497 0.000000 0.000000 0.000000 0.000000 -0.000001 0.000001
 $definebone "ValveBiped.Bip01_R_UpperArm" "ValveBiped.Bip01_R_Clavicle" 6.028144 0.000000 0.000000 -0.462090 -33.623802 93.935234 0.000000 0.000000 0.000000 -0.000002 -0.000001 0.000000
 $definebone "ValveBiped.Bip01_R_Forearm" "ValveBiped.Bip01_R_UpperArm" 11.692551 -0.000000 0.000004 -0.000005 -3.459061 0.000000 0.000000 0.000000 0.000000 -0.000005 -0.000000 0.000000
