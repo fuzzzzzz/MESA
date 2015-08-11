@@ -22,8 +22,11 @@ thumbs.db
 *_normal.txt
 */VTFEdit/*
 *.dat
-icons/obsolete/mesa
-icons/obsolete/valve
+docs/guides/*
+docs/screenshots/*
+docs/resources/*
+icons/obsolete/mesa/*
+icons/obsolete/valve/*
 icons/sources/
 scripts/delete/
 scripts/icons/
