@@ -28,6 +28,7 @@ global proc shelf_MESA () {
         -command "source sourcetools.mel;\nopenSourceProject();" 
         -sourceType "mel" 
         -commandRepeatable 1
+        -flat 1
     ;
     shelfButton
         -enableCommandRepeat 1
@@ -53,6 +54,7 @@ global proc shelf_MESA () {
         -command "source sourcetools.mel;\nopenVProject();" 
         -sourceType "mel" 
         -commandRepeatable 1
+        -flat 1
     ;
     shelfButton
         -enableCommandRepeat 1
@@ -78,6 +80,7 @@ global proc shelf_MESA () {
         -command "source smdOptionWindow;\nsmdOptionWindow;" 
         -sourceType "mel" 
         -commandRepeatable 1
+        -flat 1
     ;
     shelfButton
         -enableCommandRepeat 1
@@ -103,6 +106,7 @@ global proc shelf_MESA () {
         -command "source sourcetools;\nmdlFullCompile;" 
         -sourceType "mel" 
         -commandRepeatable 1
+        -flat 1
     ;
     shelfButton
         -enableCommandRepeat 1
@@ -128,8 +132,8 @@ global proc shelf_MESA () {
         -command "source compileQC.mel;\ncompileQC;" 
         -sourceType "mel" 
         -commandRepeatable 1
+        -flat 1
     ;
-/*
     shelfButton
         -enableCommandRepeat 1
         -enable 1
@@ -138,7 +142,7 @@ global proc shelf_MESA () {
         -manage 1
         -visible 1
         -preventOverride 0
-        -annotation "Fix scene compatibility with MESA 2.0" 
+        -annotation "Fix Bindpose Animation, You should save your scene before you use that function.\n This function will update the smdInfo node that store the export settings\n And will insert the new animation named Bindopose, and using the frame 0 > 1" .
         -enableBackground 0
         -align "center" 
         -label "Scene Upgrade" 
@@ -146,16 +150,16 @@ global proc shelf_MESA () {
         -font "plainLabelFont" 
         -overlayLabelColor 0.8 0.8 0.8 
         -overlayLabelBackColor 0 0 0 0.2 
-        -image "SourceUpgradeScene.png" 
-        -image1 "SourceUpgradeScene.png" 
+        -image "SourceAddBindpose.png" 
+        -image1 "SourceAddBindpose.png" 
         -style "iconOnly" 
         -marginWidth 1
         -marginHeight 1
-        -command "select -r smdInfo ;\naddAttr -ln Tips -at bool smdInfo;" 
+        -command "select -r smdInfo ;\naddAttr -ln Tips -at bool smdInfo;\naddAttr -ln qcUpAxis -at string smdInfo;\naddAttr -ln qcOrigin -at string smdInfo;\naddAttr -ln qcBbox -at string smdInfo;\naddAttr -ln qcCollapseBones -at bool smdInfo;" 
         -sourceType "mel" 
         -commandRepeatable 1
+        -flat 1
     ;
-*/
     shelfButton
         -enableCommandRepeat 1
         -enable 1
@@ -180,6 +184,7 @@ global proc shelf_MESA () {
         -command "vtaExport;" 
         -sourceType "mel" 
         -commandRepeatable 1
+        -flat 1
     ;
     shelfButton
         -enableCommandRepeat 1
@@ -205,6 +210,7 @@ global proc shelf_MESA () {
         -command "source smdRead.mel;\nsmdImport;" 
         -sourceType "mel" 
         -commandRepeatable 1
+        -flat 1
     ;
     shelfButton
         -enableCommandRepeat 1
@@ -230,6 +236,7 @@ global proc shelf_MESA () {
         -command "smdImportani;" 
         -sourceType "mel" 
         -commandRepeatable 1
+        -flat 1
     ;
     shelfButton
         -enableCommandRepeat 1
@@ -255,6 +262,7 @@ global proc shelf_MESA () {
         -command "layerCreate;" 
         -sourceType "mel" 
         -commandRepeatable 1
+        -flat 1
     ;
     shelfButton
         -enableCommandRepeat 1
@@ -280,6 +288,7 @@ global proc shelf_MESA () {
         -command "addShaderAttributes;" 
         -sourceType "mel" 
         -commandRepeatable 1
+        -flat 1
     ;
     shelfButton
         -enableCommandRepeat 1
@@ -305,6 +314,7 @@ global proc shelf_MESA () {
         -command "source sourcetools.mel;\neditQCScript;" 
         -sourceType "mel" 
         -commandRepeatable 1
+        -flat 1
     ;
     shelfButton
         -enableCommandRepeat 1
@@ -330,6 +340,7 @@ global proc shelf_MESA () {
         -command "source editVTF;\neditvtf(\"%MESADIR%/bin/VTFEdit/VTFEdit.exe\", 1);" 
         -sourceType "mel" 
         -commandRepeatable 1
+        -flat 1
     ;
     shelfButton
         -enableCommandRepeat 1
@@ -355,6 +366,7 @@ global proc shelf_MESA () {
         -command "source editVTF;\neditvtf(\"%MESADIR%/bin/VTFEdit/VTFEdit.exe\", 2);" 
         -sourceType "mel" 
         -commandRepeatable 1
+        -flat 1
     ;
     shelfButton
         -enableCommandRepeat 1
@@ -380,6 +392,7 @@ global proc shelf_MESA () {
         -command "source editVTF;\neditvtf(\"%MESADIR%/bin/VTFEdit/VTFEdit.exe\", 3);" 
         -sourceType "mel" 
         -commandRepeatable 1
+        -flat 1
     ;
     shelfButton
         -enableCommandRepeat 1
@@ -405,6 +418,7 @@ global proc shelf_MESA () {
         -command "source sourceTools.mel;\nhammerApp()" 
         -sourceType "mel" 
         -commandRepeatable 1
+        -flat 1
     ;
     shelfButton
         -enableCommandRepeat 1
@@ -430,6 +444,7 @@ global proc shelf_MESA () {
         -command "source sourceTools.mel;\nfacePoserApp();" 
         -sourceType "mel" 
         -commandRepeatable 1
+        -flat 1
     ;
     shelfButton
         -enableCommandRepeat 1
@@ -455,6 +470,7 @@ global proc shelf_MESA () {
         -command "source sourceTools.mel;\nopenMdlWithHlmv();" 
         -sourceType "mel" 
         -commandRepeatable 1
+        -flat 1
     ;
     shelfButton
         -enableCommandRepeat 1
@@ -480,6 +496,7 @@ global proc shelf_MESA () {
         -command "source sourcetools.mel;\nqcEyesApp();" 
         -sourceType "mel" 
         -commandRepeatable 1
+        -flat 1
     ;
 
 } 

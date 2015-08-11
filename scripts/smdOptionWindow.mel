@@ -33,6 +33,7 @@ proc smdMakeScriptNode ()
 		
 		addAttr -ln smdBreak -at bool smdInfo;
 		addAttr -ln smdIdle -at bool smdInfo;
+		addAttr -ln smdBindPose -at bool smdInfo;
 		addAttr -ln smdRef -at bool smdInfo;
 		addAttr -ln smdPhy -at bool smdInfo;
 		addAttr -ln smdFixTrans -at bool smdInfo;
@@ -45,6 +46,16 @@ proc smdMakeScriptNode ()
 		addAttr -ln smdAniAdd -dt "string" smdInfo;
 		
 		addAttr -ln qcScale -dt "string" smdInfo;
+		addAttr -ln qcUpAxis -dt "string" smdInfo;
+		addAttr -ln qcOrigin -dt "string" smdInfo;
+		addAttr -ln qcBbox -dt "string" smdInfo;
+		addAttr -ln qcCollapseBones -at bool smdInfo;
+		
+		addAttr -ln qcScaleSwitch -at bool smdInfo;
+		addAttr -ln qcUpAxisSwitch -at bool smdInfo;
+		addAttr -ln qcOriginSwitch -at bool smdInfo;
+		addAttr -ln qcBboxSwitch -at bool smdInfo;
+		
 		addAttr -ln qcStatic -at bool smdInfo;
 		addAttr -ln qcAllowStatic -at bool smdInfo;
 		addAttr -ln qcSurface -dt "string" smdInfo;
@@ -61,21 +72,40 @@ proc smdMakeScriptNode ()
 		addAttr -ln qcLOD -at bool smdInfo;
 		addAttr -ln Tips -at bool smdInfo;
 		
+		//humans SDK
+		addAttr -ln ActiveTemplate -dt "string" smdInfo;
+		addAttr -ln NpcTemplate -at bool smdInfo;
+		addAttr -ln ThirdPersonPlayerSP -at bool smdInfo;
+		addAttr -ln ThirdPersonPlayerMP -at bool smdInfo;
+		addAttr -ln Vehicle -at bool smdInfo;
 		
 		setAttr smdInfo.seperateBodyGroup 0;
 		setAttr smdInfo.fullCompile 1;
 		setAttr smdInfo.smdIdle 1;
+		
+		setAttr smdInfo.smdBindPose 1;
+		
 		setAttr smdInfo.smdRef 1;
 		setAttr smdInfo.smdPhy 1;
 		setAttr smdInfo.smdFixTrans 0;
 		setAttr smdInfo.smdFixCol 0;
 		
-		setAttr smdInfo.smdAniName -type "string" "idle§#";
-		setAttr smdInfo.smdAniStart -type "string" "0§#";
-		setAttr smdInfo.smdAniEnd -type "string" "1§#";
-		setAttr smdInfo.smdAniAdd -type "string" "loop fps 30§#";
+		setAttr smdInfo.smdAniName -type "string" "idle§#bindpose§#";
+		setAttr smdInfo.smdAniStart -type "string" "0§#0§#";
+		setAttr smdInfo.smdAniEnd -type "string" "1§#1§#";
+		setAttr smdInfo.smdAniAdd -type "string" "loop fps 30§#loop fps 30§#";
 		
 		setAttr smdInfo.qcScale -type "string" "1";
+		setAttr smdInfo.qcUpAxis -type "string" "Z";
+		setAttr smdInfo.qcOrigin -type "string" "0 0 0 0";
+		setAttr smdInfo.qcBbox -type "string" "-13 -13 0  13 13 72";
+
+		setAttr smdInfo.qcScaleSwitch 0;
+		setAttr smdInfo.qcUpAxisSwitch 0;
+		setAttr smdInfo.qcOriginSwitch 0;
+		setAttr smdInfo.qcBboxSwitch 0;
+
+		setAttr smdInfo.qcCollapseBones 0;
 		setAttr smdInfo.qcStatic 0;
 		setAttr smdInfo.qcAllowStatic 0;
 		setAttr smdInfo.qcSurface -type "string" "default";
@@ -86,6 +116,13 @@ proc smdMakeScriptNode ()
 		setAttr smdInfo.Tex 1;
 		setAttr smdInfo.qcLOD 0;
 		setAttr smdInfo.Tips 0;
+		
+		//humans SDK
+		setAttr smdInfo.ActiveTemplate -type "string" "none";
+		setAttr smdInfo.NpcTemplate 0;
+		setAttr smdInfo.ThirdPersonPlayerSP 0;
+		setAttr smdInfo.ThirdPersonPlayerMP 0;
+		setAttr smdInfo.Vehicle 0;
 		//updatePaths;
 		}
 	
@@ -93,6 +130,387 @@ proc smdMakeScriptNode ()
 	
 	}
 
+global proc BindPoseSceneUpgrade ()
+{
+	//check if we already got an smdInfo node, then update it, and prevent the attributExists to b executed if the node doesn't exist
+	$checkSmdNode = `isSmdInfoDefined`;
+		
+	if ( $checkSmdNode == 1 )
+	{
+		select -r smdInfo ;
+
+		int $AttribExists = `attributeExists smdAniName smdInfo`;
+		if ($AttribExists == 1) //the attribute already exists.
+			{
+			//grab the SmdInfo Script node
+				select -r smdInfo;
+				
+			//get the anim name value
+				string $getAniNameString = `getAttr smdInfo.smdAniName`;
+			//string for debug purpose
+				//$getAniNamesString = "idle§#animA§#animB§#animC"`;
+				//print ( $getAniNameString + "\n" );
+			//string to substitute
+				string $stringToSubstitute ="idle§#";
+			//string chain to merge 
+				string $stringToMerge  = "idle§#bindpose§#";
+				//print ( $stringToMerge + "\n" );
+			//substract what the $stringToMerge  from $getAniNamesString
+				string $myNewString = `substitute $stringToSubstitute $getAniNameString $stringToMerge`;
+				//print ( $myNewString + "\n" );
+			// set the new data in smdAniName.
+				setAttr smdInfo.smdAniName -type "string" $myNewString;
+				//print ( $getAniNameString + "\n");
+				
+				
+			}	
+		
+		int $AttribExists = `attributeExists smdAniStart smdInfo`;
+		if ($AttribExists == 1) //the attribute doesn't exists.
+			{
+			//grab the SmdInfo Script node
+				select -r smdInfo;
+				
+			//get the anim name value
+				string $getAniStartString = `getAttr smdInfo.smdAniStart`;
+			//string for debug purpose
+				//$getAniNamesString = "idle§#animA§#animB§#animC"`;
+				//print ( $getAniNameString + "\n" );
+			//string to substitute
+				string $stringToSubstitute ="0§#";
+			//string chain to merge 
+				string $stringToMerge  = "0§#0§#";
+				//print ( $stringToMerge + "\n" );
+			//substract what the $stringToMerge  from $getAniNamesString
+				string $myNewString = `substitute $stringToSubstitute $getAniStartString $stringToMerge`;
+				//print ( $myNewString + "\n" );
+			// set the new data in smdAniStart.
+				setAttr smdInfo.smdAniStart -type "string" $myNewString;
+				//print ( $getAniNameString + "\n");
+				
+				
+			}	
+		
+		int $AttribExists = `attributeExists smdAniEnd smdInfo`;
+		if ($AttribExists == 1) //the attribute doesn't exists.
+			{
+			//grab the SmdInfo Script node
+				select -r smdInfo;
+				
+			//get the anim name value
+				string $getAniEndString = `getAttr smdInfo.smdAniEnd`;
+			//string for debug purpose
+				//$getAniNamesString = "idle§#animA§#animB§#animC"`;
+				//print ( $getAniNameString + "\n" );
+			//string to substitute
+				string $stringToSubstitute ="1§#";
+			//string chain to merge 
+				string $stringToMerge  = "1§#1§#";
+				//print ( $stringToMerge + "\n" );
+			//substract what the $stringToMerge  from $getAniNamesString
+				string $myNewString = `substitute $stringToSubstitute $getAniEndString $stringToMerge`;
+				//print ( $myNewString + "\n" );
+			// set the new data in smdAniStart.
+				setAttr smdInfo.smdAniEnd -type "string" $myNewString;
+				//print ( $getAniNameString + "\n");
+				
+			}	
+		
+		int $AttribExists = `attributeExists smdAniAdd smdInfo`;
+		if ($AttribExists == 1) //the attribute doesn't exists.
+			{
+			//grab the SmdInfo Script node
+				select -r smdInfo;
+				
+			//get the anim name value
+				string $getAniAddString = `getAttr smdInfo.smdAniAdd`;
+			//string for debug purpose
+				//$getAniNamesString = "idle§#animA§#animB§#animC"`;
+				//print ( $getAniNameString + "\n" );
+			//string to substitute
+				string $stringToSubstitute ="loop fps 30§#";
+			//string chain to merge 
+				string $stringToMerge  = "loop fps 30§#loop fps 30§#";
+				//print ( $stringToMerge + "\n" );
+			//substract what the $stringToMerge  from $getAniNamesString
+				string $myNewString = `substitute $stringToSubstitute $getAniAddString $stringToMerge`;
+				//print ( $myNewString + "\n" );
+			// set the new data in smdAniStart.
+				setAttr smdInfo.smdAniAdd -type "string" $myNewString;
+				//print ( $getAniNameString + "\n");
+				
+			}	
+	}				
+}		
+
+
+
+/* Update Old MESA Scenes 
+ *      The proces is checking if a smdInfo script node exist , after it check the existence for a bunch attribute, i
+ * 	 No Attribute listed here already exists on old mesa  2.0.1
+ * NEED a Fix for Adding Bindopose to old mesa scene.
+ *		I need to insert some data at the beginning of smd AnimName; AniStart, AniEnd and  AniAdd.
+ * 	Because of Bindpose animation
+ * 	the edit can be done by the hand 
+ *
+ *		AniName :
+ *		from = 
+ *			"idle§#"
+ *		to =
+ *			"idle§#bindpose§#"
+ *
+  *	AniStart :
+ *		from = 
+ *			"0§#"
+ *		to =
+ *			"0§#0§#"		 
+ *
+ *		AniEnd :
+ *		from = 
+ *			"1§#"
+ *		to =
+ *			"1§#1§#"		 
+ *
+ *		AniAdd :
+ *		from = 
+ *			"loop fps 30§#"
+ *		to =
+ *			"loop fps 30§#loop fps 30§#"	
+ *
+ */
+	
+global proc mesaSceneUpgrade ()
+{
+	//check if we already got an smdInfo node, then update it, and prevent the attributExists to b executed if the node doesn't exist
+	$checkSmdNode = `isSmdInfoDefined`;
+		
+	if ( $checkSmdNode == 1 )
+		{
+		select -r smdInfo ;
+
+		int $AttribExists = `attributeExists Tips smdInfo`;
+		if ($AttribExists == 0) //the attribute doesn't exists.
+			{
+				//create it
+				select -r smdInfo;
+				addAttr -ln Tips -dt "string" smdInfo;
+				setAttr smdInfo.qcUpAxis -type bool 0;
+
+			}
+		int $AttribExists = `attributeExists smdBindPose smdInfo`;
+		if ($AttribExists == 0) //the attribute doesn't exists.
+			{
+				//create it
+				select -r smdInfo;
+				addAttr -ln smdBindPose -at bool smdInfo;
+				setAttr smdInfo.smdBindPose 0;
+			}
+
+		int $AttribExists = `attributeExists qcScaleSwitch smdInfo`;
+		if ($AttribExists == 0) //the attribute doesn't exists.
+			{
+				//create it
+				select -r smdInfo;
+				addAttr -ln qcScaleSwitch -at bool smdInfo;
+				setAttr smdInfo.qcScaleSwitch 0;
+			}			
+
+		int $AttribExists = `attributeExists qcUpAxis smdInfo`;
+		if ($AttribExists == 0) //the attribute doesn't exists.
+			{
+				//create it
+				select -r smdInfo;
+				addAttr -ln qcUpAxis -dt "string" smdInfo;
+				setAttr smdInfo.qcUpAxis -type "string" "Z";
+			}
+		int $AttribExists = `attributeExists qcUpAxisSwitch smdInfo`;
+		if ($AttribExists == 0) //the attribute doesn't exists.
+			{
+				//create it
+				select -r smdInfo;
+				addAttr -ln qcUpAxisSwitch -at bool smdInfo;
+				setAttr smdInfo.qcUpAxisSwitch 0;
+			}
+
+			
+		int $AttribExists = `attributeExists qcOrigin smdInfo`;
+		if ($AttribExists == 0) //the attribute doesn't exists.
+			{
+				//create it
+				select -r smdInfo;
+				addAttr -ln qcOrigin -dt "string" smdInfo;
+				setAttr smdInfo.qcOrigin -type "string" "0 0 0 0";
+		}
+		int $AttribExists = `attributeExists qcOriginSwitch smdInfo`;
+		if ($AttribExists == 0) //the attribute doesn't exists.
+			{
+				//create it
+				select -r smdInfo;
+				addAttr -ln qcOriginSwitch -at bool smdInfo;
+				setAttr smdInfo.qcOriginSwitch 0;
+		}
+		
+		
+		int $AttribExists = `attributeExists qcBbox smdInfo`;
+		if ($AttribExists == 0) //the attribute doesn't exists.
+			{
+
+				select -r smdInfo;
+				addAttr -ln qcBbox -dt "string" smdInfo;
+				setAttr smdInfo.qcBbox  -type "string" "0 0 0 0 0 0";
+			}
+
+		int $AttribExists = `attributeExists qcBboxSwitch smdInfo`;
+		if ($AttribExists == 0) //the attribute doesn't exists.
+			{
+
+				select -r smdInfo;
+				addAttr -ln qcBboxSwitch -at bool smdInfo;
+				setAttr smdInfo.qcBboxSwitch 0;
+			}			
+			
+		int $AttribExists = `attributeExists qcCollapseBones smdInfo`;
+		if ($AttribExists == 0) //the attribute doesn't exists.
+			{
+				//create it
+				select -r smdInfo;
+				addAttr -ln qcCollapseBones -at bool smdInfo;
+				setAttr smdInfo.qcCollapseBones 0;
+			}
+
+		int $AttribExists = `attributeExists ActiveTemplate smdInfo`;
+		if ($AttribExists == 0) //the attribute doesn't exists.
+			{
+
+				select -r smdInfo;
+				addAttr -ln ActiveTemplate -dt "string" smdInfo;
+			//	setAttr smdInfo.ActiveTemplate  -type "string" "none";
+			}		
+		
+		int $AttribExists = `attributeExists NpcTemplate smdInfo`;
+		if ($AttribExists == 0) //the attribute doesn't exists.
+			{
+				//create it
+				select -r smdInfo;
+				addAttr -ln NpcTemplate -at bool smdInfo;
+				setAttr smdInfo.NpcTemplate 0;
+			}
+
+		int $AttribExists = `attributeExists ThirdPersonPlayerSP smdInfo`;
+		if ($AttribExists == 0) //the attribute doesn't exists.
+			{
+				//create it
+				select -r smdInfo;
+				addAttr -ln ThirdPersonPlayerSP -at bool smdInfo;
+				setAttr smdInfo.ThirdPersonPlayerSP 0;
+			}
+	
+		int $AttribExists = `attributeExists ThirdPersonPlayerMP smdInfo`;
+		if ($AttribExists == 0) //the attribute doesn't exists.
+			{
+				//create it
+				select -r smdInfo;
+				addAttr -ln ThirdPersonPlayerMP -at bool smdInfo;
+				setAttr smdInfo.ThirdPersonPlayerMP 0;
+			}
+
+		int $AttribExists = `attributeExists Vehicle smdInfo`;
+		if ($AttribExists == 0) //the attribute doesn't exists.
+			{
+				//create it
+				select -r smdInfo;
+				addAttr -ln Vehicle -at bool smdInfo;
+				setAttr smdInfo.Vehicle 0;
+			}
+		}
+
+}
+global string $mytemplate= "";
+
+global proc string GetActiveTemplate (string $mytemplate)
+	{
+
+ 		$none = `radioButton -label "NONE"`;
+		$npc_template =	`radioButton -label "NPC TEMPLATE" -ofc DisableTemplates -onc EnableNPCTemplate`;
+		$thirdpersonplayer_SP = `radioButton -label "THIRD PERSON PLAYER SP"  -ofc DisableTemplates -onc EnableThirdPersonSPTemplate`;
+		$thirdpersonplayer_MP = `radioButton -label "THIRD PERSON PLAYER MP" -ofc DisableTemplates -onc EnableThirdPersonMPTemplate`;
+		$vehicle = `radioButton -label "FOUR WHEELED VEHICLE" -ofc DisableTemplates -onc EnableVehicleTemplate`;
+		//$error = `radioButton -label "ERROR"`;
+
+
+		select -r smdInfo;
+		if ( $mytemplate == "" )
+		{
+			$mytemplate = `getAttr smdInfo.ActiveTemplate`;
+		}
+		
+		switch ($mytemplate)
+		{
+			//not set ?
+			case "none" :
+					return $none;
+					break;	
+			case "npc_template" :
+					return $npc_template;
+					break;
+			case "thirdpersonplayer_SP" :
+					return $thirdpersonplayer_SP;
+					break;
+			case "thirdpersonplayer_MP" : 
+					return $thirdpersonplayer_MP;
+					break;
+			case "vehicle" : 
+					return $vehicle;
+					break;		
+			default :
+					return $none;
+					break;
+			
+		}
+		
+ 	}
+	
+global proc DisableTemplates()
+	{
+		select -r smdInfo;
+		setAttr smdInfo.NpcTemplate 0;
+		setAttr smdInfo.ThirdPersonPlayerSP 0;
+		setAttr smdInfo.ThirdPersonPlayerMP 0;
+		setAttr smdInfo.Vehicle 0;
+		setAttr smdInfo.ActiveTemplate  -type "string" "none";
+	}
+
+global proc EnableNPCTemplate()
+	{
+		DisableTemplates;
+		select -r smdInfo;
+		setAttr smdInfo.NpcTemplate 1;
+		setAttr smdInfo.ActiveTemplate -type "string" "npc_template";
+	}	
+
+global proc EnableThirdPersonSPTemplate()
+	{
+		DisableTemplates;
+		select -r smdInfo;
+		setAttr smdInfo.ThirdPersonPlayerSP 1;
+		setAttr smdInfo.ActiveTemplate -type "string" "thirdpersonplayer_SP";
+	}	
+global proc EnableThirdPersonMPTemplate()
+	{
+		DisableTemplates;		
+		select -r smdInfo;
+		setAttr smdInfo.ThirdPersonPlayerMP 1;
+		setAttr smdInfo.ActiveTemplate -type "string" "thirdpersonplayer_MP";
+	}		
+global proc EnableVehicleTemplate()
+	{
+		DisableTemplates;		
+		select -r smdInfo;
+		setAttr smdInfo.Vehicle 1;
+		setAttr smdInfo.ActiveTemplate -type "string" "vehicle";
+	}		
+	
+	
 global proc string stripName (string $filePath)
 	{
 	string $result;
@@ -471,6 +889,12 @@ global proc urlYouTube ()
 	python("os.startfile('http://www.youtube.com/user/JurassicLifeTeam')");
 	}
 
+global proc urlTwitter ()
+	{
+	python("import os");
+	python("os.startfile('http://twitter.com/PuppetMasterNet')");
+	}
+	
 global proc urlGitHub ()
 	{
 	python("import os");
@@ -512,58 +936,15 @@ global proc urlMesaErrors ()
 	python("import os");
 	python("os.startfile('http://puppet-master.net/plugins/mesa-2-0/issues-and-common-errors/')");
 	}	
-/*	REfuse to parse the argument correctly ! --red ... so i use a individual procedure to get the right url to open into the browser..
-global proc string openWebUrl ( string $myUrl )
-	{
-		//python("import os");
-		//python("os.startfile('http://www.google.com')");
-		//webBrowser -vis 1 -url "http://www.puppet-master.net";
-	$myUrl = "";
-	string $mesaUrl = "showHelp -absolute " + $myUrl ;
-	switch ($myUrl)
-		{
-		case "home":	
-			{
-				python("import os");
-				python("os.startfile('http://www.google.com')");
-				//$myUrl = "http://puppet-master.net";
-				//$myUrl +=
-				//$mesaUrl = `showHelp -a $home`; //"http://www.puppet-master.net/plugins/mesa-2.0/"`;
-				//webBrowser -url "http://www.puppet-master.net";
-				//eval ( $mesaUrl ); =`showHelp -a "http://www.puppet-master.net/plugins/mesa-2.0/"` );
-				//return $mesaUrl;
-				//eval ( $mesaUrl + $home);
-				//showHelp -a $myUrl;
-				break;
-			}
-		case "install":	
-			{
-				$myUrl =`showHelp -a "http://www.puppet-master.net/plugins/mesa-2.0/installation/"`;
-				print ( $myUrl );
-				break;
-			}
-		case "install_help":	
-			{
-				$myUrl =`showHelp -a "http://www.puppet-master.net/plugins/mesa-2.0/installation-help/"`;
-				print ( $myUrl );
-				break;
-			}
-		case "default" :
-			{
-			$myUrl =`showHelp -a "http://www.puppet-master.net/plugins/mesa-2.0/"`;
-			break;
-			}
-		} /// end switch
-	print ( $myUrl ) ;
-	return $myUrl;
-	
-	}
-*/	
+
 global proc smdOptionWindow ()
 	{
 	source "fixup";
-
+	// Upgrade old scenes with the new smdInfo attributes.
+	mesaSceneUpgrade ;	
+	
 	smdMakeScriptNode;
+
 	
 	int $oldSmdType;
 	int $oldSeperateBodyGroup;
@@ -585,7 +966,7 @@ global proc smdOptionWindow ()
 		deleteUI -window smdOptWin;
 		}
 
-	window -title "MESA - Maya Exporter for Source Absolute v2.1"
+	window -title "MESA::Maya Exporter for Source Assets v2.1"
 
 		-width 440
 		-height 520
@@ -595,12 +976,12 @@ global proc smdOptionWindow ()
 		smdOptWin;
 
 
-columnLayout main;
+		columnLayout main;
 
-string $tabs = `tabLayout -h 550 -w 440 -innerMarginWidth 15 -innerMarginHeight 15 -scr 1 -hst 16 -vst 16 -cr 1 -p main tlay`;
+		string $tabs = `tabLayout -h 550 -w 440 -innerMarginWidth 15 -innerMarginHeight 15 -scr 1 -hst 16 -vst 16 -cr 1 -p main tlay`;
 
-//create tab export
-string $tab1 = `columnLayout -adj 1 -p tlay tab1`;
+		//create tab export
+		string $tab1 = `columnLayout -adj 1 -p tlay tab1`;
 
         columnLayout -p tab1 tab1_main;
 		//columnLayout -cal "left" -cat "both" 20 -cw 450 -rs 9;
@@ -608,14 +989,25 @@ string $tab1 = `columnLayout -adj 1 -p tlay tab1`;
 		
 		//setParent topLayout;
 							
-			image -i "mesa-about" -bgc 0 1 0 -p tab1_main;
-		frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl on -w 400 -label "What's new ?" -p tab1_main hello_frame;
+			image -i "mesa-about-gray" -bgc 0 1 0 -p tab1_main;
+		frameLayout -marginHeight 2 -marginWidth 2 -bs "etchedOut" -bv on -collapsable true -cl off -w 400 -label "What's new ?" -p tab1_main hello_frame;
 			//text -label "Information :\n This is some note for you to know how to start with MESA 2.0\n --red\n" -align "left" -p hello_frame;
 				
 							
 				//setParent f2;
 				string $hellohelp;
-				$hellohelp += " Dear Mesaians :\n";
+				$hellohelp += "Dear Mesaians :\n";
+				$hellohelp += "Important , in order to make MESA work smoothly !\n";
+				$hellohelp += "1. Edit mesa_config.bat\n";
+				$hellohelp += "2. Run Mesa_Config.bat le batch\n";
+				$hellohelp += "3. Run Mesa_Shelf_install.bat\n";
+				$hellohelp += "4. Go to MESA/projects/ directory and run the bat\n\t file that match the target game.\n";
+				$hellohelp += "5. Run Maya, go to File > Set project and choose the\n\t directory you use at the previous step.\n";
+				$hellohelp += "Example : \nc:/mesa/projects/sourcefilmmaker/sourcefilmmaker.bat\n\n";
+				$hellohelp += "6. Save your Maya scenes into \"projects/GAME_PROJECT/Scenes/\"\n";
+				$hellohelp += "Example :\nc:/mesa/projects/sourcefilmmaker/modelsrc/props/prop_model.mb\n";
+/*
+ *	old WHAT's News of the version  2.0.1 			
 				$hellohelp += "  I hope you enjoy the improvement that has been\n";
 				$hellohelp += "  done from mesa 1.1.\n";
 				$hellohelp += "  If experience any bug you can submit a report\n";
@@ -623,8 +1015,8 @@ string $tab1 = `columnLayout -adj 1 -p tlay tab1`;
 				$hellohelp += "  If you have any request or suggestion about MESA\n";
 				$hellohelp += "  You can simply contact me on Steam.\n";
 				$hellohelp += " \t\t\t\t\t\t\t\t\t\t --red";
-				
-				scrollField -w 320 -h 140 -text $hellohelp -ed 0 -p hello_frame;
+*/
+				scrollField -w 320 -h 170 -ww false -text $hellohelp -ed 0 -p hello_frame;
 
 				
 			columnLayout -cal "left" -cat "both" 15 -cw 400 -rs 10 -p tab1_main;
@@ -665,12 +1057,20 @@ string $tab1 = `columnLayout -adj 1 -p tlay tab1`;
 				;
 			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -w 400 -label "Animation Sequences" -p tab1_main anim_seq;
 			
-			checkBox -label "Export Static Idle" -ann "Export 1 frame Idle smd" 
+			checkBox -label "Export Idle" -ann "Export 0:1 frame Idle animation" 
 				-value `getAttr smdInfo.smdIdle` 
 				-onCommand "setAttr smdInfo.smdIdle 1"
 				-offCommand "setAttr smdInfo.smdIdle 0"
 				-p anim_seq;
+				;			
+			
+			checkBox -label "Export BindPose" -ann "Export 0:1 frame Bindpose animation" 
+				-value `getAttr smdInfo.smdBindPose` 
+				-onCommand "setAttr smdInfo.smdBindPose 1"
+				-offCommand "setAttr smdInfo.smdBindPose 0"
+				-p anim_seq;
 				;
+				
 
 			checkBox -label "Export Animations" -ann "Export SMDs Animation Sequence set on the Animation Tab" 
 				-value `getAttr smdInfo.smdAni` 
@@ -700,6 +1100,15 @@ string $tab1 = `columnLayout -adj 1 -p tlay tab1`;
 				-offCommand "setAttr smdInfo.Thumb 0"
 				-p export_util;
 				;
+
+			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -w 400 -label "Templatize Model" -p tab1_main template_frame;
+			//Templatization Selection
+			$templateSelection = `radioCollection`; 
+				global string $activetemplate;
+				global string $mytemplate;
+				$activetemplate = `GetActiveTemplate($mytemplate)`;
+				radioCollection -edit -select $activetemplate $templateSelection;
+				
 				
 			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -w 400 -label "Compile Assets" -p tab1_main compile_frame;
 			checkBox -label "Export VTF/VMT" -ann "Export Textures ( Vtex )" 
@@ -715,6 +1124,14 @@ string $tab1 = `columnLayout -adj 1 -p tlay tab1`;
 				-offCommand "setAttr smdInfo.fullCompile 0"
 				-p compile_frame;
 				;
+
+			checkBox -label "QC / VMT learning tooltip (experimental)" -ann " Print Tips in QC scripts and VMT files" 
+				-value `getAttr smdInfo.Tips`
+				-onCommand "setAttr smdInfo.Tips 1"
+				-offCommand "setAttr smdInfo.Tips 0"
+				-p compile_frame;
+				;
+			
 			checkBox -label "Compile MDL" -ann "Compile the QC script with the generated Assets" 
 				-value `getAttr smdInfo.compile` 
 				-onCommand "setAttr smdInfo.compile 1"
@@ -722,19 +1139,11 @@ string $tab1 = `columnLayout -adj 1 -p tlay tab1`;
 				-p compile_frame;
 				;
 
-
-			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -w 400 -label "Templatize your Scripts" -p tab1_main template_frame;
-			checkBox -label "Templatize QC and VMT files (experimental)" -ann " Print Tips in QC scripts and VMT files" 
-				-value `getAttr smdInfo.Tips`
-				-onCommand "setAttr smdInfo.Tips 1"
-				-offCommand "setAttr smdInfo.Tips 0"
-				-p template_frame;
-				;
-
 			//Export Tab Help
 			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl on -w 400 -label "Export Help" -p tab1_main export_help;
 			rowLayout -nc 1 -p export_help;
 			//setParent f1a;
+
 			string $exphelp;
 				$exphelp += "Export Tab Options:\n";  
 				$exphelp += "\n";
@@ -809,20 +1218,22 @@ string $tab1 = `columnLayout -adj 1 -p tlay tab1`;
 				$exphelp += "  Make sure you have a bright light in scene.\n";
 				$exphelp += "  default turns out too dark.\n";
 				$exphelp += "\n";
-				$exphelp += " -Templatize QC|VMT files (Experimental Feature)\n";
+				$exphelp += " -QC|VMT Learning Tooltip (Experimental Feature)\n";
 				$exphelp += "  Currently this options will print some useful\n";
 				$exphelp += "  tips, accordingly of what option are checked\n";
 				$exphelp += "  from the export tab panel.\n";
 				$exphelp += "\n";				
 
-			
-				scrollField -w 388 -h 225 -text $exphelp -ed 0 -p export_help;				
+				
+				scrollField -wordWrap false -w 388 -h 225 -text $exphelp -ed 0 -p export_help;				
 				
 
 //create Tab path settings
 
 string $tab2 = `columnLayout -adj 1 -p tlay tab2`;
-			columnLayout -p tab2 tab2_main;
+
+		
+			columnLayout  -p tab2 tab2_main;
 				string $smdTarget;
 				string $texFolder;
 				string $smdPhy;
@@ -832,8 +1243,54 @@ string $tab2 = `columnLayout -adj 1 -p tlay tab2`;
 				$smdTarget=`getAttr smdInfo.smdTarget`;
 				$texFolder=`getAttr smdInfo.texPath`;
 				image -i "mesa-about" -p tab2_main;
-			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -w 400 -label "Export Paths" -p tab2_main smdpath_frame;
-				rowLayout -nc 1 -width 400 -p smdpath_frame;
+				
+		
+			frameLayout -marginHeight 1 -marginWidth 1  -bs "etchedOut" -bv off -collapsable true -cl on -w 400 -label "MESA Environement variables" -bgc 0.2 0.2 0.3 -p tab2_main envvars_frame;
+			columnLayout -bgc 0.2 0.2 0.3 /*-h 270*/ -rs 0 -p envvars_frame sourcecheckpath;
+				//rowLayout -bgc 0.2 0.2 0.3 -nc 1 -width 400 -h 176 -cal 1 "right"; // useless , screw the layout ..red
+					//text -label " " -p sourcecheckpath;
+				//Define String
+				string $sourceBinPathString = `getenv SOURCE_BIN_PATH`;
+				string $GameProjectSource = `getenv GAME_PROJECT_SRC`;
+				string $GameProjectName = `getenv GAME_PROJECT_NAME`;				
+				string $GameProjectPath = `getenv GAME_PROJECT`;	
+				string $VProjectPath = `getenv VPROJECT`;
+				string $MesaDirPath = `getenv MESADIR`;
+				
+					text -bgc 0.8 0.2 0.1 -ebg  on -fn "boldLabelFont" -label " %SOURCE BIN PATH% :" -w 400 -h 20 -align left -p sourcecheckpath; 
+					text  -bgc 0.8 0.6 0.1 -ebg  on -label $sourceBinPathString -w 400 -h 15 -align left -p sourcecheckpath; 
+					
+//					separator -w 370 -h 3 -st "in" -p sourcecheckpath;
+					
+					text -bgc 0.8 0.2 0.1 -ebg  on -fn "boldLabelFont" -label " %GAME PROJECT SRC% :" -w 400 -h 20 -align left -p sourcecheckpath; 
+					text  -bgc 0.8 0.6 0.1 -ebg  on -fn "obliqueLabelFont" -label $GameProjectSource -w 400 -h 15 -align left -p sourcecheckpath; 
+					
+//					separator -w 370 -h 3 -st "in" -p sourcecheckpath;
+					
+					text -bgc 0.8 0.2 0.1 -ebg  on -fn "boldLabelFont" -label " %GAME PROJECT NAME% :" -w 400 -h 20 -align left -p sourcecheckpath; 
+					text -bgc 0.8 0.6 0.1 -ebg on -fn "obliqueLabelFont" -label $GameProjectName -w 400 -h 15 -align left -p sourcecheckpath; 
+					
+//					separator -w 370 -h 3 -st "in" -p sourcecheckpath;
+					
+					text -bgc 0.8 0.2 0.1 -ebg  on -fn "boldLabelFont" -label " %GAME_PROJECT% :" -w 400 -h 20 -align left -p sourcecheckpath; 
+					text  -bgc 0.8 0.6 0.1 -ebg on -fn "obliqueLabelFont" -label $GameProjectPath -w 400 -h 13 -align left -p sourcecheckpath; 
+					
+//					separator -w 370 -h 3 -st "in" -p sourcecheckpath;
+					
+					text -bgc 0.8 0.2 0.1 -ebg  on -fn "boldLabelFont" -label " %VPROJECT% :" -w 400 -h 20 -align left -p sourcecheckpath; 
+					text  -bgc 0.8 0.6 0.1 -ebg on -fn "obliqueLabelFont" -label $VProjectPath -w 400 -h 13 -align left -p sourcecheckpath; 
+					
+//					separator -w 370 -h 3 -st "in" -p sourcecheckpath;
+					
+					text -bgc 0.8 0.2 0.1 -ebg  on -fn "boldLabelFont" -label " %MESADIR% :" -w 400 -h 20 -align left -p sourcecheckpath; 
+					text  -bgc 0.8 0.6 0.1 -ebg  on -fn "obliqueLabelFont" -label $MesaDirPath -w 400 -h 15 -align left -p sourcecheckpath; 
+
+				setParent sourcecheckpath;
+				
+				
+			frameLayout -marginHeight 1 -marginWidth 1 -bs "etchedOut" -bv on -collapsable true -w 400 -label "Export Paths" -bgc 0.2 0.2 0.3 -p tab2_main smdpath_frame;
+				columnLayout  /*-h 270*/ -rs 0 -p smdpath_frame;
+//				rowLayout -nc 1 -width 400 -p smdpath_frame;
 					text -vis 1 
 						-font "boldLabelFont"
 						-label "SMD / QC Path"
@@ -855,7 +1312,7 @@ string $tab2 = `columnLayout -adj 1 -p tlay tab2`;
 				
 			columnLayout -p smdpath_frame vtex;
 					
-				rowLayout -nc 1 -width 380 ;
+				rowLayout -nc 1 ;//-width 380 ;
 					text -vis 1 
 						-font "boldLabelFont"
 						-label "Materials/Textures Path"
@@ -888,7 +1345,7 @@ string $tab2 = `columnLayout -adj 1 -p tlay tab2`;
 					textField -ed 0 -w 380 -text $smdIdle -p texfolder;
 					//text -label $smdIdle -p texfolder;
 					text -label " " -p texfolder;
-				button -label "GENERATE PATHS" -width 380 -align "center" 
+				button -label "GENERATE PATHS" -width 380 -align "center" -bgc 0.7 0.3 0.3
 					-c "updatePaths;" 
 					-p texfolder;
 
@@ -897,33 +1354,7 @@ string $tab2 = `columnLayout -adj 1 -p tlay tab2`;
 				setParent texfolder;
 
 			//separator -h 1 -w 405;
-			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl on -w 400 -label "MESA Environement variables" -p tab2_main envvars_frame;
-			columnLayout -p envvars_frame sourcecheckpath;
-				rowLayout -nc 1 -width 400 -cal 1 "right";
-					//text -label " " -p sourcecheckpath;
-				//Define String
-				string $sourceBinPathString = `getenv SOURCE_BIN_PATH`;
-				string $GameProjectSource = `getenv GAME_PROJECT_SRC`;
-				string $GameProjectName = `getenv GAME_PROJECT_NAME`;				
-				string $GameProjectPath = `getenv GAME_PROJECT`;	
-				string $VProjectPath = `getenv VPROJECT`;	
-				
-					text -fn "boldLabelFont" -label " %SOURCE BIN PATH% :" -w 400 -h 20 -align left -p sourcecheckpath; 
-					text  -label $sourceBinPathString -w 400 -p sourcecheckpath; 
-					
-					text -fn "boldLabelFont" -label " %GAME PROJECT SRC% :" -w 400 -h 20 -align left -p sourcecheckpath; 
-					text -fn "obliqueLabelFont" -label $GameProjectSource -w 400 -p sourcecheckpath; 
-
-					text -fn "boldLabelFont" -label " %GAME PROJECT NAME% :" -w 400 -h 20 -align left -p sourcecheckpath; 
-					text -fn "obliqueLabelFont" -label $GameProjectName -w 400 -p sourcecheckpath; 
-					
-					text -fn "boldLabelFont" -label " %GAME_PROJECT% :" -w 400 -h 20 -align left -p sourcecheckpath; 
-					text -fn "obliqueLabelFont" -label $GameProjectPath -w 400 -p sourcecheckpath; 
-										
-					text -fn "boldLabelFont" -label " %VPROJECT% :" -w 400 -h 20 -align left -p sourcecheckpath; 
-					text -fn "obliqueLabelFont" -label $VProjectPath -w 400 -p sourcecheckpath; 
-
-				setParent sourcecheckpath;
+			
 			
 			//Path Settings help
 			frameLayout -marginHeight 2 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl on -w 400 -label "Path Settings Help" -p tab2_main path_help;
@@ -961,7 +1392,7 @@ string $tab2 = `columnLayout -adj 1 -p tlay tab2`;
 			$envhelp += "INSTRUCTIONS :\n";
 			$envhelp += "\n";
 			$envhelp += " -Paths\n";
-			$envhelp += "  Maya Scene path: '%GAME_PROJECT_SRC%/scenes/' \n";
+			$envhelp += "  Maya Scenes path: '%GAME_PROJECT_SRC%/scenes/' \n";
 			$envhelp += "  The path must lies with '/modelsrc/'\n";
 			$envhelp += "  ex :'%GAME_PROJECT_SRC%/Scenes/' directory.\n";
 			$envhelp += "  \n";
@@ -981,47 +1412,124 @@ string $tab2 = `columnLayout -adj 1 -p tlay tab2`;
 string $tab3 = `columnLayout -adj 1 -p tlay tab3`;
 			
 			//QC settings
-			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl false -w 370 -label "QC Settings" -p tab3 tab3_main;
+			frameLayout -marginHeight 2 -marginWidth 2 -bs "etchedOut" -borderVisible off -collapsable true -cl off -w 370 -label "QC Settings" -p tab3 tab3_main;
 				
-			rowLayout -nc 4 -columnWidth4 60 140 100 40 -co4 2 2 2 2 -p tab3_main tab3_row1;
-				text -vis 1 -label "Scale" -align "right" -p tab3_row1;
-				textField -w 60 -cc "setAttr smdInfo.qcScale -type \"string\" `textField -q -text qcScale`" -text `getAttr smdInfo.qcScale` -p tab3_row1 qcScale;
-				checkBox -label "STATICPROP" -ann "coming soon"
+			rowLayout -nc 6 /*-columnWidth6 32 3 140 100 3 32*/ -co6 4 4 4 4 4 4  -p tab3_main tab3_row1;
+
+				checkBox -label "" -ann "Enable Scale to be write into the generate Qc script. "
+					-value `getAttr smdInfo.qcScaleSwitch` 
+					-onCommand "setAttr smdInfo.qcScaleSwitch 1"//checkBox -e -value 0 sep"
+					-offCommand "setAttr smdInfo.qcScaleSwitch 0"
+					-align "left" 
+					-p tab3_row1
+					;			
+				//separator -hr false -w 3 -h 20 -st "out";
+				text -vis 1 -label "$SCALE" -align "left" -p tab3_row1;
+				textField -w 160 -cc "setAttr smdInfo.qcScale -type \"string\" `textField -q -text qcScale`" -text `getAttr smdInfo.qcScale` -p tab3_row1 qcScale;
+
+				
+				separator -hr false -w 3 -h 20 -st "out";
+				
+				checkBox -label "$STATICPROP" -ann "$staticprop specifies that the model being compiled does not have any moving parts."
 					-value `getAttr smdInfo.qcStatic` 
 					-onCommand "setAttr smdInfo.qcStatic 1;setAttr smdInfo.seperateBodyGroup 0;checkBox -e -value 0 sep"
 					-offCommand "setAttr smdInfo.qcStatic 0"
 					-align "left" -p tab3_row1
 					;
 
-			rowLayout -nc 4 -columnWidth4 60 140 100 40 -co4 2 2 2 2 -p tab3_main tab3_row2;
-				text -vis 1 -label "Mass" -align "right" -p tab3_row2;
-				textField -w 60 -cc "setAttr smdInfo.qcMass -type \"string\" `textField -q -text qcMass`" -text `getAttr smdInfo.qcMass` -p tab3_row2 qcMass;
+				
+			rowLayout -nc 6 /*-columnWidth5 60 140 3 100 40 */-co6 4 4 4 4 4 4 -p tab3_main tab3_row2;
+				text -vis 1 -label "$MASS" -align "left" -p tab3_row2;
+				textField -w 180 -cc "setAttr smdInfo.qcMass -type \"string\" `textField -q -text qcMass`" -text `getAttr smdInfo.qcMass` -p tab3_row2 qcMass;
 				//text -vis 1 -label "bla" -p tab3_row2;
 				//text -vis 1 -w 60 -label "truc" -p tab3_row2;
+				
+				separator -hr false -w 3 -h 20 -st "out";
+				
 				checkBox -label "Allow prop_static" -ann "allow static for breakeable models"
 					-value `getAttr smdInfo.qcAllowStatic` 
 					-onCommand "setAttr smdInfo.qcAllowStatic 1;checkBox -e -value 0 sep" //smdInfo.seperateBodyGroup 0; //removed
 					-offCommand "setAttr smdInfo.qcAllowStatic 0"
-					-align "right" -p tab3_row2
+					-align "left" -p tab3_row2
 					;
-			separator -h 1;
-			rowLayout -nc 4 -columnWidth4 120 140 120 140 -co4 2 2 2 2 -p tab3_main tab3_row3;
-				text -vis 1 -label "                    Surfaceprop" -p tab3_row3;
-				text -vis 0 -label "" -align "right" -p tab3_row3;
-				text -vis 1 -label "        Keyvalues" -align "center" -p tab3_row3;
-				text -vis 0 -label "" -align "right" -p tab3_row3;
+			rowLayout -nc 6 /*-columnWidth5 60 140 3 100 40*/ -co6 4 4 4 4 4 4 /*-cl4 "left" "left" "left" "right" */-p tab3_main tab3_row3;
+
+				checkBox -label "" -ann "Enable UpAxis to be write into the generate Qc script. "
+					-value `getAttr smdInfo.qcUpAxisSwitch` 
+					-onCommand "setAttr smdInfo.qcUpAxisSwitch 1"//checkBox -e -value 0 sep"
+					-offCommand "setAttr smdInfo.qcUpAxisSwitch 0"
+					-align "left" 
+					-p tab3_row3
+					;			
+				text -vis 1 -label "$UPAXIS" -align "left" -p tab3_row3;
+				textField -w 156 -cc "setAttr smdInfo.qcUpAxis -type \"string\" `textField -q -text qcUpAxis`" -text `getAttr smdInfo.qcUpAxis` -p tab3_row3 qcUpAxis;
 				
-			rowLayout -nc 4 -columnWidth4 60 30 30 140 -co4 2 2 2 2 -p tab3_main surfprop;
+				separator -hr false -w 3 -h 20 -st "out";
+				
+				checkBox -label "$COLLAPSEBONE" -ann "Removes all bones that aren't connected to vertices, attachment points, ik rules, or don't animate. Vertices or attachment points that are connected to a collapsed bone are reconnected to the bones parent. "
+					-value `getAttr smdInfo.qcCollapseBones` 
+					-onCommand "setAttr smdInfo.qcCollapseBones 1;checkBox -e -value 0 sep" //smdInfo.seperateBodyGroup 0; //removed
+					-offCommand "setAttr smdInfo.qcCollapseBones 0"
+					-align "left" -p tab3_row3
+					;
+				
+			rowLayout -nc 6 /*-columnWidth4 60 140 100 40 */ -co6 4 4 4 4 4 4 -p tab3_main tab3_row4;
+
+				checkBox -label "" -ann "Enable $BBox (boundary box) to be write into the generate Qc script. "
+					-value `getAttr smdInfo.qcBboxSwitch` 
+					-onCommand "setAttr smdInfo.qcBboxSwitch 1"//checkBox -e -value 0 sep"
+					-offCommand "setAttr smdInfo.qcBboxSwitch 0"
+					-align "left" 
+					-p tab3_row4
+					;	
+			
+				text -vis 1 -label "$BBOX" -align "left" -p tab3_row4;
+				textField -w 166 -pht "min min min max max max"-cc "setAttr smdInfo.qcBbox -type \"string\" `textField -q -text qcBbox`" -text `getAttr smdInfo.qcBbox` -p tab3_row4 qcBbox;
+				
+				separator -hr false -w 3 -h 20 -st "out";
+								
+			rowLayout -nc 6 /*-columnWidth4 60 140 100 40*/ -co6 4 4 4 4 4 4 -p tab3_main tab3_row6;		
+
+				checkBox -label "" -ann "Enable $origin to be write into the generate Qc script. "
+					-value `getAttr smdInfo.qcOriginSwitch` 
+					-onCommand "setAttr smdInfo.qcOriginSwitch 1"//checkBox -e -value 0 sep"
+					-offCommand "setAttr smdInfo.qcOriginSwitch 0"
+					-align "left" 
+					-p tab3_row6
+					;
+			
+				text -vis 1 -label "$ORIGIN" -align "left" -p tab3_row6;
+				textField -w 156 -cc "setAttr smdInfo.qcOrigin -type \"string\" `textField -q -text qcOrigin`" -text `getAttr smdInfo.qcOrigin` -p tab3_row6 qcOrigin;
+				
+				separator -hr false -w 3 -h 20 -st "out";
+			/*			
+				textField -w 80 -cc "setAttr smdInfo.qcBbox -type \"boolstring\" `textField -q -text qcBbox`" -text `getAttr smdInfo.qcBbox` -p tab3_row5 qcBbox;
+				text -vis 1 -label "$Bbox" -align "left" -p tab3_row5;
+	*/		
+			rowLayout -nc 1 -columnWidth1 400 -co1 10 -p tab3_main tab3_rowSep;
+				separator -hr true -w 400 -h 3 -st "in";
+			
+			
+			rowLayout -nc 2 -columnWidth2 165 260 -co2 2 2 -p tab3_main tab3_row5;
+				text -vis 1 -label "  Surfaceprop" -align "right" -p tab3_row5;
+				//text -vis 0 -label "" -align "left" -p tab3_row5;
+				text -vis 1 -label "Keyvalues" -align "right" -p tab3_row5;
+				//text -vis 0 -label "" -align "left" -p tab3_row5;
+				
+			rowLayout -adj 1-nc 4 /*-columnWidth4 60 30 30 140*/ -co4 2 2 2 2 -cl4 "left" "left" "left" "left" -p tab3_main surfprop;
 				//text -vis 1 -label "Surfaceprop" -align "right" -p surfprop;
-				textScrollList -w 188 -sc "setAttr smdInfo.qcSurface -type \"string\" `textScrollList -q -si qcSurf`" -p surfprop qcSurf;
-				text -vis 0 -label "" -align "right" -p surfprop;
-				textScrollList -w 188 -sc "setAttr smdInfo.qcKey -type \"string\" `textScrollList -q -si qcKey`" -p surfprop qcKey;
+				textScrollList /*-w 178*/ -sc "setAttr smdInfo.qcSurface -type \"string\" `textScrollList -q -si qcSurf`" -p surfprop qcSurf;
+				text -vis 0 -label "" /*-align "right"*/ -p surfprop;
+				
+				separator -hr false -w 2 -h 200 -st "in";
+				
+				textScrollList /* -w 188*/ -sc "setAttr smdInfo.qcKey -type \"string\" `textScrollList -q -si qcKey`" -p surfprop qcKey;
 				propList;
 				//text -vis 0 -label "" -align "right" -p surfpropt;
 				//separator -h 10 -w 370;
 
 				//QC settings Help
-				frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl true -w 350 -label "QC Settings Help" -p tab3 tab3_help;
+				frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl on -w 350 -label "QC Settings Help" -p tab3 tab3_help;
 				rowLayout -nc 1 -p tab3_help;
 				
 				string $qcshelp;
@@ -1252,7 +1760,7 @@ string $tab7 = `columnLayout -adj 1 -p tlay tab7`;
 					//separator -h 1;
 				rowLayout -numberOfColumns 1 -cw1 395 -p tab7 tab7_row1;	
 					columnLayout -p tab7_row1 cell1;
-						image -i "mesa-about" -p cell1;
+						image -i "mesa-about-gray" -p cell1;
 						//text -font "boldLabelFont" -vis 1 -label "WebSite" -align "left" -p c1;
 					//separator -h 1;
 						setParent tab7;
@@ -1264,8 +1772,8 @@ string $tab7 = `columnLayout -adj 1 -p tlay tab7`;
 				string $credhelp;
 				$credhelp += " \t\t\t MESA* by Nicolas Kirsch \n Contact :\t fuzzzzzz@gmail.com\n\n";
 				$credhelp += " Credits :\t Nicolas Kirsch, Valve software, Prall\n";
-				$credhelp += " Thanks  :\t Martin Niehoff and Robert Olender\n\n";
-				$credhelp += "\t\t\t(*Maya Exporter for Source Absolute|Assets)";
+				$credhelp += " Thanks  :\t Martin Niehoff and Robert Olender (logo)\n\n";
+				$credhelp += "\t\t\t(*Maya Exporter for Source Assets)";
 				
 				scrollField -w 320 -h 120 -text $credhelp -ed 0 -p tab7_frame;
 				
@@ -1283,12 +1791,13 @@ string $tab7 = `columnLayout -adj 1 -p tlay tab7`;
 					columnLayout -bgc 0.5 0.51 0.5 -p tab7_row2 cell3;
 
 						button -label "Puppet-Master.net" -w 395 -align "center" -p cell3 -c urlPuppetMaster;
-						button -label "Github MESA development" -w 395 -align "center" -p cell3 -c urlGitHub;
+						button -label "MESA on Github" -w 395 -align "center" -p cell3 -c urlGitHub;
 					
 					
 				rowLayout -bgc 0.2 0.2 0.2 -numberOfColumns 1 -cw1 395 -p tab7_frame2 tab7_row3;
 					columnLayout -bgc 0.5 0.51 0.5 -p tab7_row3 cell4;
 						button -label "Youtube Channel" -w 395 -align "center" -p cell4 -c urlYouTube;
+						button -label "@PuppetMaster on twitter" -w 395 -align "center" -p cell4 -c urlTwitter;
 						button -label "FaceBook Page" -w 395 -align "center" -p cell4 -c urlFaceBook;						
 			
 				frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -label "Tutorials" -p tab7 tab7_frame3;
@@ -1310,17 +1819,19 @@ string $tab7 = `columnLayout -adj 1 -p tlay tab7`;
 						button -label "MESA Common Issues" -w 395 -align "center" -p cell6 -c urlMesaErrors;
 
 				
-rowLayout -numberOfColumns 4 
-					-height 32
+rowLayout -numberOfColumns 3 -adj 3
+					-height 40
 					//-cw4 130 130 130 130
-					-cw4 105 105 105 105
-					-ct4 "both" "both" "both" "both"
-					-co4 1 1 1 1
+					-cw3 140 140 140
+					-ct3 "both" "both" "both"
+					-co3 5 5 5
+					
+					//-cal 1 "center"
 		 			-p main;
-					button -label "OK settings" -c "updateNode;deleteUI -window smdOptWin;" -align "center";
-					button -label "Full Compile" -c "updateNode;deleteUI -window smdOptWin; smdExport( 3, `getAttr smdInfo.seperateBodyGroup` )" -align "center";
-					button -label "Export only" -c "updateNode;deleteUI -window smdOptWin; smdExport( `getAttr smdInfo.smdType`, `getAttr smdInfo.seperateBodyGroup` )" -align "center";
-					button -label "Cancel" -c "deleteUI -window smdOptWin" -align "center";	
+					button -h 35 -label "OK settings" -c "updateNode;deleteUI -window smdOptWin;" -align "center";
+					button -h 35 -label "Full Compile" -c "updateNode;deleteUI -window smdOptWin; smdExport( 3, `getAttr smdInfo.seperateBodyGroup` )" -align "center";
+				//	button -label "Export only" -c "updateNode;deleteUI -window smdOptWin; smdExport( `getAttr smdInfo.smdType`, `getAttr smdInfo.seperateBodyGroup` )" -align "center";
+					button -h 35 -label "Cancel" -c "deleteUI -window smdOptWin" -align "center";	
 
 					
 

@@ -1342,10 +1342,67 @@ proc int exportQC( string $qcFileName, string $refFileName, int $type)		//type 1
 
 				}
 
-			fprint $qcFileHandle "$scale ";
-			string $scale = `getAttr smdInfo.qcScale`;
-			fprint $qcFileHandle $scale;
-			fprint $qcFileHandle "\n";
+			int $IsQCScaleChecked = `getAttr smdInfo.qcScaleSwitch`;
+			if ($IsQCScaleChecked == 1)
+				{
+					fprint $qcFileHandle "$scale ";
+					string $scale = `getAttr smdInfo.qcScale`;
+					fprint $qcFileHandle $scale;
+					fprint $qcFileHandle "\n";
+				}
+
+			// UPAXIS WRITE DATA !!!
+			// TODO ADD a CHECKBOX on QC Setting panel to Export or not that value and add the condition for that here !
+			// TODO ADD the QC TIPS AFTER THE ENCAPSULATION
+			int $IsUpAxisChecked = `getAttr smdInfo.qcUpAxisSwitch`;
+			if ($IsUpAxisChecked == 1)
+				{
+					fprint $qcFileHandle "$upaxis ";
+					string $upaxis = `getAttr smdInfo.qcUpAxis`;
+					fprint $qcFileHandle $upaxis;
+					fprint $qcFileHandle "\n";			
+				}
+			// ORIGIN WRITE DATA !!!
+			// TODO ADD a CHECKBOX on QC Setting panel to Export or not that value and add the condition for that here !
+			// TODO ADD the QC TIPS AFTER THE ENCAPSULATION
+			int $IsOriginChecked = `getAttr smdInfo.qcOriginSwitch`;
+			if ($IsOriginChecked == 1)
+				{
+					fprint $qcFileHandle "$origin ";
+					string $origin = `getAttr smdInfo.qcOrigin`;
+					fprint $qcFileHandle $origin;
+					fprint $qcFileHandle "\n";	
+				}
+				
+			// BBOX WRITE DATA !!!
+			// TODO ADD a CHECKBOX on QC Setting panel to Export or not that value and add the condition for that here !
+			// TODO ADD the QC TIPS AFTER THE ENCAPSULATION
+			int $IsBboxChecked = `getAttr smdInfo.qcBboxSwitch`;
+			if ($IsBboxChecked == 1)
+				{
+					fprint $qcFileHandle "$bbox ";
+					string $bbox = `getAttr smdInfo.qcBbox`;
+					fprint $qcFileHandle $bbox;
+					fprint $qcFileHandle "\n";
+				}
+				
+			//COLLAPSE BONES  WRITE QC DATA
+			int $IsCollapseBonesChecked = `getAttr smdInfo.qcCollapseBones`;
+			if ($IsCollapseBonesChecked == 1)
+				{//`attributeQuery qcCollapseBones smdInfo;
+					fprint $qcFileHandle "$collapsebones ";
+					fprint $qcFileHandle "\n";
+					//string $collapseBones= `getAttr smdInfo.qcCollapseBones`;
+					//fprint $qcFileHandle $scale;
+				// Collapse Bones  Tips
+					if (`getAttr smdInfo.Tips`== 1)
+						{
+							fprint $qcFileHandle  "\n/*\n";
+							fprint $qcFileHandle  "CollapseBones :\n";
+							fprint $qcFileHandle  "Removes all bones that aren't connected to vertices, attachment points, ik rules, or don't animate.\n Vertices or attachment points that are connected to a collapsed bone are reconnected to the bones parent. \n";
+							fprint $qcFileHandle  "*/\n";
+					}									
+				}
 				
 			string $isbreak = `match "[Bb][Rr][Ee][Aa][Kk]" $name`;
 			if ($isbreak != "")
@@ -1565,7 +1622,7 @@ proc int exportQC( string $qcFileName, string $refFileName, int $type)		//type 1
 				if (`getAttr smdInfo.Tips`== 1)
 					{
 						fprint $qcFileHandle  "\n/*\n";
-						fprint $qcFileHandle  "One Idle Sequences Tips \n";
+						fprint $qcFileHandle  "Idle Sequences Tips \n";
 						fprint $qcFileHandle  "Coming Soon... \n";
 						fprint $qcFileHandle  "*/\n";
 					}
@@ -1574,6 +1631,23 @@ proc int exportQC( string $qcFileName, string $refFileName, int $type)		//type 1
 				fprint $qcFileHandle  $name;
 				fprint $qcFileHandle  "_idle\" loop fps 1.00\n";
 				}	
+				
+			// One Idle Frame
+			if (`getAttr smdInfo.smdBindPose` == 1 || $type == 1 )
+				{
+				if (`getAttr smdInfo.Tips`== 1)
+					{
+						fprint $qcFileHandle  "\n/*\n";
+						fprint $qcFileHandle  "Bindpose Sequences Tips \n";
+						fprint $qcFileHandle  "Coming Soon... \n";
+						fprint $qcFileHandle  "*/\n";
+					}
+					
+				fprint $qcFileHandle  "$sequence bindpose \"";
+				fprint $qcFileHandle  $name;
+				fprint $qcFileHandle  "_bindpose\" loop fps 1.00\n";
+				}
+				
 			// Animation Sequences	
 			if (`getAttr smdInfo.smdAni`== 1 && $type == 2 )
 				{
@@ -1708,9 +1782,152 @@ proc int exportQC( string $qcFileName, string $refFileName, int $type)		//type 1
 				fprint $qcFileHandle "\n";
 				fprint $qcFileHandle $addQcFooter;
 				}			
+				
+			// TEMPLATIZATION WRITE DATA !!!
+			// TODO ADD a CHECKBOX on QC Setting panel to Export or not that value and add the condition for that here !
+			// TODO ADD the QC TIPS AFTER THE ENCAPSULATION
+			int $IsNpcTemplateChecked = `getAttr smdInfo.NpcTemplate`;
+			if ($IsNpcTemplateChecked == 1)
+				{//`attributeQuery qcCollapseBones smdInfo;
+				// NPC TEMPLATE QC TIPS
+					if (`getAttr smdInfo.Tips`== 1)
+						{
+							fprint $qcFileHandle  "\n/*\n";
+							fprint $qcFileHandle  "NPC TEMPLATE HELP :\n";
+							fprint $qcFileHandle  "Coming Soon...\n";
+							fprint $qcFileHandle  "*/\n";
+						}		
+
+					fprint $qcFileHandle  "\n/* NPC TEMPLATE */\n";
+					fprint $qcFileHandle "$collapsebones\n";
+					fprint $qcFileHandle "$eyeposition 0 0 70\n";
+
+					fprint $qcFileHandle "$mostlyopaque\n";
+
+					fprint $qcFileHandle "$includemodel humans/male_shared.mdl\n";
+					fprint $qcFileHandle "$includemodel humans/male_ss.mdl\n";
+					fprint $qcFileHandle "$includemodel humans/male_gestures.mdl\n";
+					fprint $qcFileHandle "$includemodel humans/male_postures.mdl\n";
+
+					fprint $qcFileHandle "$pushd 				\"../../../../../addons/humans_sdk\"\n";
+					fprint $qcFileHandle "$proceduralbones \"../../../../../addons/humans_sdk/male.vrd\"\n";
+					fprint $qcFileHandle "$include \"../../../../../addons/humans_sdk/male/commonbones.qci\"\n";
+					fprint $qcFileHandle "$include \"../../../../../addons/humans_sdk/standardhierarchy.qci\"\n";
+					fprint $qcFileHandle "$include \"../../../../../addons/humans_sdk/standardikchains.qci\"\n";
+					fprint $qcFileHandle "$include \"../../../../../addons/humans_sdk/male/hitbox.qci\"\n";
+					fprint $qcFileHandle "$include \"../../../../../addons/humans_sdk/male/ragdoll.qci\"\n";
+					fprint $qcFileHandle "$popd\n";
+					fprint $qcFileHandle "\n";
+				}					
+			// TEMPLATIZATION WRITE DATA !!!
+			// TODO ADD a CHECKBOX on QC Setting panel to Export or not that value and add the condition for that here !
+			// TODO ADD the QC TIPS AFTER THE ENCAPSULATION
+			int $IsThirdPlayerSPChecked = `getAttr smdInfo.ThirdPersonPlayerSP`;
+			if ($IsThirdPlayerSPChecked == 1)
+				{//`attributeQuery qcCollapseBones smdInfo;
+				// NPC TEMPLATE QC TIPS
+					if (`getAttr smdInfo.Tips`== 1)
+						{
+							fprint $qcFileHandle  "\n/*\n";
+							fprint $qcFileHandle  "THIRD PERSON PLAYER SP HELP :\n";
+							fprint $qcFileHandle  "Coming Soon...\n";
+							fprint $qcFileHandle  "*/\n";
+						}		
+
+					fprint $qcFileHandle  "\n/* THIRD PERSON PLAYER SP Template */\n";
+							
+					fprint $qcFileHandle "$collapsebones\n";
+					fprint $qcFileHandle "$eyeposition 0 0 70\n";
+					fprint $qcFileHandle "$mostlyopaque\n";
+
+					fprint $qcFileHandle "$includemodel player/male_anims.mdl\n";
+
+
+					fprint $qcFileHandle "$pushd 				\"../../../../../addons/humans_sdk\"\n";
+					fprint $qcFileHandle "$proceduralbones \"../../../../../addons/humans_sdk/male.vrd\"\n";
+					fprint $qcFileHandle "$include \"../../../../../addons/humans_sdk/male/commonbones.qci\"\n";
+					fprint $qcFileHandle "$include \"../../../../../addons/humans_sdk/standardhierarchy.qci\"\n";
+					fprint $qcFileHandle "$include \"../../../../../addons/humans_sdk/standardikchains.qci\"\n";
+					fprint $qcFileHandle "$include \"../../../../../addons/humans_sdk/male/hitbox.qci\"\n";
+					fprint $qcFileHandle "$include \"../../../../../addons/humans_sdk/male/ragdoll.qci\"\n";
+					fprint $qcFileHandle "$popd\n";
+					fprint $qcFileHandle "\n";
+					
+					fprint $qcFileHandle "$attachment \"eyes\" \"ValveBiped.Bip01_Head1\"  0 -4 67.5 absolute //-1.00 5.00 0.00 rotate 0 0 0\n";
+					fprint $qcFileHandle "$attachment \"mouth\" \"ValveBiped.Bip01_Head1\" 1.00 -6.30 0.00 rotate 0 -80 -90\n";
+					fprint $qcFileHandle "$attachment \"chest\" \"ValveBiped.Bip01_Spine2\" 5.00 4.00 0.00 rotate 0 90 90\n";
+					fprint $qcFileHandle "\n";					
+				}
+
+			// TEMPLATIZATION WRITE DATA !!!
+			// TODO ADD a CHECKBOX on QC Setting panel to Export or not that value and add the condition for that here !
+			// TODO ADD the QC TIPS AFTER THE ENCAPSULATION
+			int $IsThirdPlayerMPChecked = `getAttr smdInfo.ThirdPersonPlayerMP`;
+			if ($IsThirdPlayerMPChecked == 1)
+				{//`attributeQuery qcCollapseBones smdInfo;
+				// NPC TEMPLATE QC TIPS
+					if (`getAttr smdInfo.Tips`== 1)
+						{
+							fprint $qcFileHandle  "\n/*\n";
+							fprint $qcFileHandle  "THIRD PERSON PLAYER MP HELP :\n";
+							fprint $qcFileHandle  "Coming Soon...\n";
+							fprint $qcFileHandle  "*/\n";
+						}		
+					fprint $qcFileHandle  "\n/* THIRD PERSON PLAYER MP Template */\n";
+					
+					fprint $qcFileHandle "$collapsebones\n";
+					fprint $qcFileHandle "$eyeposition 0 0 70\n";
+					fprint $qcFileHandle "$mostlyopaque\n";
+
+					fprint $qcFileHandle "$includemodel player/male_anims.mdl\n";
+
+
+					fprint $qcFileHandle "$pushd 				\"../../../../../addons/humans_sdk\"\n";
+					fprint $qcFileHandle "$proceduralbones \"../../../../../addons/humans_sdk/male.vrd\"\n";
+					fprint $qcFileHandle "$include \"../../../../../addons/humans_sdk/male/commonbones.qci\"\n";
+					fprint $qcFileHandle "$include \"../../../../../addons/humans_sdk/standardhierarchy.qci\"\n";
+					fprint $qcFileHandle "$include \"../../../../../addons/humans_sdk/standardikchains.qci\"\n";
+					fprint $qcFileHandle "$include \"../../../../../addons/humans_sdk/male/hitbox.qci\"\n";
+					fprint $qcFileHandle "$include \"../../../../../addons/humans_sdk/male/ragdoll.qci\"\n";
+					fprint $qcFileHandle "$popd\n";
+					fprint $qcFileHandle "\n";
+					
+					fprint $qcFileHandle "$attachment \"eyes\" \"ValveBiped.Bip01_Head1\"  0 -4 67.5 absolute //-1.00 5.00 0.00 rotate 0 0 0\n";
+					fprint $qcFileHandle "$attachment \"mouth\" \"ValveBiped.Bip01_Head1\" 1.00 -6.30 0.00 rotate 0 -80 -90\n";
+					fprint $qcFileHandle "$attachment \"chest\" \"ValveBiped.Bip01_Spine2\" 5.00 4.00 0.00 rotate 0 90 90\n";
+					fprint $qcFileHandle "\n";
+				}	
+
+			// TEMPLATIZATION WRITE DATA !!!
+			// TODO ADD a CHECKBOX on QC Setting panel to Export or not that value and add the condition for that here !
+			// TODO ADD the QC TIPS AFTER THE ENCAPSULATION
+			int $IsFourWheeledVehicleChecked = `getAttr smdInfo.Vehicle`;
+			if ($IsFourWheeledVehicleChecked == 1)
+				{//`attributeQuery qcCollapseBones smdInfo;
+				// NPC TEMPLATE QC TIPS
+					if (`getAttr smdInfo.Tips`== 1)
+						{
+							fprint $qcFileHandle  "\n/*\n";
+							fprint $qcFileHandle  "FOUR WHEELED VEHICLE HELP :\n";
+							fprint $qcFileHandle  "Coming Soon...\n";
+							fprint $qcFileHandle  "*/\n";
+						}		
+					fprint $qcFileHandle  "\n/* Four Wheeled Vehicle Template */\n";
+					
+					fprint $qcFileHandle "$collapsebones\n";
+					fprint $qcFileHandle "$include \"buggy_shared.qci\"\n";
+					
+					fprint $qcFileHandle "\n";
+/*					
+					fprint $qcFileHandle "$attachment \"eyes\" \"ValveBiped.Bip01_Head1\"  0 -4 67.5 absolute //-1.00 5.00 0.00 rotate 0 0 0\n";
+					fprint $qcFileHandle "$attachment \"mouth\" \"ValveBiped.Bip01_Head1\" 1.00 -6.30 0.00 rotate 0 -80 -90\n";
+					fprint $qcFileHandle "$attachment \"chest\" \"ValveBiped.Bip01_Spine2\" 5.00 4.00 0.00 rotate 0 90 90\n";
+*/					
+				}	
+				
 			// mesa watermark print as comment on the QC footer.
 			string $mesaSignature;
-			$mesaSignature = "/*" + "Created With MESA by www.puppet-master.net" + " */";
+			$mesaSignature = "/*" + "Created With MESA by http://puppet-master.net" + " */";
 			fprint $qcFileHandle "\n";
 			fprint $qcFileHandle $mesaSignature;
 			fprint $qcFileHandle "\n";
@@ -1793,6 +2010,7 @@ global proc int smdExport (int $reference, int $separateBodyGroups)
 	string $smdFileName = $fileName;
 	string $smdPhy;
 	string $smdIdle;
+	string $smdBindPose;
 	string $smdName;
 	string $qcName;
 	string $vtaFileName;
@@ -1801,6 +2019,8 @@ global proc int smdExport (int $reference, int $separateBodyGroups)
 	//$smdFileName = `substitute "\\.[Mm][AaBb]$" $smdFileName ".smd"`;
 	$smdPhy = `substitute ".[Ss][Mm][Dd]" $smdFileName "_phy.smd"`;
 	$smdIdle = `substitute ".[Ss][Mm][Dd]" $smdFileName "_idle.smd"`;
+	//rename BindPose
+	$smdBindPose = `substitute ".[Ss][Mm][Dd]" $smdFileName "_bindpose.smd"`;
 	$smdName = `substitute ".[Ss][Mm][Dd]" $smdFileName ""`;
 	$qcName = `substitute ".[Ss][Mm][Dd]" $smdFileName ".qc"`;
 	$vtaFileName = `substitute ".[Ss][Mm][Dd]" $smdFileName ".vta"`;
@@ -1815,7 +2035,11 @@ global proc int smdExport (int $reference, int $separateBodyGroups)
 		{
 		$retval = exportAnimation( $smdIdle );
 		}
-	
+	if (`getAttr smdInfo.smdBindPose`== 1)
+		{
+		$retval = exportAnimation( $smdBindPose );
+		}
+		
 	if ( $reference == 1)
 		{
 		$retval = exportReference( $fileRoot, $fileName, $meshList, $separateBodyGroups );

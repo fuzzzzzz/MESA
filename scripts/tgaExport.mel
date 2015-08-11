@@ -173,10 +173,10 @@ global proc int tgaExport( string $fileNode, int $overwriteMode )
 	if ($isNormalMap && `getAttr smdInfo.Tex` == 1)
 		{
 		print "-----------------------------------------------------\n";
-		print ( " VTEX will Export Diffuse and Normal Textures Maps \n" );
+		print ( " VTEX will Export the Textures Maps \n" );
 		print "-----------------------------------------------------\n";
 		string $SourceBinPath = `getenv SOURCE_BIN_PATH`;
-		$vtexapp = "\"" + "\"" + $SourceBinPath + "/vtex.exe" + "\"" + " -nop4 -nopause ";
+		$vtexapp = "\"" +"\"" + $SourceBinPath + "/vtex.exe" + "\"" + " -nop4 -nopause ";
 		$vtex += `system ( $vtexapp  + "\"" + $textFile + "\"\n" )`;
 		print ( $vtex );
 		$vtex += "\n";
@@ -187,13 +187,13 @@ global proc int tgaExport( string $fileNode, int $overwriteMode )
 	if (`getAttr smdInfo.Tex` == 1)
 		{
 		print "-----------------------------------------------------\n";
-		print ( " VTEX will Export the Diffuse Texture Map \n" );
+		print ( " VTEX will Export the Texture Maps \n" );
 		print "-----------------------------------------------------\n";
 		string $SourceBinPath = `getenv SOURCE_BIN_PATH`;
 		$vtexapp = "\"" + "\"" + $SourceBinPath + "/vtex.exe" + "\"" + " -nop4 -nopause ";
 		$vtex += `system ( $vtexapp  + "\"" + $textFile  + "\"" )`;
 		$vtexdebug = $vtexapp  + "\"" + $textFile  + "\"\n";
-		print ( $vtexdebug );
+		//print ( $vtexdebug );
 		print ( $vtex );
 		}
 	$vtex += "\n\n";
