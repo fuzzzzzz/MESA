@@ -25,9 +25,9 @@ thumbs.db
 docs/guides/*
 docs/screenshots/*
 docs/resources/*
-icons/obsolete/mesa/*
-icons/obsolete/valve/*
-icons/sources/
-scripts/delete/
-scripts/icons/
+icons/obselete/mesa/*
+icons/obselete/valve/*
+icons/sources/*
+scripts/delete/*
+scripts/icons/*
 addons/humans_sdk/male/group03m/scenes/male_05_reference.scn
