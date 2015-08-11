@@ -7,7 +7,7 @@ config.cfg
 *.tmp
 *.log
 *.psd
-*.png
+*.bak
 *.graphml
 *.mel_
 *.py
@@ -26,4 +26,5 @@ icons/obsolete/mesa
 icons/obsolete/valve
 icons/sources/
 scripts/delete/
+scripts/icons/
 addons/humans_sdk/male/group03m/scenes/male_05_reference.scn
