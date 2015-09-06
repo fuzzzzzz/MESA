@@ -142,7 +142,7 @@ global proc shelf_MESA () {
         -manage 1
         -visible 1
         -preventOverride 0
-        -annotation "Fix Bindpose Animation, You should save your scene before you use that function.\n This function will update the smdInfo node that store the export settings\n And will insert the new animation named Bindopose, and using the frame 0 > 1" .
+        -annotation "Fix Bindpose Animation, You should save your scene before you use that function." // This function will update the smdInfo node that store the export settings And will insert the new animation named Bindopose, and using the frame 0 > 1" .
         -enableBackground 0
         -align "center" 
         -label "Scene Upgrade" 
@@ -160,6 +160,7 @@ global proc shelf_MESA () {
         -commandRepeatable 1
         -flat 1
     ;
+	
     shelfButton
         -enableCommandRepeat 1
         -enable 1
@@ -498,5 +499,4 @@ global proc shelf_MESA () {
         -commandRepeatable 1
         -flat 1
     ;
-
 } 

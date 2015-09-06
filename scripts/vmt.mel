@@ -456,7 +456,7 @@ global proc int vmt (string $shader)
 		fprint $fileHandle ("\"" + $normalMap + "\"");
 		}
 	fprint $fileHandle "\r\n}\r\n";
-	$mesaSignature = "// Created With MESA by www.puppet-master.net";
+	$mesaSignature = "// Created With MESA 2.1 by www.puppet-master.net";
 	fprint $fileHandle $mesaSignature;
 	fclose $fileHandle;
 

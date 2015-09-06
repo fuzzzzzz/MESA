@@ -1633,21 +1633,21 @@ proc int exportQC( string $qcFileName, string $refFileName, int $type)		//type 1
 				}	
 				
 			// One Idle Frame
-			if (`getAttr smdInfo.smdBindPose` == 1 || $type == 1 )
+/*			if (`getAttr smdInfo.smdBindPose` == 1 || $type == 1 )
 				{
 				if (`getAttr smdInfo.Tips`== 1)
 					{
 						fprint $qcFileHandle  "\n/*\n";
 						fprint $qcFileHandle  "Bindpose Sequences Tips \n";
 						fprint $qcFileHandle  "Coming Soon... \n";
-						fprint $qcFileHandle  "*/\n";
-					}
+						fprint $qcFileHandle  "*///\n";
+/*					}
 					
 				fprint $qcFileHandle  "$sequence bindpose \"";
 				fprint $qcFileHandle  $name;
 				fprint $qcFileHandle  "_bindpose\" loop fps 1.00\n";
 				}
-				
+*/				
 			// Animation Sequences	
 			if (`getAttr smdInfo.smdAni`== 1 && $type == 2 )
 				{

@@ -90,10 +90,10 @@ proc smdMakeScriptNode ()
 		setAttr smdInfo.smdFixTrans 0;
 		setAttr smdInfo.smdFixCol 0;
 		
-		setAttr smdInfo.smdAniName -type "string" "idle§#bindpose§#";
-		setAttr smdInfo.smdAniStart -type "string" "0§#0§#";
-		setAttr smdInfo.smdAniEnd -type "string" "1§#1§#";
-		setAttr smdInfo.smdAniAdd -type "string" "loop fps 30§#loop fps 30§#";
+		setAttr smdInfo.smdAniName -type "string" "idle§#";
+		setAttr smdInfo.smdAniStart -type "string" "0§#";
+		setAttr smdInfo.smdAniEnd -type "string" "1§#";
+		setAttr smdInfo.smdAniAdd -type "string" "loop fps 30§#";
 		
 		setAttr smdInfo.qcScale -type "string" "1";
 		setAttr smdInfo.qcUpAxis -type "string" "Z";
@@ -865,7 +865,6 @@ global proc propList()
 
 global proc vtaExport ()
 	{
-	//source smdOptionWindow;
 	source smdExport;
 	smdExport( 2, 0 );
 	}
@@ -966,7 +965,7 @@ global proc smdOptionWindow ()
 		deleteUI -window smdOptWin;
 		}
 
-	window -title "MESA::Maya Exporter for Source Assets v2.1"
+	window -title "MESA v2.1 - Maya Exporter for Source Engine"
 
 		-width 440
 		-height 520
@@ -978,19 +977,19 @@ global proc smdOptionWindow ()
 
 		columnLayout main;
 
-		string $tabs = `tabLayout -h 550 -w 440 -innerMarginWidth 15 -innerMarginHeight 15 -scr 1 -hst 16 -vst 16 -cr 1 -p main tlay`;
+		string $tabs = `tabLayout -h 750 -w 440 -innerMarginWidth 1 -innerMarginHeight 1 -scr 1 -hst 12 -vst 12 -cr 1 -p main tlay`;
 
 		//create tab export
-		string $tab1 = `columnLayout -adj 1 -p tlay tab1`;
+		string $tab1 = `columnLayout -p tlay tab1`;
 
-        columnLayout -p tab1 tab1_main;
+        columnLayout -adj 1 -p tab1 tab1_main;
 		//columnLayout -cal "left" -cat "both" 20 -cw 450 -rs 9;
 		//	text -w 380 -label $destination  -align "center";
 		
 		//setParent topLayout;
 							
-			image -i "mesa-about-gray" -bgc 0 1 0 -p tab1_main;
-		frameLayout -marginHeight 2 -marginWidth 2 -bs "etchedOut" -bv on -collapsable true -cl off -w 400 -label "What's new ?" -p tab1_main hello_frame;
+			image -i "mesa-about-gray" -p tab1_main;
+		frameLayout -marginHeight 2 -marginWidth 2 -bs "etchedOut" -bv on -collapsable true -cl on -label "Read Me First !" -p tab1_main hello_frame;
 			//text -label "Information :\n This is some note for you to know how to start with MESA 2.0\n --red\n" -align "left" -p hello_frame;
 				
 							
@@ -1016,11 +1015,11 @@ global proc smdOptionWindow ()
 				$hellohelp += "  You can simply contact me on Steam.\n";
 				$hellohelp += " \t\t\t\t\t\t\t\t\t\t --red";
 */
-				scrollField -w 320 -h 170 -ww false -text $hellohelp -ed 0 -p hello_frame;
+				scrollField /*-w 320*/ -h 170 -ww false -text $hellohelp -ed 0 -p hello_frame;
 
 				
-			columnLayout -cal "left" -cat "both" 15 -cw 400 -rs 10 -p tab1_main;
-			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -w 400 -label "Export Options" -p tab1_main export_opt;
+			columnLayout -cal "left" -cat "both" 15 /*-cw 400*/ -rs 10 -p tab1_main;
+			frameLayout -marginHeight 2 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -label "Export Options" -p tab1_main export_opt;
 			
 			
 			checkBox -label "Reference Model" -ann "Export Reference smd from Layer \"reference\""
@@ -1055,7 +1054,7 @@ global proc smdOptionWindow ()
 				-offCommand "setAttr smdInfo.qcLOD 0"
 				-p export_opt;
 				;
-			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -w 400 -label "Animation Sequences" -p tab1_main anim_seq;
+			frameLayout -marginHeight 2 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -label "Animation Sequences" -p tab1_main anim_seq;
 			
 			checkBox -label "Export Idle" -ann "Export 0:1 frame Idle animation" 
 				-value `getAttr smdInfo.smdIdle` 
@@ -1078,7 +1077,7 @@ global proc smdOptionWindow ()
 				-offCommand "setAttr smdInfo.smdAni 0"
 				-p anim_seq;
 				;			
-			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -w 400 -label "Export Utilities" -p tab1_main export_util;
+			frameLayout -marginHeight 2 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -label "Export Utilities" -p tab1_main export_util;
 			
 			checkBox -label "Freeze Transformations" -ann "Freeze and Reset Transforms (not with anims!)" 
 				-value `getAttr smdInfo.smdFixTrans` 
@@ -1101,7 +1100,7 @@ global proc smdOptionWindow ()
 				-p export_util;
 				;
 
-			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -w 400 -label "Templatize Model" -p tab1_main template_frame;
+			frameLayout -marginHeight 2 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -label "Templatize Model" -p tab1_main template_frame;
 			//Templatization Selection
 			$templateSelection = `radioCollection`; 
 				global string $activetemplate;
@@ -1110,7 +1109,7 @@ global proc smdOptionWindow ()
 				radioCollection -edit -select $activetemplate $templateSelection;
 				
 				
-			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -w 400 -label "Compile Assets" -p tab1_main compile_frame;
+			frameLayout -marginHeight 2 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -label "Compile Assets" -p tab1_main compile_frame;
 			checkBox -label "Export VTF/VMT" -ann "Export Textures ( Vtex )" 
 				-value `getAttr smdInfo.Tex` 
 				-onCommand "setAttr smdInfo.Tex 1"
@@ -1140,8 +1139,8 @@ global proc smdOptionWindow ()
 				;
 
 			//Export Tab Help
-			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl on -w 400 -label "Export Help" -p tab1_main export_help;
-			rowLayout -nc 1 -p export_help;
+			frameLayout -marginHeight 2 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl on /*-w 400*/ -label "Export Help" -p tab1_main export_help;
+			rowLayout -nc 1 -ad1 1 -p export_help;
 			//setParent f1a;
 
 			string $exphelp;
@@ -1225,7 +1224,7 @@ global proc smdOptionWindow ()
 				$exphelp += "\n";				
 
 				
-				scrollField -wordWrap false -w 388 -h 225 -text $exphelp -ed 0 -p export_help;				
+				scrollField -wordWrap false /*-w 388*/ -h 225 -text $exphelp -ed 0 -p export_help;				
 				
 
 //create Tab path settings
@@ -1233,7 +1232,7 @@ global proc smdOptionWindow ()
 string $tab2 = `columnLayout -adj 1 -p tlay tab2`;
 
 		
-			columnLayout  -p tab2 tab2_main;
+			columnLayout  -adj 1 -p tab2 tab2_main;
 				string $smdTarget;
 				string $texFolder;
 				string $smdPhy;
@@ -1242,11 +1241,11 @@ string $tab2 = `columnLayout -adj 1 -p tlay tab2`;
 				
 				$smdTarget=`getAttr smdInfo.smdTarget`;
 				$texFolder=`getAttr smdInfo.texPath`;
-				image -i "mesa-about" -p tab2_main;
+				image -i "mesa-about-gray" -p tab2_main;
 				
 		
-			frameLayout -marginHeight 1 -marginWidth 1  -bs "etchedOut" -bv off -collapsable true -cl on -w 400 -label "MESA Environement variables" -bgc 0.2 0.2 0.3 -p tab2_main envvars_frame;
-			columnLayout -bgc 0.2 0.2 0.3 /*-h 270*/ -rs 0 -p envvars_frame sourcecheckpath;
+			frameLayout -marginHeight 2 -marginWidth 3  -bs "etchedOut" -bv off -collapsable true -cl on -label "MESA Environement variables" -bgc 0.2 0.2 0.3 -p tab2_main envvars_frame;
+			columnLayout -bgc 0.2 0.2 0.3 /*-h 270*/ -adj 1 -rs 1 -p envvars_frame sourcecheckpath;
 				//rowLayout -bgc 0.2 0.2 0.3 -nc 1 -width 400 -h 176 -cal 1 "right"; // useless , screw the layout ..red
 					//text -label " " -p sourcecheckpath;
 				//Define String
@@ -1256,52 +1255,92 @@ string $tab2 = `columnLayout -adj 1 -p tlay tab2`;
 				string $GameProjectPath = `getenv GAME_PROJECT`;	
 				string $VProjectPath = `getenv VPROJECT`;
 				string $MesaDirPath = `getenv MESADIR`;
+				if ( $sourceBinPathString == "")
+					{
+						$sourceBinPathString = " Something is going wrong, check the MESA/projects/workspace/workspace.bat..";
+						text -bgc 0.8 0.2 0.1 -ebg  on -fn "boldLabelFont" -label " %SOURCE BIN PATH% :" -h 20 -align left -p sourcecheckpath; 
+						text  -bgc 0.5 0.1 0.1 -ebg  on /*-fn "boldLabelFont"*/ -label $sourceBinPathString -h 15 -align left -p sourcecheckpath; 
+					
+					}
+				else 
+					{
+						text -bgc 0.8 0.2 0.1 -ebg  on -fn "boldLabelFont" -label " %SOURCE BIN PATH% :" -h 20 -align left -p sourcecheckpath; 
+						text  -bgc 0.8 0.6 0.1 -ebg  on /*-fn "boldLabelFont"*/ -label $sourceBinPathString -h 15 -align left -p sourcecheckpath; 
+					}
+					
+				if (  $GameProjectSource == "")
+					{
+						$GameProjectSource = " Something is going wrong, check the MESA/projects/workspace/workspace.bat..";
+						text -bgc 0.8 0.2 0.1 -ebg  on -fn "boldLabelFont" -label " %GAME PROJECT SRC% :" -h 20 -align left -p sourcecheckpath; 
+						text  -bgc 0.5 0.1 0.1 -ebg  on /*"obliqueLabelFont"*/ -label $GameProjectSource -h 15 -align left -p sourcecheckpath; 					
+					}
+				else 
+					{	
+						text -bgc 0.8 0.2 0.1 -ebg  on -fn "boldLabelFont" -label " %GAME PROJECT SRC% :" -h 20 -align left -p sourcecheckpath; 
+						text  -bgc 0.8 0.6 0.1 -ebg  on /*"obliqueLabelFont"*/ -label $GameProjectSource -h 15 -align left -p sourcecheckpath; 
+					}
+					
+
+				if (  $GameProjectName == "")
+					{
+						$GameProjectName = " Something is going wrong, check the MESA/projects/workspace/workspace.bat..";
+						text -bgc 0.8 0.2 0.1 -ebg  on -fn "boldLabelFont" -label " %GAME PROJECT NAME% :" -h 20 -align left -p sourcecheckpath; 
+						text -bgc 0.5 0.1 0.1 -ebg on -label $GameProjectName -h 15 -align left -p sourcecheckpath; 
+					}
+				else 
+					{	
+						text -bgc 0.8 0.2 0.1 -ebg  on -fn "boldLabelFont" -label " %GAME PROJECT NAME% :" -h 20 -align left -p sourcecheckpath; 
+						text -bgc 0.8 0.6 0.1 -ebg on -label $GameProjectName -h 15 -align left -p sourcecheckpath; 
+					}
+
+				if (  $GameProjectPath == "")
+					{
+						$GameProjectPath = " Something is going wrong, check the MESA/projects/workspace/workspace.bat..";
+						text -bgc 0.8 0.2 0.1 -ebg  on -fn "boldLabelFont" -label " %GAME_PROJECT% :" -h 20 -align left -p sourcecheckpath; 
+						text  -bgc 0.5 0.1 0.1 -ebg on -label $GameProjectPath -h 13 -align left -p sourcecheckpath; 
+					}
+				else 
+					{
+						text -bgc 0.8 0.2 0.1 -ebg  on -fn "boldLabelFont" -label " %GAME_PROJECT% :" -h 20 -align left -p sourcecheckpath; 
+						text  -bgc 0.8 0.6 0.1 -ebg on -label $GameProjectPath -h 13 -align left -p sourcecheckpath; 
+					}
 				
-					text -bgc 0.8 0.2 0.1 -ebg  on -fn "boldLabelFont" -label " %SOURCE BIN PATH% :" -w 400 -h 20 -align left -p sourcecheckpath; 
-					text  -bgc 0.8 0.6 0.1 -ebg  on -label $sourceBinPathString -w 400 -h 15 -align left -p sourcecheckpath; 
-					
-//					separator -w 370 -h 3 -st "in" -p sourcecheckpath;
-					
-					text -bgc 0.8 0.2 0.1 -ebg  on -fn "boldLabelFont" -label " %GAME PROJECT SRC% :" -w 400 -h 20 -align left -p sourcecheckpath; 
-					text  -bgc 0.8 0.6 0.1 -ebg  on -fn "obliqueLabelFont" -label $GameProjectSource -w 400 -h 15 -align left -p sourcecheckpath; 
-					
-//					separator -w 370 -h 3 -st "in" -p sourcecheckpath;
-					
-					text -bgc 0.8 0.2 0.1 -ebg  on -fn "boldLabelFont" -label " %GAME PROJECT NAME% :" -w 400 -h 20 -align left -p sourcecheckpath; 
-					text -bgc 0.8 0.6 0.1 -ebg on -fn "obliqueLabelFont" -label $GameProjectName -w 400 -h 15 -align left -p sourcecheckpath; 
-					
-//					separator -w 370 -h 3 -st "in" -p sourcecheckpath;
-					
-					text -bgc 0.8 0.2 0.1 -ebg  on -fn "boldLabelFont" -label " %GAME_PROJECT% :" -w 400 -h 20 -align left -p sourcecheckpath; 
-					text  -bgc 0.8 0.6 0.1 -ebg on -fn "obliqueLabelFont" -label $GameProjectPath -w 400 -h 13 -align left -p sourcecheckpath; 
-					
-//					separator -w 370 -h 3 -st "in" -p sourcecheckpath;
-					
-					text -bgc 0.8 0.2 0.1 -ebg  on -fn "boldLabelFont" -label " %VPROJECT% :" -w 400 -h 20 -align left -p sourcecheckpath; 
-					text  -bgc 0.8 0.6 0.1 -ebg on -fn "obliqueLabelFont" -label $VProjectPath -w 400 -h 13 -align left -p sourcecheckpath; 
-					
-//					separator -w 370 -h 3 -st "in" -p sourcecheckpath;
-					
-					text -bgc 0.8 0.2 0.1 -ebg  on -fn "boldLabelFont" -label " %MESADIR% :" -w 400 -h 20 -align left -p sourcecheckpath; 
-					text  -bgc 0.8 0.6 0.1 -ebg  on -fn "obliqueLabelFont" -label $MesaDirPath -w 400 -h 15 -align left -p sourcecheckpath; 
+				if (  $VProjectPath == "")
+					{
+						$VProjectPath = " Something is going wrong, check the MESA/projects/workspace/workspace.bat..";
+						text -bgc 0.8 0.2 0.1 -ebg  on -fn "boldLabelFont" -label " %VPROJECT% :"  -h 20 -align left -p sourcecheckpath; 
+						text  -bgc 0.5 0.1 0.1 -ebg on -label $VProjectPath -h 13 -align left -p sourcecheckpath; 
+					}
+				else
+					{
+						text -bgc 0.8 0.2 0.1 -ebg  on -fn "boldLabelFont" -label " %VPROJECT% :"  -h 20 -align left -p sourcecheckpath; 
+						text  -bgc 0.8 0.6 0.1 -ebg on -label $VProjectPath -h 13 -align left -p sourcecheckpath; 				
+					}
+
+					//we dont need to check this, cause if mesa is not loaded  this is totally useless to give feedback from there --red
+					text -bgc 0.8 0.2 0.1 -ebg  on -fn "boldLabelFont" -label " %MESADIR% :" -h 20 -align left -p sourcecheckpath; 
+					text  -bgc 0.8 0.6 0.1 -ebg  on -label $MesaDirPath -h 15 -align left -p sourcecheckpath; 
 
 				setParent sourcecheckpath;
 				
 				
-			frameLayout -marginHeight 1 -marginWidth 1 -bs "etchedOut" -bv on -collapsable true -w 400 -label "Export Paths" -bgc 0.2 0.2 0.3 -p tab2_main smdpath_frame;
-				columnLayout  /*-h 270*/ -rs 0 -p smdpath_frame;
-//				rowLayout -nc 1 -width 400 -p smdpath_frame;
+			frameLayout -marginHeight 1 -marginWidth 2 -bs "etchedOut" -bv on -collapsable true -label "Export Paths" -bgc 0.2 0.2 0.3 -p tab2_main smdpath_frame;
+				columnLayout  /*-mh 2 -mw 2 */-rs 0 -adj 1 -p smdpath_frame;
+				//rowLayout -ad1 1  -nc 1 -p smdpath_frame;
 					text -vis 1 
+						//-h 20 
+						-bgc 0.8 0.2 0.1
 						-font "boldLabelFont"
-						-label "SMD / QC Path"
+						-label "  SMD / QC Path"
 						-align "left" 
 						;
 				
 				setParent tab2_main;
 
-			columnLayout -p smdpath_frame smdtarget;
-				rowLayout -nc 1 -width 380 ;
-					textField -w 380
+			columnLayout -rs 0 -adj 1 -p smdpath_frame smdtarget;
+				//rowLayout -nc 1/* -width 380 */;
+					textField 
+						//-h 25
 						-text $smdTarget 
 						-editable 1 
 						-cc "updateNode;" 
@@ -1310,46 +1349,57 @@ string $tab2 = `columnLayout -adj 1 -p tlay tab2`;
 
 				setParent smdtarget;
 				
-			columnLayout -p smdpath_frame vtex;
-					
-				rowLayout -nc 1 ;//-width 380 ;
+			columnLayout /*-rs 0*/ -adj 1 -p smdpath_frame vtex;
+				//rowLayout -nc 1 ;//-width 380 ;
 					text -vis 1 
+						-h 12
+						-bgc 0.8 0.2 0.1
 						-font "boldLabelFont"
-						-label "Materials/Textures Path"
+						-label "  Materials/Textures Path"
 						-ann "This path is not editable\n and must ended at the /materialsrc/"
 						-align "left" ;
 				
 				setParent vtex;
 							
-			columnLayout -p smdpath_frame texfolder;
-				rowLayout -nc 1 -width 380 ;
-					textField -w 380 -ed 0
+			columnLayout -rs 0 -adj 1 -p smdpath_frame texfolder;
+				rowLayout -nc 1 -ad1 1;//-width 380 ;
+					textField -ed 0
+						//-h 25
+						-bgc 0.4 0.4 0.4
 						-text $texFolder 
 						-cc " " 
 						tex;
 					
 				$smdPhy = `substitute ".[Ss][Mm][Dd]" $smdTarget "_phy.smd"`;
 				$smdIdle = `substitute ".[Ss][Mm][Dd]" $smdTarget "_idle.smd"`;
-					text -label " " -p texfolder;
+					//text -label " " -p texfolder;
 				//$output = "Physics Name   ";// + $smdPhy;
-					text -w 380 -font "boldLabelFont" -label " Physics Name:" -align "left" -p texfolder phy; // phy;
-					text -label " " -p texfolder;
-					textField -ed 0 -w 380 -text $smdPhy -p texfolder;
+					text  -bgc 0.8 0.2 0.1 -font "boldLabelFont" -label "   Physics Name:" /*-h 20*/  -align "left" -p texfolder phy; // phy;
+					//text -label " " -p texfolder;
+					textField -ed 0 
+						-text $smdPhy 
+						-bgc 0.4 0.4 0.4
+						//-h 25 
+						-p texfolder;
 					//text -label $smdPhy -p texfolder;
-					text -label " " -p texfolder;
+					//text -label " " -p texfolder;
 				
 
 				//$output = "IDLE Name       ";// + $smdIdle;
-					text -w 380 -font "boldLabelFont" -label " IDLE Name: " -align "left" -p texfolder idle; // idle;
-					text -label " " -align "right" -p texfolder;
-					textField -ed 0 -w 380 -text $smdIdle -p texfolder;
+					text  -bgc 0.8 0.2 0.1 -font "boldLabelFont" -label "   IDLE Name: " /*-h 20 */ -align "left" -p texfolder idle; // idle;
+					//text -label " " -align "right" -p texfolder;
+					textField -ed 0 
+						-text $smdIdle 
+						//-h 25 
+						-bgc 0.4 0.4 0.4
+						-p texfolder;
 					//text -label $smdIdle -p texfolder;
-					text -label " " -p texfolder;
-				button -label "GENERATE PATHS" -width 380 -align "center" -bgc 0.7 0.3 0.3
+					//text -label " " -p texfolder;
+				button -label "GENERATE PATHS"  -h 40 -align "center" -bgc 0.2 0.2 0.2
 					-c "updatePaths;" 
 					-p texfolder;
 
-					text -label " " -p texfolder;
+					//text -label " " -p texfolder;
 
 				setParent texfolder;
 
@@ -1357,7 +1407,7 @@ string $tab2 = `columnLayout -adj 1 -p tlay tab2`;
 			
 			
 			//Path Settings help
-			frameLayout -marginHeight 2 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl on -w 400 -label "Path Settings Help" -p tab2_main path_help;
+			frameLayout -marginHeight 2 -marginWidth 2 -bs "etchedOut" -bv on -collapsable true -cl on -label "Path Settings Help" -p tab2_main path_help;
 			rowLayout -nc 1 -p path_help;
 			
 			string $pahelp;
@@ -1484,7 +1534,7 @@ string $tab3 = `columnLayout -adj 1 -p tlay tab3`;
 					;	
 			
 				text -vis 1 -label "$BBOX" -align "left" -p tab3_row4;
-				textField -w 166 -pht "min min min max max max"-cc "setAttr smdInfo.qcBbox -type \"string\" `textField -q -text qcBbox`" -text `getAttr smdInfo.qcBbox` -p tab3_row4 qcBbox;
+				textField -w 166 /*-pht "min min min max max max"*/ -cc "setAttr smdInfo.qcBbox -type \"string\" `textField -q -text qcBbox`" -text `getAttr smdInfo.qcBbox` -p tab3_row4 qcBbox;
 				
 				separator -hr false -w 3 -h 20 -st "out";
 								
@@ -1529,7 +1579,7 @@ string $tab3 = `columnLayout -adj 1 -p tlay tab3`;
 				//separator -h 10 -w 370;
 
 				//QC settings Help
-				frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl on -w 350 -label "QC Settings Help" -p tab3 tab3_help;
+				frameLayout -marginHeight 2 -marginWidth 2 -bs "etchedOut" -bv on -collapsable true -cl on -w 350 -label "QC Settings Help" -p tab3 tab3_help;
 				rowLayout -nc 1 -p tab3_help;
 				
 				string $qcshelp;
@@ -1564,26 +1614,26 @@ string $tab4 = `columnLayout -adj 1 -p tlay tab4`;
 
 
 			// QC Header
-			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -label "QC Header" -p tab4 qchead_frame;
+			frameLayout -marginHeight 2 -marginWidth 2 -bs "etchedOut" -bv on -collapsable true -label "QC Header" -p tab4 qchead_frame;
 			rowLayout -nc 1 -adj 1  -p qchead_frame;
 				text -vis 1 -label "Add on QC Header" -align "left" -p qchead_frame;
 				scrollField -w 410 -h 170 -text `getAttr smdInfo.qcHeader` -cc "setAttr smdInfo.qcHeader -type \"string\" `scrollField -q -text qcHeader`" -p qchead_frame qcHeader;
 			
 			// QC Footer
-			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -label "QC Footer" -p tab4 qcfoot_frame;
+			frameLayout -marginHeight 2 -marginWidth 2 -bs "etchedOut" -bv on -collapsable true -label "QC Footer" -p tab4 qcfoot_frame;
 			rowLayout -nc 1 -p qcfoot_frame;
 				text -vis 1 -label "Add to QC Footer" -align "left" -p qcfoot_frame;
 				scrollField -w 410 -h 170 -text `getAttr smdInfo.qcFooter` -cc "setAttr smdInfo.qcFooter -type \"string\" `scrollField -q -text qcFooter`" -p qcfoot_frame qcFooter;
 			
 			// Common QC Commands
-			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl on -label "Common QC commands" -p tab4 qc_commands_frame;
+			frameLayout -marginHeight 2 -marginWidth 2 -bs "etchedOut" -bv on -collapsable true -cl on -label "Common QC commands" -p tab4 qc_commands_frame;
 			rowLayout -nc 1 -p qc_commands_frame;
 				string $qcCmdhelp;
 				$qcCmdhelp += " Coming soon\n";
 				scrollField -w 140 -h 100 -text $qcCmdhelp -ed 0 -p qc_commands_frame;
 			
 			
-			frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl true -label "QC Commands Help" -p tab4 qchelp_frame;
+			frameLayout -marginHeight 2 -marginWidth 2 -bs "etchedOut" -bv on -collapsable true -cl true -label "QC Commands Help" -p tab4 qchelp_frame;
 			rowLayout -nc 1 -p qchelp_frame;
 				string $qcEdhelp;
 				$qcEdhelp += "- $upaxis [X|Y|Z] \n";
@@ -1630,7 +1680,7 @@ string $tab5 = `columnLayout -adj 1 -p tlay tab5`;
 						button -label "del" -c "$it = `textScrollList -q -sii aniName`;int $i = $it[0];delAniItem($i);" -p r3;
 				
 							//help with Animation Tab
-				frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -cl true -label "Animation Help" -p tab5 anim_help_frame;
+				frameLayout -marginHeight 2 -marginWidth 2 -bs "etchedOut" -bv on -collapsable true -cl true -label "Animation Help" -p tab5 anim_help_frame;
 				rowLayout -nc 1 -p anim_help_frame;
 				//setParent f2;
 				string $animhelp;
@@ -1667,9 +1717,9 @@ string $tab5 = `columnLayout -adj 1 -p tlay tab5`;
 // Help Tab
 string $tab6 = `columnLayout -adj 1 -p tlay tab6`;
 				
-				image -i "mesa-about" -p tab6;
+				image -i "mesa-about-gray" -p tab6;
 				
-				frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -label "MESA Help" -p tab6 mesa_help;
+				frameLayout -marginHeight 2 -marginWidth 2 -bs "etchedOut" -bv on -collapsable true -label "MESA Help" -p tab6 mesa_help;
 				rowLayout -nc 1 -p mesa_help;
 				string $help;
 				
@@ -1758,65 +1808,51 @@ string $tab7 = `columnLayout -adj 1 -p tlay tab7`;
 				//rowLayout -numberOfColumns 1 -w 390 -p tab7 rl1;
 					//columnLayout -h 1 -p rl1 c1;
 					//separator -h 1;
-				rowLayout -numberOfColumns 1 -cw1 395 -p tab7 tab7_row1;	
-					columnLayout -p tab7_row1 cell1;
+				rowLayout -numberOfColumns 1 -adj 1/*-cw1 375 */-p tab7 tab7_row1;	
+					columnLayout -adj 1 -p tab7_row1 cell1;
 						image -i "mesa-about-gray" -p cell1;
 						//text -font "boldLabelFont" -vis 1 -label "WebSite" -align "left" -p c1;
 					//separator -h 1;
 						setParent tab7;
 				
 				//MESA Credits
-				frameLayout -marginHeight 5 -marginWidth 5 -w 200 -bs "etchedOut" -bv on -collapsable true -cl false -label "Credits" -p tab7 tab7_frame;
-				rowLayout -nc 1 -p tab7_frame;
+				frameLayout -marginHeight 1 -marginWidth 2 /*-w 200*/ -bs "etchedOut" -bv on -collapsable true -cl false -label "Credits" -p tab7 tab7_frame;
+				rowLayout -adj 1 -nc 1  -ad1 1 -p tab7_frame;
 				//setParent f2;
 				string $credhelp;
 				$credhelp += " \t\t\t MESA* by Nicolas Kirsch \n Contact :\t fuzzzzzz@gmail.com\n\n";
 				$credhelp += " Credits :\t Nicolas Kirsch, Valve software, Prall\n";
-				$credhelp += " Thanks  :\t Martin Niehoff and Robert Olender (logo)\n\n";
+				$credhelp += " Thanks  :\t Martin Niehoff and Robert Olender (logo)\n";
 				$credhelp += "\t\t\t(*Maya Exporter for Source Assets)";
 				
-				scrollField -w 320 -h 120 -text $credhelp -ed 0 -p tab7_frame;
+				scrollField /*-w 300 */-h 120 -text $credhelp -ed 0 -p tab7_frame;
 				
-				frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -label "Website" -p tab7 tab7_frame2;
-				rowLayout -bgc 0.2 0.2 0.2 -numberOfColumns 1 -p tab7_frame2 tab7_row2;
+				frameLayout -marginHeight 2 -marginWidth 2 -bs "etchedOut" -bv on -collapsable true -label "Website" -p tab7 tab7_frame2;
+				rowLayout -adj 1  -bgc 0.2 0.2 0.2 -numberOfColumns 1 -p tab7_frame2 tab7_row2;
 				//rowLayout -bgc 0.2 0.2 0.2 -numberOfColumns 2 -cw2 100 290 -p tab7_frame tab7_row2;
 					
-	/*				columnLayout -adj 1 -h 70 -bgc 0.5 0.5 0.5 -p tab7_row2 cell2;
-						text -vis 1 -w 100 -h 23 -al "center" -label "Visit the Website" -p cell2;
-						text -vis 1 -w 100 -h 23 -al "center" -label "GitHub" -p cell2;
-						text -vis 1 -w 100 -h 23 -al "center" -label "Youtube Channel" -p cell2;
-						text -vis 1 -w 100 -h 23 -al "center" -label "Facebook Page" -p cell2;
-						text -vis 1 -w 100 -h 23 -al "center" -label "Youtube Channel2" -p cell2;
-	*/					
-					columnLayout -bgc 0.5 0.51 0.5 -p tab7_row2 cell3;
+				columnLayout -adj 1 -bgc 0.5 0.51 0.5 -p tab7_row2 cell3;
 
-						button -label "Puppet-Master.net" -w 395 -align "center" -p cell3 -c urlPuppetMaster;
-						button -label "MESA on Github" -w 395 -align "center" -p cell3 -c urlGitHub;
+						button -label "Puppet-Master.net" -align "center" -p cell3 -c urlPuppetMaster;
+						button -label "MESA on Github" -align "center" -p cell3 -c urlGitHub;
 					
 					
-				rowLayout -bgc 0.2 0.2 0.2 -numberOfColumns 1 -cw1 395 -p tab7_frame2 tab7_row3;
-					columnLayout -bgc 0.5 0.51 0.5 -p tab7_row3 cell4;
-						button -label "Youtube Channel" -w 395 -align "center" -p cell4 -c urlYouTube;
-						button -label "@PuppetMaster on twitter" -w 395 -align "center" -p cell4 -c urlTwitter;
-						button -label "FaceBook Page" -w 395 -align "center" -p cell4 -c urlFaceBook;						
+				rowLayout -adj 1  -bgc 0.2 0.2 0.2 -numberOfColumns 1 /*-cw1 395 */-p tab7_frame2 tab7_row3;
+					columnLayout -adj 1 -bgc 0.5 0.51 0.5 -p tab7_row3 cell4;
+						button -label "Youtube Channel" -align "center" -p cell4 -c urlYouTube;
+						button -label "@PuppetMaster on twitter" -align "center" -p cell4 -c urlTwitter;
+						button -label "FaceBook Page" -align "center" -p cell4 -c urlFaceBook;						
 			
-				frameLayout -marginHeight 5 -marginWidth 5 -bs "etchedOut" -bv on -collapsable true -label "Tutorials" -p tab7 tab7_frame3;
+				frameLayout -marginHeight 2 -marginWidth 2 -bs "etchedOut" -bv on -collapsable true -label "Tutorials" -p tab7 tab7_frame3;
 				//rowLayout -bgc 0.2 0.2 0.2 -numberOfColumns 2 -cw2 100 290 -p tab7_frame3 tab7_row3;						
-				rowLayout -bgc 0.2 0.2 0.2 -numberOfColumns 1 -cw1 395 -p tab7_frame3 tab7_row4;
+				rowLayout -adj 1  -bgc 0.2 0.2 0.2 -numberOfColumns 1 /*-cw1 395 */-p tab7_frame3 tab7_row4;
 
-	/*				columnLayout -bgc 0.5 0.51 0.5 -p tab7_row4 cell5;
-	
-						text -vis 1 -w 100 -h 23 -al "center" -label "Installation" -p cell5;
-						text -vis 1 -w 100 -h 23 -al "center" -label "Installation Help" -p cell5;
-						text -vis 1 -w 100 -h 23 -al "center" -label "Export Tutorial" -p cell5;
-						text -vis 1 -w 100 -h 23 -al "center" -label "Export Video Tutorial" -p cell5;
-	*/
-					columnLayout -bgc 0.5 0.51 0.5 -p tab7_row4 cell6;
-						button -label "Installation" -w 395 -align "center" -p cell6 -c urlInstallation;
-						button -label "Installation Help" -w 395 -align "center" -p cell6 -c urlInstallationHelp;
-						button -label "Export Tutorial" -w 395 -align "center" -p cell6 -c urlExportTutorial;
-						button -label "Export Video Tutorial" -w 395 -align "center" -p cell6 -c urlExportTutorialYT;
-						button -label "MESA Common Issues" -w 395 -align "center" -p cell6 -c urlMesaErrors;
+					columnLayout -adj 1-bgc 0.5 0.51 0.5 -p tab7_row4 cell6;
+						button -label "Installation"-align "center" -p cell6 -c urlInstallation;
+						button -label "Installation Help" -align "center" -p cell6 -c urlInstallationHelp;
+						button -label "Export Tutorial" -align "center" -p cell6 -c urlExportTutorial;
+						button -label "Export Video Tutorial" -align "center" -p cell6 -c urlExportTutorialYT;
+						button -label "MESA Common Issues" -align "center" -p cell6 -c urlMesaErrors;
 
 				
 rowLayout -numberOfColumns 3 -adj 3
